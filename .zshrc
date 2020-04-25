@@ -3,7 +3,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export TERM="screen-256color"
 
 # Prompt Settings (http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html)
-export PS1="%1~ %# "
+export PS1="%B%K{4} %3~ > %k%b "
 
 # Java
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home
