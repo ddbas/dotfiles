@@ -34,3 +34,8 @@ call plug#end()
 " --------------------- Color Settings ---------------------
 colorscheme gruvbox
 let g:airline_theme='gruvbox'
+set background=dark
+
+" Allow VIM to be transparent (just for Alacritty?)
+hi! Normal ctermbg=NONE guibg=NONE
+hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
