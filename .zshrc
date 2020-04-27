@@ -3,7 +3,16 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export TERM="screen-256color"
 
 # Prompt Settings (http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html)
-export PS1="%B%K{4} %3~ %k%b "
+function git_branch() {
+    branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')
+    if [[ $branch == "" ]]; then
+        :
+    else
+        echo '%K{5} ('$branch') '
+    fi
+}
+setopt prompt_subst
+PROMPT='%B%K{4} %3~ $(git_branch)%k%b '
 
 # Java
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home
@@ -19,8 +28,8 @@ export GREP_COLOR=always
 # Lerna GitHub Access
 export GH_TOKEN=6cd28562b263c3e40c3dda7aa31a820e6f10fd0d 
 
-# Setting ag as the default source for fzf
-export FZF_DEFAULT_COMMAND='ag -g ""'
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Start tmux
 [[ -z "$TMUX" ]] && exec tmux
