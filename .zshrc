@@ -12,9 +12,15 @@ function git_branch() {
 }
 setopt prompt_subst
 PROMPT='%B%K{4} %3~ $(git_branch)%k%b '
+# RPROMPT can also be used for a right-side prompt
 
 # Environment Variables
 export GREP_OPTIONS='--color=auto'
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Git Autocompletion
+zstyle ':completion:*:*:git:*' script ~/.git-completion.bash
+fpath=(~/.zsh/functions $fpath)
+autoload -Uz compinit && compinit
