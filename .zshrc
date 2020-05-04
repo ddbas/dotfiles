@@ -14,6 +14,27 @@ setopt prompt_subst
 PROMPT='%B%K{4} %3~ $(git_branch)%k%b '
 # RPROMPT can also be used for a right-side prompt
 
+# NVM Setup
+function _install_nvm() {
+  unset -f nvm npm node
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+  "$@"
+}
+
+function nvm() {
+    _install_nvm nvm "$@"
+}
+
+function npm() {
+    _install_nvm npm "$@"
+}
+
+function node() {
+    _install_nvm node "$@"
+}
+
 # Environment Variables
 export GREP_OPTIONS='--color=auto'
 
