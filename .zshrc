@@ -36,6 +36,7 @@ function node() {
 }
 
 # Environment Variables
+export PATH="$HOME/.cargo/bin:$PATH" # Rust installation
 export GREP_OPTIONS='--color=auto'
 
 # FZF
