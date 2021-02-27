@@ -37,6 +37,7 @@ call plug#end()
 " Setup ALE
 "
 " make sure a rust-analyzer binary is setup in somewhere in your $PATH... :help ale-integration-rust 
+let g:airline#extensions#ale#enabled = 1
 let g:ale_linters = {
 \   'rust': ['cargo', 'analyzer']
 \}
