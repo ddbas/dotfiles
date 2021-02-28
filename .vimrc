@@ -21,7 +21,8 @@ set laststatus=2
 call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
-    Plug '/usr/local/opt/fzf' " Fuzzy finder
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
     Plug 'junegunn/goyo.vim'
 
     " Syntax highlighting
@@ -38,6 +39,8 @@ call plug#end()
 "
 " make sure a rust-analyzer binary is setup in somewhere in your $PATH... :help ale-integration-rust 
 let g:airline#extensions#ale#enabled = 1
+let g:ale_completion_enabled = 1
+let g:ale_sign_column_always = 1
 let g:ale_linters = {
 \   'rust': ['cargo', 'analyzer']
 \}
