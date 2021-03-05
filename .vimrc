@@ -42,8 +42,10 @@ colorscheme gruvbox
 set background=dark
 
 " --------------------- Mappings ---------------------
-nnoremap <silent> <c-p> :Files<CR>
-nnoremap <silent> <c-F> :Rg<CR>
+let mapleader = " "
+nnoremap <silent> <leader>p :Files<CR>
+nnoremap <silent> <leader>f :Rg<CR>
+nnoremap <silent> <leader>gt :ALEGoToDefinition<CR>
 
 " --------------------- Syntax Checking ---------------------
 "
