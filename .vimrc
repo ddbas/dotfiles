@@ -40,7 +40,6 @@ call plug#end()
 " make sure a rust-analyzer binary is setup in somewhere in your $PATH... :help ale-integration-rust 
 let g:airline#extensions#ale#enabled = 1
 let g:ale_completion_enabled = 1
-let g:ale_sign_column_always = 1
 let g:ale_linters = {
 \   'rust': ['cargo', 'analyzer']
 \}
@@ -50,6 +49,6 @@ colorscheme gruvbox
 let g:airline_theme='gruvbox'
 set background=dark
 
-" Allow VIM to be transparent (just for Alacritty?)
-hi! Normal ctermbg=NONE guibg=NONE
-hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
+" --------------------- Mappings ---------------------
+nnoremap <silent> <c-p> :FZF<CR>
+nnoremap <silent> <c-F> :Rg<CR>
