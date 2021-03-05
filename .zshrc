@@ -36,13 +36,8 @@ function node() {
 }
 
 # Environment Variables
-export PATH="$HOME/.cargo/bin:$PATH" # Rust installation
 export GREP_OPTIONS='--color=auto'
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Git Autocompletion
-zstyle ':completion:*:*:git:*' script ~/.git-completion.bash
-fpath=(~/.zsh/functions $fpath)
-autoload -Uz compinit && compinit
+export FZF_DEFAULT_OPTS="--border=rounded --color='border:2'"
