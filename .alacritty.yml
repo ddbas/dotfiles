@@ -1,7 +1,7 @@
 window:
   dimensions:
-    columns: 140
-    lines: 38
+    columns: 150
+    lines: 50
 
   # Window padding (changes require restart)
   #
@@ -11,27 +11,14 @@ window:
     x: 10
     y: 10
 
-  decorations: none
+  decorations: buttonless 
 
 scrolling:
   history: 10000
   multiplier: 3
-background_opacity: 0.85
 
 font:
-  normal:
-    family: Meslo LG M DZ for Powerline
-    style: Regular
-  bold:
-    family: Meslo LG M DZ for Powerline
-    style: Bold
-  italic:
-    family: Meslo LG M DZ for Powerline
-    style: Italic
   size: 11.0
-  debug:
-    persistent_logging: false
-draw_bold_text_with_bright_colors: false
 
 # Colors (Gruvbox dark)
 colors:
@@ -65,8 +52,11 @@ colors:
     white:   '#ebdbb2'
 
 cursor:
-  style: Block
+  style:
+    shape: Block
+    blinking: Always
   unfocused_hollow: true
+  blink_interval: 300
 
 key_bindings:
   - { key: Left,     mods: Alt,     chars: "\x1bb"                       }
