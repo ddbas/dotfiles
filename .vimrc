@@ -44,7 +44,8 @@ set background=dark
 " --------------------- Mappings ---------------------
 let mapleader = " "
 nnoremap <silent> <leader>p :Files<CR>
-nnoremap <silent> <leader>f :Rg<CR>
+nnoremap <silent> <leader>f :BLines<CR>
+nnoremap <silent> <leader>F :Rg<CR>
 nnoremap <silent> <leader>gt :ALEGoToDefinition<CR>
 
 " --------------------- Syntax Checking ---------------------
