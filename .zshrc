@@ -1,7 +1,7 @@
 # Start tmux
 [[ -z "$TMUX" ]] && exec tmux
 
-# Prompt Settings (http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html)
+# Prompt
 function git_branch() {
     branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')
     if [[ $branch == "" ]]; then
@@ -12,7 +12,13 @@ function git_branch() {
 }
 setopt prompt_subst
 PROMPT='%B%K{4} %3~ $(git_branch)%k%b '
-# RPROMPT can also be used for a right-side prompt
+
+autoload -Uz compinit
+if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
+    compinit
+else
+    compinit -C
+fi
 
 # NVM Setup
 function _install_nvm() {
