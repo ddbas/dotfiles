@@ -46,4 +46,5 @@ export GREP_OPTIONS='--color=auto'
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='rg --files' # ignore files in .gitignore for file search in VIM
 export FZF_DEFAULT_OPTS="--border=rounded --color='border:2'"
