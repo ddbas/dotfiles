@@ -51,6 +51,7 @@ nnoremap <silent> <leader>gt :ALEGoToDefinition<CR>
 " --------------------- Syntax Checking ---------------------
 "
 " Note: make sure a rust-analyzer binary is setup in somewhere in your $PATH... :help ale-integration-rust 
+" let g:ale_hover_to_preview = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_completion_enabled = 1
 let g:ale_linters = {
