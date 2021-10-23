@@ -48,6 +48,9 @@ nnoremap <silent> <leader>f :BLines<CR>
 nnoremap <silent> <leader>F :Rg<CR>
 nnoremap <silent> <leader>gt :ALEGoToDefinition<CR>
 
+" --------------------- Source ---------------------
+source ~/.vim/scripts/bracketed-paste.vim
+
 " --------------------- Syntax Checking ---------------------
 "
 " Note: make sure a rust-analyzer binary is setup in somewhere in your $PATH... :help ale-integration-rust 
