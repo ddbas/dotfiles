@@ -20,6 +20,9 @@ else
     compinit -C
 fi
 
+# Path
+PATH=$PATH:~/.local/bin
+
 # NVM Setup
 function _install_nvm() {
   unset -f nvm npm npx node
