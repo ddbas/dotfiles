@@ -13,7 +13,7 @@ function git_branch() {
 setopt prompt_subst
 PROMPT='%B%K{4} %3~ $(git_branch)%k%b '
 
-autoload -Uz compinit
+autoload -Uz compinit && compinit
 if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
     compinit
 else
@@ -22,7 +22,7 @@ fi
 
 # NVM Setup
 function _install_nvm() {
-  unset -f nvm npm node
+  unset -f nvm npm npx node
   export NVM_DIR="$HOME/.nvm"
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
@@ -35,6 +35,10 @@ function nvm() {
 
 function npm() {
     _install_nvm npm "$@"
+}
+
+function npx() {
+    _install_nvm npx "$@"
 }
 
 function node() {
