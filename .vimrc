@@ -47,16 +47,16 @@ nnoremap <silent> <leader>p :Files<CR>
 nnoremap <silent> <leader>f :BLines<CR>
 nnoremap <silent> <leader>F :Rg<CR>
 nnoremap <silent> <leader>gt :ALEGoToDefinition<CR>
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
 
 " --------------------- Source ---------------------
 source ~/.vim/scripts/bracketed-paste.vim
 
 " --------------------- Syntax Checking ---------------------
-"
-" Note: make sure a rust-analyzer binary is setup in somewhere in your $PATH... :help ale-integration-rust 
-" let g:ale_hover_to_preview = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_completion_enabled = 1
-let g:ale_linters = {
-\   'rust': ['cargo', 'analyzer']
-\}
+let g:ale_linters = {'rust': ['cargo', 'analyzer']}
+
+" --------------------- File Explorer ---------------------
+let g:netrw_banner = 0
+let g:netew_liststyle = 3
