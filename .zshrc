@@ -7,11 +7,11 @@ function git_branch() {
     if [[ $branch == "" ]]; then
         :
     else
-        echo '%K{5} ('$branch') '
+        echo '%F{4} ('$branch')'
     fi
 }
 setopt prompt_subst
-PROMPT='%B%K{4} %3~ $(git_branch)%k%b '
+PROMPT='%B%F{12} %1~$(git_branch)%f%b > '
 
 autoload -Uz compinit && compinit
 if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
