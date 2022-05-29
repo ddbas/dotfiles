@@ -1,0 +1,11 @@
+theme = "gruvbox"
+
+[editor]
+line-number = "relative"
+mouse = false
+
+[editor.file-picker]
+hidden = false
+
+[editor.whitespace]
+render = "all"
