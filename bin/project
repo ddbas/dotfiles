@@ -1,19 +1,42 @@
 #!/usr/bin/env bash
 
-if [[ $# -eq 1 ]]; then
-    selected_name=$1
-else
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -d|--dev)
+            DEV=true
+            shift
+            ;;
+        -*|--*)
+            echo "Unknown option $1"
+            exit 1
+            ;;
+        *)
+            selected_name=$1
+            shift
+            ;;
+    esac
+done
+
+if [[ -z $selected_name ]]; then
     selected_name=`ls -1 ~/Documents/Projects | fzf`
 fi
 
 if [[ -z $selected_name ]]; then
-    exit 0
+    exit 1
 fi
 
 selected_project=~/Documents/Projects/$selected_name
 
 if ! tmux has-session -t=$selected_name 2> /dev/null; then
-    tmux new-session -d -s $selected_name -c $selected_project
+    if [[ -n $DEV ]]; then
+        tmux new-session -d -s $selected_name -c $selected_project
+        tmux new-window -d -a -t $selected_name:0 -c $selected_project
+        tmux send-keys -t $selected_name:0 hx Enter
+    else
+        tmux new-session -d -s $selected_name -c $selected_project
+    fi
 fi
 
 tmux switch-client -t $selected_name
+
+
