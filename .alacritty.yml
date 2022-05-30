@@ -3,30 +3,23 @@ window:
     columns: 150
     lines: 50
 
-  # Window padding (changes require restart)
-  #
-  # Blank space added around the window in pixels. This padding is scaled
-  # by DPI and the specified value is always added at both opposing sides.
   padding:
     x: 10
     y: 10
 
-  decorations: buttonless 
+  decorations: buttonless
 
 scrolling:
-  history: 10000
-  multiplier: 3
+  history: 0
 
 font:
-  size: 16.0
+  size: 18.0
 
 # Colors (Gruvbox dark)
 colors:
   # Default colors
   primary:
-    # hard contrast: background = '#1d2021'
     background: '#282828'
-    # soft contrast: background = '#32302f'
     foreground: '#ebdbb2'
 
   # Normal colors
@@ -57,6 +50,8 @@ cursor:
     blinking: Always
   unfocused_hollow: true
   blink_interval: 300
+
+live_config_reload: true
 
 key_bindings:
   - { key: Left,     mods: Alt,     chars: "\x1bb"                       }
