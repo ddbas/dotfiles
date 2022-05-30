@@ -1,3 +1,5 @@
+" https://github.com/ConradIrwin/vim-bracketed-paste
+
 if exists("g:loaded_bracketed_paste")
   finish
 endif
