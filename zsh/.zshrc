@@ -26,7 +26,7 @@ fi
 PATH=$PATH:~/.local/bin
 
 # Editor
-export VISUAL=/Users/bastied/.cargo/bin/hx
+export VISUAL=/usr/local/bin/hx
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
