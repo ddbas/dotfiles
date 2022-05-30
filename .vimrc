@@ -17,6 +17,14 @@ set scrolloff=8
 set nocompatible
 set hidden " Keep buffers open without having to save them
 set timeoutlen=500 " Only wait 500 milliseconds after ESC is pressed
+set noswapfile
+set re=0 " https://github.com/vim/vim/issues/7280
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o " Disable automatic comment insertion
+augroup vimrc-incsearch-highlight
+    autocmd!
+    autocmd CmdlineEnter /,\? :set hlsearch
+    autocmd CmdlineLeave /,\? :set nohlsearch
+augroup END
 
 " --------------------- Plugins ---------------------
 call plug#begin('~/.vim/plugged')
@@ -49,14 +57,18 @@ nnoremap <silent> <leader>F :Rg<CR>
 nnoremap <silent> <leader>gt :ALEGoToDefinition<CR>
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
 
-" --------------------- Source ---------------------
+command! -bang -nargs=* Rg 
+            \ call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, 
+            \ fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
+
+" --------------------- Source Scripts ----------------------
 source ~/.vim/scripts/bracketed-paste.vim
 
 " --------------------- Syntax Checking ---------------------
 let g:airline#extensions#ale#enabled = 1
 let g:ale_completion_enabled = 1
-let g:ale_linters = {'rust': ['cargo', 'analyzer']}
+let g:ale_linters = {'rust': ['analyzer']}
 
-" --------------------- File Explorer ---------------------
+" --------------------- File Explorer -----------------------
 let g:netrw_banner = 0
-let g:netew_liststyle = 3
+let g:netrw_liststyle = 3
