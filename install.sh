@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# TODO: Create a map with each symlink mapping and loop through it.
+# TODO: Print the progress.
+
 # Install ZSH
 ln -s $PWD/zsh/.zshrc ~/.zshrc
 
