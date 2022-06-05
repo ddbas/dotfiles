@@ -1,25 +1,35 @@
 #!/usr/bin/env bash
 
-# TODO: Check if the file exists first.
+if ! test -f ~/.zshrc; then
+    echo "Install zsh"
+    ln -s $PWD/zsh/.zshrc ~/.zshrc
+fi
 
-echo "Install zsh"
-ln -s $PWD/zsh/.zshrc ~/.zshrc
+if ! test -f ~/.tmux.conf; then
+    echo "Install tmux"
+    ln -s $PWD/tmux/.tmux.conf ~/.tmux.conf
+fi
 
-echo "Install tmux"
-ln -s $PWD/tmux/.tmux.conf ~/.tmux.conf
+if ! test -f ~/.alacritty.yml; then
+    echo "Install alacritty"
+    ln -s $PWD/alacritty/.alacritty.yml ~/.alacritty.yml
+fi
 
-echo "Install alacritty"
-ln -s $PWD/alacritty/.alacritty.yml ~/.alacritty.yml
+if ! test -f ~/.vim/scripts/bracketed-paste.vim; then
+    echo "Install vim"
+    ln -s $PWD/vim/.vimrc ~/.vimrc
+    mkdir -p ~/.vim/scripts
+    ln -s $PWD/vim/bracketed-paste.vim ~/.vim/scripts/bracketed-paste.vim
+fi
 
-echo "Install vim"
-ln -s $PWD/vim/.vimrc ~/.vimrc
-mkdir -p ~/.vim/scripts
-ln -s $PWD/vim/bracketed-paste.vim ~/.vim/scripts/bracketed-paste.vim
+if ! test -f ~/.config/helix/config.toml; then
+    echo "Install helix"
+    mkdir -p ~/.config/helix/
+    ln -s $PWD/helix/config.toml ~/.config/helix/config.toml
+fi
 
-echo "Install helix"
-mkdir -p ~/.config/helix/
-ln -s $PWD/helix/config.toml ~/.config/helix/config.toml
-
-echo "Install scripts"
-mkdir -p ~/.local
-ln -s $PWD/bin ~/.local/bin
+if [ ! -d ~/.local/bin ]; then
+    echo "Install scripts"
+    mkdir -p ~/.local
+    ln -s $PWD/bin ~/.local/bin
+fi
