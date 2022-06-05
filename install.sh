@@ -1,26 +1,25 @@
 #!/usr/bin/env bash
 
-# TODO: Create a map with each symlink mapping and loop through it.
-# TODO: Print the progress.
+# TODO: Check if the file exists first.
 
-# Install ZSH
+echo "Install zsh"
 ln -s $PWD/zsh/.zshrc ~/.zshrc
 
-# Install TMUX
+echo "Install tmux"
 ln -s $PWD/tmux/.tmux.conf ~/.tmux.conf
 
-# Install Alacritty
+echo "Install alacritty"
 ln -s $PWD/alacritty/.alacritty.yml ~/.alacritty.yml
 
-# Install VIM
+echo "Install vim"
 ln -s $PWD/vim/.vimrc ~/.vimrc
 mkdir -p ~/.vim/scripts
 ln -s $PWD/vim/bracketed-paste.vim ~/.vim/scripts/bracketed-paste.vim
 
-# Install Helix
+echo "Install helix"
 mkdir -p ~/.config/helix/
 ln -s $PWD/helix/config.toml ~/.config/helix/config.toml
 
-# Install scripts
+echo "Install scripts"
 mkdir -p ~/.local
 ln -s $PWD/bin ~/.local/bin

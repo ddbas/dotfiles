@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 
-# Remove ZSH
+echo "Uninstall zsh"
 rm ~/.zshrc 2> /dev/null
 
-# Remove TMUX
+echo "Uninstall tmux"
 rm ~/.tmux.conf 2> /dev/null
 
-# Remove Alacritty
+echo "Uninstall alacritty"
 rm ~/.alacritty.yml 2> /dev/null
 
-# Remove VIM
+echo "Uninstall vim"
 rm ~/.vim/scripts/bracketed-paste.vim 2> /dev/null
 rm ~/.vimrc 2> /dev/null
 
-# Remove Helix
+echo "Uninstall helix"
 rm ~/.config/helix/config.toml 2> /dev/null
 
-# Remove scripts
+echo "Uninstall scripts"
 rm -rf ~/.local/bin 2> /dev/null
