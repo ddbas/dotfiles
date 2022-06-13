@@ -29,7 +29,7 @@ PATH=$PATH:~/.local/bin
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob=\!.git/'
 export FZF_DEFAULT_OPTS="--border=rounded --color='border:12'"
-export FZF_CTRL_T_COMMAND='rg --files --hidden --glob=\!.git/'
+export FZF_CTRL_T_COMMAND='fd --hidden --exclude ".git"'
 export FZF_CTRL_T_OPTS="--border=rounded --color='border:12'"
 
 # NVM
