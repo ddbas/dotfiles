@@ -33,33 +33,9 @@ export FZF_CTRL_T_COMMAND='fd --hidden --exclude ".git"'
 export FZF_CTRL_T_OPTS="--border=rounded --color='border:12'"
 
 # NVM
-function _install_nvm() {
-    unset -f nvm npx node npm yarn
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-    [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-    "$@"
-}
-
-function nvm() {
-    _install_nvm nvm "$@"
-}
-
-function npx() {
-    _install_nvm npx "$@"
-}
-
-function node() {
-    _install_nvm node "$@"
-}
-
-function npm() {
-    _install_nvm npm "$@"
-}
-
-function yarn() {
-    _install_nvm yarn "$@"
-}
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # Other Environment Variables
 if [[ -a ~/.env.zsh ]]
