@@ -32,10 +32,8 @@ export FZF_DEFAULT_OPTS="--border=rounded --color='border:12'"
 export FZF_CTRL_T_COMMAND='fd --hidden --exclude ".git"'
 export FZF_CTRL_T_OPTS="--border=rounded --color='border:12'"
 
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+# FNM
+eval "$(fnm env --log-level quiet --use-on-cd)"
 
 # Other Environment Variables
 if [[ -a ~/.env.zsh ]]
