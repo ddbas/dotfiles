@@ -22,6 +22,9 @@ else
     compinit -C
 fi
 
+# Default editor
+export VISUAL=hx
+
 # Path
 PATH=$PATH:~/.local/bin
 
