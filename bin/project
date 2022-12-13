@@ -3,7 +3,13 @@
 while [[ $# -gt 0 ]]; do
     case $1 in
         -d|--dev)
+            # Open session for development
             DEV=true
+            shift
+            ;;
+        -r|--replace)
+            # Replace current session
+            REPLACE=true
             shift
             ;;
         -*|--*)
@@ -28,15 +34,15 @@ fi
 selected_project=~/Documents/Projects/$selected_name
 
 if ! tmux has-session -t=$selected_name 2> /dev/null; then
+    tmux new-session -d -s $selected_name -c $selected_project
     if [[ -n $DEV ]]; then
-        tmux new-session -d -s $selected_name -c $selected_project
-        tmux new-window -d -a -t $selected_name:0 -c $selected_project
         tmux send-keys -t $selected_name:0 hx Enter
-    else
-        tmux new-session -d -s $selected_name -c $selected_project
     fi
 fi
 
+previous_session_name=`tmux display-message -p '#S'`
 tmux switch-client -t $selected_name
 
-
+if [[ -n $REPLACE ]]; then
+    tmux kill-session -t $previous_session_name
+fi
