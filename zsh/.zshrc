@@ -1,5 +1,6 @@
 # Start tmux
 [[ -z "$TMUX" ]] && exec tmux
+export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo # See https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
 
 # Prompt
 function git_branch() {
