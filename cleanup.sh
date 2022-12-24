@@ -14,7 +14,7 @@ rm ~/.vim/scripts/bracketed-paste.vim 2> /dev/null
 rm ~/.vimrc 2> /dev/null
 
 echo "Uninstall helix"
-rm ~/.config/helix/config.toml 2> /dev/null
+rm -rf ~/.config/helix 2> /dev/null
 
 echo "Uninstall scripts"
 rm -rf ~/.local/bin 2> /dev/null

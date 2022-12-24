@@ -22,10 +22,10 @@ if ! test -f ~/.vim/scripts/bracketed-paste.vim; then
     ln -s $PWD/vim/bracketed-paste.vim ~/.vim/scripts/bracketed-paste.vim
 fi
 
-if ! test -f ~/.config/helix/config.toml; then
+if [ ! -d ~/.config/helix ]; then
     echo "Install helix"
-    mkdir -p ~/.config/helix/
-    ln -s $PWD/helix/config.toml ~/.config/helix/config.toml
+    mkdir -p ~/.config
+    ln -s $PWD/helix ~/.config/helix
 fi
 
 if [ ! -d ~/.local/bin ]; then
