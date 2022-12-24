@@ -8,11 +8,11 @@ function git_branch() {
     if [[ $branch == "" ]]; then
         :
     else
-        echo '%F{4} ('$branch')'
+        echo '%F{2} ('$branch')'
     fi
 }
 setopt prompt_subst
-PROMPT='%B%F{12} %1~$(git_branch)%f%b > '
+PROMPT='%B%F{6} %1~$(git_branch)%f%b > '
 # Colors cheatsheet: https://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
 
 # Setup autocompletion system
