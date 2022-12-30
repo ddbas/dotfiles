@@ -9,6 +9,8 @@ window:
 
   decorations: buttonless
 
+  opacity: 0.999 # Fixes slow MacOS mission control animation (source: https://github.com/alacritty/alacritty/issues/4474#issuecomment-803972329)
+
 scrolling:
   history: 0
 
