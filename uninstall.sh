@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
+echo "Uninstall configurations"
 
-echo "Uninstall zsh"
+echo "zsh"
 rm ~/.zshrc 2> /dev/null
 
-echo "Uninstall tmux"
+echo "tmux"
 rm ~/.tmux.conf 2> /dev/null
 
-echo "Uninstall alacritty"
+echo "alacritty"
 rm ~/.alacritty.yml 2> /dev/null
 
-echo "Uninstall vim"
-rm ~/.vim/scripts/bracketed-paste.vim 2> /dev/null
-rm ~/.vimrc 2> /dev/null
-
-echo "Uninstall helix"
+echo "helix"
 rm -rf ~/.config/helix 2> /dev/null
 
 echo "Uninstall scripts"
 rm -rf ~/.local/bin 2> /dev/null
+
+echo "Uninstall nix packages"
+nix-env -e '.*'
