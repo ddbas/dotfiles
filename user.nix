@@ -11,6 +11,7 @@ with import <nixpkgs> {}; [
   git
   helix
   ripgrep
+  tree
 
   # Language servers
   rust-analyzer
