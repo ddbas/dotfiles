@@ -1,6 +1,7 @@
 with import <nixpkgs> {}; [
-  # Basics
+  # Environment
   tmux
+  zsh
 
   # Tools
   exa
