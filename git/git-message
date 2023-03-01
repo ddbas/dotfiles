@@ -1,0 +1,12 @@
+
+# <type>: <subject>
+#
+# Types:
+#    feat     (new feature)
+#    fix      (bug fix)
+#    refactor (refactor)
+#    chore    (maintenance change)
+#    docs     (documentation change)
+#    perf     (performance improvement)
+#    test     (test change)
+#    style    (linting & formatting)

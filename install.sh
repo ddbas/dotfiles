@@ -4,19 +4,25 @@ nix-channel --add https://nixos.org/channels/nixpkgs-unstable
 nix-env -irf user.nix
 
 echo "Install configurations"
-if ! test -f ~/.zshrc; then
+if [ ! -f ~/.zshrc ]; then
     echo "zsh"
     ln -s $PWD/zsh/.zshrc ~/.zshrc
 fi
 
-if ! test -f ~/.tmux.conf; then
+if [ ! -f ~/.tmux.conf ]; then
     echo "tmux"
     ln -s $PWD/tmux/.tmux.conf ~/.tmux.conf
 fi
 
-if ! test -f ~/.alacritty.yml; then
+if [ ! -f ~/.alacritty.yml ]; then
     echo "alacritty"
     ln -s $PWD/alacritty/.alacritty.yml ~/.alacritty.yml
+fi
+
+if [ ! -f ~/.gitconfig ] && [ ! -f ~/.gitmessage ]; then
+    echo "git"
+    ln -s $PWD/git/git-config ~/.gitconfig
+    ln -s $PWD/git/git-message ~/.gitmessage
 fi
 
 if [ ! -d ~/.config/helix ]; then
