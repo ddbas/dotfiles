@@ -1,6 +1,9 @@
+# Initialize brew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # Start tmux
-[[ -z "$TMUX" ]] && exec tmux
 export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo # See https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
+[[ -z "$TMUX" ]] && exec tmux
 
 # Prompt
 function git_branch() {
@@ -30,11 +33,7 @@ export VISUAL=hx
 PATH=$PATH:~/.local/bin
 
 # FZF
-# Copied from here: https://nixos.wiki/wiki/Fzf
-if [ -n "${commands[fzf-share]}" ]; then
-  source "$(fzf-share)/key-bindings.zsh"
-  source "$(fzf-share)/completion.zsh"
-fi
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob=\!.git/'
 export FZF_DEFAULT_OPTS="--border=rounded --color='border:12'"
 export FZF_CTRL_T_COMMAND='fd --hidden --exclude ".git"'

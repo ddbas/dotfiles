@@ -29,7 +29,4 @@ fi
 if [ -L ~/.config/helix ]; then
     echo "helix"
     rm -rf ~/.config/helix 2> /dev/null
-  fi
-
-echo "Uninstall nix packages"
-nix-env -e '.*'
+fi

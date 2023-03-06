@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-echo "Install nix packages"
-nix-channel --add https://nixos.org/channels/nixpkgs-unstable
-nix-env -irf user.nix
-
 echo "Install configurations"
 if [ ! -f ~/.zshrc ]; then
     echo "zsh"
