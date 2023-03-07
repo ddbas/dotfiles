@@ -1,6 +1,7 @@
 theme = "nord"
 
 [editor]
+auto-pairs = false
 color-modes = true
 cursorline = true
 line-number = "relative"
