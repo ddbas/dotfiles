@@ -1,5 +1,11 @@
 # Initialize brew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [ -f /usr/local/bin/brew ]; then
+    # Intel MacOS
+    eval "$(/usr/local/bin/brew shellenv)"
+else
+    # ARM MacOS
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 # Start tmux
 export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo # See https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
