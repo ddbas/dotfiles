@@ -2,8 +2,12 @@
 
 ## Install
 
-To install the dotfiles, run the following command.
-
-```bash
+```sh
 ./install.sh
+```
+
+# Uninstall
+
+```sh
+./uninstall.sh
 ```
