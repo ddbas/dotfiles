@@ -1,0 +1,19 @@
+# Environment
+alacritty
+zsh
+tmux
+
+# Tools
+exa
+fd
+fnm
+fzf
+git
+helix
+ripgrep
+tree
+
+# Language servers
+bash-language-server
+typescript-language-server
+rust-analyzer
