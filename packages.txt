@@ -17,3 +17,6 @@ tree
 bash-language-server
 typescript-language-server
 rust-analyzer
+
+# Other
+drawio
