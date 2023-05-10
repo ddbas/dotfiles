@@ -41,7 +41,7 @@ PATH=$PATH:~/.local/bin
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob=\!.git/'
-export FZF_DEFAULT_OPTS="--border=rounded --color='border:12'"
+export FZF_DEFAULT_OPTS="--border=rounded --color='border:12,bg+:#3B4252,bg:#2E3440,spinner:#81A1C1,hl:#616E88,fg:#D8DEE9,header:#616E88,info:#81A1C1,pointer:#81A1C1,marker:#81A1C1,fg+:#D8DEE9,prompt:#81A1C1,hl+:#81A1C1'"
 export FZF_CTRL_T_COMMAND='fd --hidden --exclude ".git"'
 export FZF_CTRL_T_OPTS="--border=rounded --color='border:12'"
 
