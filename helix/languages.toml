@@ -7,3 +7,8 @@ indent = { tab-width = 4, unit = "    " }
 name = "typescript"
 auto-format = true
 indent = { tab-width = 4, unit = "    " }
+
+[[language]]
+name = "bash"
+auto-format = true
+indent = { tab-width = 2, unit = "  " }
