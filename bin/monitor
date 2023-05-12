@@ -35,6 +35,6 @@ reload_loop() {
 reload_loop &> /dev/null &
 reload_loop_job=$!
 
-$CMD | fzf --listen 6266
+$CMD | fzf --listen 6266 --layout reverse
 
 kill $reload_loop_job
