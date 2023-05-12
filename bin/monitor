@@ -1,5 +1,27 @@
 #!/usr/bin/env bash
 
+help() {
+  cat << EOF
+usage: $0 [OPTIONS] <command>
+
+    -h                    Show this message
+EOF
+}
+
+OPTIND=1
+
+while getopts "h" opt;
+do
+  case "$opt" in
+    h)
+      help
+      exit 0
+      ;;
+  esac
+done
+
+shift $((OPTIND-1))
+
 CMD=$@
 
 reload_loop() {
