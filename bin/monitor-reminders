@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+monitor \
+  -b "return:execute(echo {} | awk '{print \$1}' | xargs remind complete)+reload(remind list)+clear-query" \
+  "remind list"

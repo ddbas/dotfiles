@@ -1,3 +1,6 @@
+# Path
+PATH=$PATH:~/.local/bin
+
 # Initialize brew
 if [ -f /usr/local/bin/brew ]; then
     # Intel MacOS
@@ -34,9 +37,6 @@ fi
 
 # Default editor
 export VISUAL=hx
-
-# Path
-PATH=$PATH:~/.local/bin
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
