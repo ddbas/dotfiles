@@ -2,7 +2,7 @@
 
 if ! tmux has-session -t=reminders 2> /dev/null; then
     tmux new-session -d -s reminders
-    tmux send-keys -t reminders:0 "remind list -i" Enter
+    tmux send-keys -t reminders:0 "monitor-reminders" Enter
 fi
 
 tmux switch-client -t reminders
