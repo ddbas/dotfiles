@@ -1,26 +1,18 @@
 #!/usr/bin/env bash
 
-help() {
-  cat << EOF
-usage: $0 [OPTIONS] <command>
-
-    -h                    Show this message
-EOF
-}
-
 OPTIND=1
 
-FZF_BINDINGS=()
+FZF_BINDING_OPTIONS=()
+HEADER_OPTION=
 
-while getopts "hb:" opt;
+while getopts "b:h:" opt;
 do
   case "$opt" in
-    h)
-      help
-      exit 0
-      ;;
     b)
-      FZF_BINDINGS+=("--bind=$OPTARG")
+      FZF_BINDING_OPTIONS+=("--bind=$OPTARG")
+      ;;
+    h)
+      HEADER_OPTION="--header=$OPTARG"
       ;;
   esac
 done
@@ -30,16 +22,21 @@ shift $((OPTIND-1))
 CMD=$@
 
 reload_loop() {
-    while true;
-    do
-        curl -XPOST localhost:6266 -d "reload($CMD)"
-        sleep 5
-    done
+  while true;
+  do
+    curl -XPOST localhost:6266 -d "reload($CMD)"
+    sleep 5
+  done
 }
 
 reload_loop &> /dev/null &
 reload_loop_job=$!
 
-$CMD | fzf --listen 6266 --layout reverse --ansi "${FZF_BINDINGS[@]}"
+
+if [ -n "$HEADER_OPTION" ]; then
+  $CMD | fzf --listen 6266 --layout reverse --ansi "$HEADER_OPTION" "${FZF_BINDING_OPTIONS[@]}"
+else
+  $CMD | fzf --listen 6266 --layout reverse --ansi "${FZF_BINDING_OPTIONS[@]}"
+fi
 
 kill $reload_loop_job
