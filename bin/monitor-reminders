@@ -3,5 +3,6 @@
 monitor \
   -b "return:execute(echo {} | awk '{print \$1}' | xargs remind complete)+reload(remind list)+clear-query" \
   -b "ctrl-d:execute(echo {} | awk '{print \$1}' | xargs remind remove)+reload(remind list)+clear-query" \
-  -b "ctrl-m:execute(read 'reminder?remind me> '; [[ -n \"\$reminder\" ]] && remind me \$reminder)+reload(remind list)+clear-query" \
+  -b "ctrl-m:execute(printf \"\\033c\"; read 'reminder?remind me> '; [[ -n \"\$reminder\" ]] && remind me \$reminder)+reload(remind list)+clear-query" \
+  -b "ctrl-r:execute(printf \"\\033c\"; read 'time?reschedule reminder> '; [[ -n \"\$time\" ]] && echo {} | awk '{print \$1}' | xargs remind reschedule \$time)+reload(remind list)+clear-query" \
   "remind list"
