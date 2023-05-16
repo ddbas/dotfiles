@@ -2,7 +2,7 @@
 
 monitor \
   -b "return:execute-silent(echo {} | awk '{print \$1}' | xargs remind complete)+reload(remind list)+clear-query" \
-  -b "bspace:execute-silent(echo {} | awk '{print \$1}' | xargs remind remove)+reload(remind list)+clear-query" \
+  -b "ctrl-d:execute-silent(echo {} | awk '{print \$1}' | xargs remind remove)+reload(remind list)+clear-query" \
   -b "ctrl-a:execute(printf \"\\033c\"; read 'reminder?remind me> '; [[ -n \"\$reminder\" ]] && remind me \$reminder)+reload(remind list)+clear-query" \
   -b "ctrl-r:execute(printf \"\\033c\"; read 'time?reschedule reminder> '; [[ -n \"\$time\" ]] && echo {} | awk '{print \$1}' | xargs remind reschedule \$time)+reload(remind list)+clear-query" \
   "remind list"
