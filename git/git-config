@@ -2,9 +2,9 @@
 	# A gitconfig outside of version control.
 	# It is silently ignored if it doesn't exist.
 	path = ~/.gitconfig-local
-
 [init]
 	defaultBranch = main
-
 [commit]
 	template = ~/.gitmessage
+[push]
+	autoSetupRemote = true
