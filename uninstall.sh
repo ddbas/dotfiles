@@ -80,9 +80,9 @@ if [ $uninstall_scripts -eq 1 ]; then
 fi
 
 uninstall_alacritty_config() {
-  if [ -L ~/.alacritty.yml ]; then
+  if [ -L ~/.config/alacritty ]; then
       echo -e "${BLUE}>>${NC} Alacritty"
-      rm ~/.alacritty.yml 2> /dev/null
+      rm -rf ~/.config/alacritty 2> /dev/null
   fi
 }
 

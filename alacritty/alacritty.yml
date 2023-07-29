@@ -1,15 +1,15 @@
 window:
-  dimensions:
-    columns: 150
-    lines: 50
+  # dimensions:
+  #   columns: 150
+  #   lines: 50
 
   padding:
-    x: 10
-    y: 10
+    x: 8
+    y: 8
 
   decorations: buttonless
 
-  opacity: 0.999 # Fixes slow MacOS mission control animation (source: https://github.com/alacritty/alacritty/issues/4474#issuecomment-803972329)
+  # opacity: 0.999 # Fixes slow MacOS mission control animation (source: https://github.com/alacritty/alacritty/issues/4474#issuecomment-803972329)
 
 scrolling:
   history: 0
@@ -52,8 +52,6 @@ cursor:
     blinking: Always
   unfocused_hollow: true
   blink_interval: 300
-
-live_config_reload: true
 
 key_bindings:
   - { key: Left,     mods: Alt,     chars: "\x1bb"                       }

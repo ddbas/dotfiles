@@ -103,9 +103,10 @@ if [ $install_packages -eq 1 ]; then
 fi
 
 install_alacritty_config() {
-  if [ ! -f ~/.alacritty.yml ]; then
+  if [ ! -f ~/.config/alacritty ]; then
       echo -e "${BLUE}>>${NC} Alacritty"
-      ln -s $PWD/alacritty/.alacritty.yml ~/.alacritty.yml
+      mkdir -p ~/.config
+      ln -s $PWD/alacritty ~/.config/alacritty
   fi
 }
 
