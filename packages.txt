@@ -4,20 +4,22 @@ zsh
 tmux
 font-iosevka-nerd-font
 
-# Tools
-exa
-fd
+# Programming languages
+rust
 fnm
-fzf
+
+# Tools
 git
 helix
+exa
+fd
+fzf
 ripgrep
 tree
 
 # Language servers
 bash-language-server
 typescript-language-server
-rust-analyzer
 
 # Other
 drawio
