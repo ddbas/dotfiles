@@ -2,7 +2,8 @@
 alacritty
 zsh
 tmux
-font-iosevka-nerd-font
+font-iosevka-term-nerd-font
+starship
 
 # Programming languages
 rust

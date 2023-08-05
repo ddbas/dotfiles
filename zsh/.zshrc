@@ -14,18 +14,8 @@ fi
 export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo # See https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
 [[ -z "$TMUX" ]] && exec tmux
 
-# Prompt
-function git_branch() {
-    branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')
-    if [[ $branch == "" ]]; then
-        :
-    else
-        echo '%F{2} ('$branch')'
-    fi
-}
-setopt prompt_subst
-PROMPT='%B%F{6}%1~$(git_branch)%f%b > '
-# Colors cheatsheet: https://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
+# Setup prompt
+eval "$(starship init zsh)"
 
 # Setup autocompletion system
 autoload -Uz compinit

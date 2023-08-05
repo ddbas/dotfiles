@@ -125,6 +125,14 @@ install_tmux_config() {
   fi
 }
 
+install_starship_config() {
+  if [ ! -f ~/.config/starship.toml ]; then
+      echo -e "${BLUE}>>${NC} Starship"
+      mkdir -p ~/.config
+      ln -s $PWD/starship/starship.toml ~/.config/starship.toml
+  fi
+}
+
 install_git_config() {
   if [ ! -f ~/.gitconfig ] && [ ! -f ~/.gitmessage ]; then
       echo -e "${BLUE}>>${NC} Git"
@@ -146,6 +154,7 @@ if [ $install_configurations -eq 1 ]; then
   install_alacritty_config
   install_zsh_config
   install_tmux_config
+  install_starship_config
   install_git_config
   install_helix_config
 fi

@@ -100,6 +100,13 @@ uninstall_tmux_config() {
   fi
 }
 
+uninstall_starship_config() {
+  if [ -L ~/.config/starship.toml ]; then
+      echo -e "${BLUE}>>${NC} Starship"
+      rm ~/.config/starship.toml 2> /dev/null
+  fi
+}
+
 uninstall_git_config() {
   if [ -L ~/.gitconfig ] && [ -L ~/.gitmessage ]; then
       echo -e "${BLUE}>>${NC} Git"
@@ -120,6 +127,7 @@ if [ $uninstall_configurations -eq 1 ]; then
   uninstall_alacritty_config
   uninstall_zsh_config
   uninstall_tmux_config
+  uninstall_starship_config
   uninstall_git_config
   uninstall_helix_config
 fi
