@@ -74,6 +74,7 @@ fi
 
 brew_install() {
   echo -e "${BLUE}>>${NC} Homebrew install"
+  brew tap homebrew/cask-fonts
   cat packages.txt | grep -v -e '^\s*$' | grep -v '#' | xargs brew install
 }
 
