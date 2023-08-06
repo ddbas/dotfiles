@@ -2,7 +2,7 @@
 alacritty
 zsh
 tmux
-font-iosevka-term-nerd-font
+font-jetbrains-mono-nerd-font
 starship
 
 # Programming languages
