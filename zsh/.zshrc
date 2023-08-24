@@ -31,7 +31,7 @@ export VISUAL=hx
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob=\!.git/'
-export FZF_DEFAULT_OPTS="--border=rounded --color='border:12,bg+:#3B4252,bg:#2E3440,spinner:#81A1C1,hl:#616E88,fg:#D8DEE9,header:#616E88,info:#81A1C1,pointer:#81A1C1,marker:#81A1C1,fg+:#D8DEE9,prompt:#81A1C1,hl+:#81A1C1'"
+export FZF_DEFAULT_OPTS="--border=rounded --color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4" # Dracula theme
 export FZF_CTRL_T_COMMAND='fd --hidden --exclude ".git"'
 export FZF_CTRL_T_OPTS="--border=rounded --color='border:12'"
 
