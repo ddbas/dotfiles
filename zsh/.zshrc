@@ -5,20 +5,28 @@ export XDG_DATA_HOME="$HOME"/.local/share
 if [ -f /usr/local/bin/brew ]; then
     # Intel MacOS
     eval "$(/usr/local/bin/brew shellenv)"
-else
+elif [ -f /opt/homebrew/bin/brew ]; then
     # ARM MacOS
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # Start tmux
-export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo # See https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
-[[ -z "$TMUX" ]] && exec tmux
+if [ -x "$(command -v tmux)" ]; then
+    export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo # See https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
+    [[ -z "$TMUX" ]] && exec tmux
+else
+    echo "Error: tmux is not installed"
+fi
 
 # Binaries
 export PATH="$PATH:~/.local/bin"
 
 # Setup prompt
-eval "$(starship init zsh)"
+if [ -x "$(command -v starship)" ]; then
+    eval "$(starship init zsh)"
+else
+    echo "Error: starship is not installed"
+fi
 
 # Setup autocompletion system
 autoload -Uz compinit
@@ -29,7 +37,11 @@ else
 fi
 
 # Default editor
-export VISUAL=hx
+if [ -x "$(command -v hx)" ]; then
+    export VISUAL=hx
+else
+    echo "Error: helix is not installed"
+fi
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -39,16 +51,18 @@ export FZF_CTRL_T_COMMAND='fd --hidden --exclude ".git"'
 export FZF_CTRL_T_OPTS="--border=rounded --color='border:12'"
 
 # FNM
-eval "$(fnm env --log-level quiet --use-on-cd)"
+if [ -x "$(command -v fnm)" ]; then
+    eval "$(fnm env --log-level quiet --use-on-cd)"
+else
+    echo "Error: fnm is not installed"
+fi
 
 # Other Environment Variables
-if [[ -a ~/.env.zsh ]]
-then
+if [ -f ~/.env.zsh ]; then
     source ~/.env.zsh
 fi
 
 # Secrets
-if [[ -a ~/.secrets.zsh ]]
-then
+if [ -f ~/.secrets.zsh ]; then
     source ~/.secrets.zsh
 fi
