@@ -1,5 +1,5 @@
-# Path
-PATH=$PATH:~/.local/bin
+export XDG_CONFIG_HOME="$HOME"/.config
+export XDG_DATA_HOME="$HOME"/.local/share
 
 # Initialize brew
 if [ -f /usr/local/bin/brew ]; then
@@ -13,6 +13,9 @@ fi
 # Start tmux
 export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo # See https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
 [[ -z "$TMUX" ]] && exec tmux
+
+# Binaries
+export PATH="$PATH:~/.local/bin"
 
 # Setup prompt
 eval "$(starship init zsh)"
