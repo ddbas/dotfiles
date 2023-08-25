@@ -104,7 +104,7 @@ if [ $install_packages -eq 1 ]; then
 fi
 
 install_alacritty_config() {
-  if [ ! -f ~/.config/alacritty ]; then
+  if [ ! -d ~/.config/alacritty ]; then
       echo -e "${BLUE}>>${NC} Alacritty"
       mkdir -p ~/.config
       ln -s $PWD/alacritty ~/.config/alacritty
@@ -119,9 +119,18 @@ install_zsh_config() {
 }
 
 install_tmux_config() {
-  if [ ! -f ~/.tmux.conf ]; then
+  if [ ! -d ~/.config/tmux ] || [ ! -d ~/.local/share/tmux ]; then
       echo -e "${BLUE}>>${NC} Tmux"
-      ln -s $PWD/tmux/.tmux.conf ~/.tmux.conf
+  fi
+
+  if [ ! -d ~/.config/tmux ]; then
+      mkdir -p ~/.config
+      ln -s $PWD/tmux ~/.config/tmux
+  fi
+
+  if [ ! -d ~/.local/share/tmux ]; then
+      mkdir -p ~/.local/share/tmux
+      git clone https://github.com/tmux-plugins/tpm ~/.local/share/tmux/plugins/tpm
   fi
 }
 

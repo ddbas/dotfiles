@@ -94,9 +94,16 @@ uninstall_zsh_config() {
 }
 
 uninstall_tmux_config() {
-  if [ -L ~/.tmux.conf ]; then
+  if [ -L ~/.config/tmux ] || [ -L ~/.local/share/tmux ]; then
       echo -e "${BLUE}>>${NC} Tmux"
-      rm ~/.tmux.conf 2> /dev/null
+  fi
+
+  if [ -L ~/.config/tmux ]; then
+      rm -rf ~/.config/tmux 2> /dev/null
+  fi
+
+  if [ -d ~/.local/share/tmux ]; then
+      rm -rf ~/.local/share/tmux 2> /dev/null
   fi
 }
 
