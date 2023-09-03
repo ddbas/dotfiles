@@ -21,6 +21,7 @@ tree
 # Language servers
 bash-language-server
 typescript-language-server
+marksman
 
 # Other
 drawio
