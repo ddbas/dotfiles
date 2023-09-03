@@ -20,8 +20,10 @@ tree
 
 # Language servers
 bash-language-server
+rust-analyzer
 typescript-language-server
 marksman
 
 # Other
+rustfmt
 drawio
