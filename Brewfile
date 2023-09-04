@@ -17,7 +17,7 @@ brew "fzf"
 brew "ripgrep"
 brew "tree"
 
-# Programming language tools
+# Programming tools
 brew "rust"
 brew "rust-analyzer"
 brew "rustfmt"
@@ -25,6 +25,7 @@ brew "fnm"
 brew "bash-language-server"
 brew "typescript-language-server"
 brew "marksman"
+cask "docker"
 
 # Note taking
 brew "zk"
