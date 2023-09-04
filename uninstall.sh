@@ -139,10 +139,10 @@ if [ $uninstall_configurations -eq 1 ]; then
   uninstall_helix_config
 fi
 
-brew_uninstall() {
-  echo -e "${BLUE}>>${NC} Homebrew uninstall"
-  cat packages.txt | grep -v -e '^\s*$' | grep -v '#' | xargs brew uninstall
-}
+# brew_uninstall() {
+#   echo -e "${BLUE}>>${NC} Homebrew uninstall"
+#   cat packages.txt | grep -v -e '^\s*$' | grep -v '#' | xargs brew uninstall
+# }
 
 undo_tmux() {
   if [ -f ~/.local/share/terminfo/74/tmux-256color ]; then
@@ -153,7 +153,8 @@ undo_tmux() {
 
 if [ $uninstall_packages -eq 1 ]; then
   echo -e "${GREEN}>>${NC} Uninstalling packages"
-  brew_uninstall
+  # Cannot uninstall packages with `brew bundle`
+  # brew_uninstall
   undo_tmux
 fi
 
