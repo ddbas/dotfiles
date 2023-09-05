@@ -5,6 +5,7 @@ tap "homebrew/cask-fonts"
 cask "alacritty"
 brew "zsh"
 brew "tmux"
+brew "tpm"
 cask "font-jetbrains-mono-nerd-font"
 brew "starship"
 
