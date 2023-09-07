@@ -33,3 +33,4 @@ brew "zk"
 
 # Other
 cask "drawio"
+cask "syncthing"
