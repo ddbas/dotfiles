@@ -28,9 +28,6 @@ brew "typescript-language-server"
 brew "marksman"
 cask "docker"
 
-# Note taking
-brew "zk"
-
 # Other
 cask "drawio"
 cask "syncthing"
