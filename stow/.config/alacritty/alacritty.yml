@@ -45,4 +45,4 @@ key_bindings:
   - { key: Right,    mods: Command, chars: "\x1bOF",   mode: AppCursor   } # End
 
 import:
-  - ~/.config/alacritty/themes/dracula.yml
+  - ~/.config/alacritty/themes/catppuccin/catppuccin-mocha.yml
