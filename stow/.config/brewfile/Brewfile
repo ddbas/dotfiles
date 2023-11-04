@@ -1,5 +1,6 @@
 # Taps
 tap "homebrew/cask-fonts"
+tap "oven-sh/bun"
 
 # Terminal
 cask "alacritty"
@@ -16,6 +17,7 @@ brew "exa"
 brew "fd"
 brew "fzf"
 brew "ripgrep"
+brew "stow"
 brew "tree"
 
 # Programming tools
@@ -27,6 +29,7 @@ brew "bash-language-server"
 brew "typescript-language-server"
 brew "marksman"
 cask "docker"
+brew "bun"
 
 # Other
 cask "drawio"

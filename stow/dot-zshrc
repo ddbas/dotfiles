@@ -1,5 +1,6 @@
 export XDG_CONFIG_HOME="$HOME"/.config
 export XDG_DATA_HOME="$HOME"/.local/share
+export HOMEBREW_BUNDLE_FILE="$XDG_CONFIG_HOME/brewfile/Brewfile"
 
 # Initialize brew
 if [ -f /usr/local/bin/brew ]; then

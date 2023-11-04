@@ -1,13 +1,19 @@
 # Dotfiles
 
+## Brew
+
+```sh
+brew bundle
+```
+
 ## Install
 
 ```sh
 ./install.sh
 ```
 
-# Uninstall
+## Clean
 
 ```sh
-./uninstall.sh
+./clean.sh
 ```
