@@ -8,6 +8,7 @@ window:
     y: 28
 
   decorations: transparent
+  blur: true
 
   # opacity: 0.999 # Fixes slow MacOS mission control animation (source: https://github.com/alacritty/alacritty/issues/4474#issuecomment-803972329)
   opacity: 0.9
