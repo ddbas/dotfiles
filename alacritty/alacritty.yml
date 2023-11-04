@@ -5,11 +5,12 @@ window:
 
   padding:
     x: 8
-    y: 8
+    y: 28
 
-  decorations: buttonless
+  decorations: transparent
 
-  opacity: 0.999 # Fixes slow MacOS mission control animation (source: https://github.com/alacritty/alacritty/issues/4474#issuecomment-803972329)
+  # opacity: 0.999 # Fixes slow MacOS mission control animation (source: https://github.com/alacritty/alacritty/issues/4474#issuecomment-803972329)
+  opacity: 0.9
 
 scrolling:
   history: 0

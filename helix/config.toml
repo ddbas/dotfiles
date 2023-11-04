@@ -1,4 +1,4 @@
-theme = "dracula"
+theme = "dracula_transparent"
 
 [editor]
 auto-pairs = false
@@ -9,6 +9,9 @@ mouse = false
 
 [editor.file-picker]
 hidden = false
+
+[editor.soft-wrap]
+enable = true
 
 [editor.whitespace.render]
 newline = "all"
