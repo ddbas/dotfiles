@@ -3,7 +3,7 @@
 # Configurations
 brew bundle
 npm install -g \
-  typescript-language-server \
+  typescript-language-server typescript \
   @tailwindcss/language-server \
   bash-language-server \
   vscode-langservers-extracted

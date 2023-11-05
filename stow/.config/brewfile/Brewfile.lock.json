@@ -2,10 +2,10 @@
   "entries": {
     "tap": {
       "homebrew/cask-fonts": {
-        "revision": "d3db7b050893f332ad0e9ea1d59da8ae54bf81de"
+        "revision": "a6347d8ce45bf3de8107b1e049a0ad9ed7f34d64"
       },
       "oven-sh/bun": {
-        "revision": "9742a73ea648f446d20f4e2c317ea8534847aa51"
+        "revision": "844b4fd6ed04b3bc49ec46c7ded0c6177992acd3"
       }
     },
     "cask": {
@@ -986,7 +986,7 @@
         }
       },
       "bun": {
-        "version": "1.0.8",
+        "version": "1.0.9",
         "bottle": false
       }
     }
