@@ -1,19 +1,21 @@
 # Dotfiles
 
-## Brew
-
-```sh
-brew bundle
-```
-
 ## Install
 
+### Packages
+
 ```sh
-./install.sh
+./install-packages.sh
 ```
 
-## Clean
+### Configurations
 
 ```sh
-./clean.sh
+./install-configurations.sh
+```
+
+Clean
+
+```sh
+./clean-configurations.sh
 ```

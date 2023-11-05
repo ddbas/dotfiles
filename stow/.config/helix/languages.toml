@@ -1,20 +1,39 @@
 [[language]]
 name = "javascript"
-auto-format = false
+auto-format = true
+formatter = { command = 'bunx', args = ["prettier", "--parser", "typescript"] }
 
 [[language]]
 name = "typescript"
-auto-format = false
+auto-format = true
+formatter = { command = 'bunx', args = ["prettier", "--parser", "typescript"] }
 
 [[language]]
 name = "jsx"
-auto-format = false
+auto-format = true
+formatter = { command = 'bunx', args = ["prettier", "--parser", "typescript"] }
 
 [[language]]
 name = "tsx"
-auto-format = false
+auto-format = true
+language-servers = [ "typescript-language-server", "tailwind-lsp" ]
+formatter = { command = 'bunx', args = ["prettier", "--parser", "typescript"] }
+
+[[language]]
+name = "html"
+auto-format = true
+formatter = { command = 'bunx', args = ["prettier", "--parser", "html"] }
+
+[[language]]
+name = "json"
+auto-format = true
+formatter = { command = 'bunx', args = ["prettier", "--parser", "json"] }
 
 [[language]]
 name = "bash"
 auto-format = true
 indent = { tab-width = 2, unit = "  " }
+
+[language-server.tailwind-lsp]
+command = "tailwindcss-language-server"
+args = ["--stdio"]
