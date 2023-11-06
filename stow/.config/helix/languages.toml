@@ -30,6 +30,11 @@ auto-format = true
 formatter = { command = 'bunx', args = ["prettier", "--parser", "json"] }
 
 [[language]]
+name = "markdown"
+auto-format = true
+formatter = { command = 'bunx', args = ["prettier", "--parser", "markdown"] }
+
+[[language]]
 name = "bash"
 auto-format = true
 indent = { tab-width = 2, unit = "  " }
