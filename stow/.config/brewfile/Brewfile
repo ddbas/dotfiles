@@ -27,6 +27,8 @@ brew "rustfmt"
 brew "fnm"
 brew "marksman"
 cask "docker"
+brew "yarn"
+brew "pnpm"
 brew "bun"
 
 # Other
