@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Configurations
-stow --verbose --delete --dotfiles --target ~ stow
+stow --verbose --delete --dotfiles --target ~ home
 
 # Tmux
 if [ -d ~/.local/share/tmux ]; then
