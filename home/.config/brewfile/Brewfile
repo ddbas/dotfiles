@@ -3,7 +3,7 @@ tap "homebrew/cask-fonts"
 tap "oven-sh/bun"
 
 # Terminal
-cask "alacritty"
+# cask "alacritty" # Install latest commit on GitHub instead to enable blurred background
 brew "zsh"
 brew "tmux"
 brew "tpm"

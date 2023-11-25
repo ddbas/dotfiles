@@ -2,7 +2,3 @@
 
 add_newline = false
 format = """$directory$git_branch$character"""
-
-[git_branch]
-format = """[$symbol$branch(:$remote_branch)]($style) """
-symbol = '🌱'
