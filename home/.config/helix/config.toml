@@ -6,6 +6,7 @@ color-modes = true
 cursorline = true
 line-number = "relative"
 mouse = false
+bufferline = "multiple"
 
 [editor.cursor-shape]
 insert = "bar"
