@@ -9,6 +9,7 @@ mouse = false
 
 [editor.cursor-shape]
 insert = "bar"
+select = "underline"
 
 [editor.file-picker]
 hidden = false
