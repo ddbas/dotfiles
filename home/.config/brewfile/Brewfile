@@ -5,6 +5,7 @@ tap "oven-sh/bun"
 # Terminal
 # cask "alacritty" # Install latest commit on GitHub instead to enable blurred background
 brew "zsh"
+brew "zsh-autosuggestions"
 brew "tmux"
 brew "tpm"
 cask "font-jetbrains-mono-nerd-font"
