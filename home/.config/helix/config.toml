@@ -7,6 +7,9 @@ cursorline = true
 line-number = "relative"
 mouse = false
 
+[editor.cursor-shape]
+insert = "bar"
+
 [editor.file-picker]
 hidden = false
 
