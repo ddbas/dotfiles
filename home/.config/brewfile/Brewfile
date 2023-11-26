@@ -13,6 +13,7 @@ brew "starship"
 # CLIs
 brew "git"
 brew "helix", args: ["head"]
+brew "neovim"
 brew "exa"
 brew "fd"
 brew "fzf"
