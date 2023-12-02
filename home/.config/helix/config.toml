@@ -15,8 +15,5 @@ select = "underline"
 [editor.file-picker]
 hidden = false
 
-[editor.soft-wrap]
-enable = true
-
 [editor.whitespace.render]
 newline = "all"

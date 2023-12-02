@@ -1,4 +1,4 @@
-import = ["/Users/davidbastien/.config/alacritty/themes/catppuccin/catppuccin-mocha.toml"]
+import = ["~/.config/alacritty/themes/catppuccin/catppuccin-mocha.toml"]
 
 [cursor]
 blink_interval = 300
@@ -57,6 +57,10 @@ blur = true
 decorations = "transparent"
 opacity = 0.85
 dynamic_padding = true
+
+[window.dimensions]
+columns = 100
+lines = 30
 
 [window.padding]
 x = 8
