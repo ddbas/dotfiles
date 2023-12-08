@@ -1,7 +1,6 @@
 theme = "catppuccin_mocha_transparent"
 
 [editor]
-auto-pairs = false
 color-modes = true
 cursorline = true
 line-number = "relative"

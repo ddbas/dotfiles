@@ -9,7 +9,7 @@ blinking = "Always"
 shape = "Block"
 
 [font]
-size = 18.0
+size = 18
 
 [font.bold]
 family = "JetBrainsMono NFM"
@@ -53,9 +53,7 @@ mods = "Command"
 history = 0
 
 [window]
-blur = true
-decorations = "transparent"
-opacity = 0.85
+decorations = "buttonless"
 dynamic_padding = true
 
 [window.dimensions]
