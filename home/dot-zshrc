@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 export XDG_CONFIG_HOME="$HOME"/.config
 export XDG_DATA_HOME="$HOME"/.local/share
 export HOMEBREW_BUNDLE_FILE="$XDG_CONFIG_HOME/brewfile/Brewfile"
@@ -22,7 +24,7 @@ else
 fi
 
 # Binaries
-export PATH="$PATH:~/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # Setup prompt
 if [ -x "$(command -v starship)" ]; then
