@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
 
-# Kills the current tmux session and switches to the last one.
-# If there is no other session, create a new one in the home directory.
-
 current_session=`tmux display-message -p '#S'`
-
-session_count=`tmux list-sessions | wc -l | awk '{$1=$1}1'`
-if [[ $session_count -eq 1 ]]; then
-    tmux new-session -d -c ~/
-fi
 
 if ! tmux switch-client -l 2> /dev/null; then
     # If there is no last session, go to the previous one

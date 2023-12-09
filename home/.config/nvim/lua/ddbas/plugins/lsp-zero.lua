@@ -24,7 +24,7 @@ return {
 
     require("mason").setup({})
     require("mason-lspconfig").setup({
-      ensure_installed = {},
+      ensure_installed = {'bashls', 'cssls', 'html', 'rust_analyzer', 'tailwindcss', 'tsserver'},
       handlers = {
         lsp_zero.default_setup
       }

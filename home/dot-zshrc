@@ -15,13 +15,6 @@ elif [ -f /opt/homebrew/bin/brew ]; then
 fi
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# Start Tmux
-# if [ -x "$(command -v tmux)" ]; then
-#     [[ -z "$TMUX" ]] && exec tmux
-# else
-#     echo "Error: tmux is not installed"
-# fi
-
 # Setup prompt
 if [ -x "$(command -v starship)" ]; then
     eval "$(starship init zsh)"
