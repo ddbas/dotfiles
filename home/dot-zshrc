@@ -31,10 +31,10 @@ else
 fi
 
 # Default editor
-if [ -x "$(command -v hx)" ]; then
-    export VISUAL=hx
+if [ -x "$(command -v nvim)" ]; then
+    export VISUAL=nvim
 else
-    echo "Error: helix is not installed"
+    echo "Error: nvim is not installed"
 fi
 
 # FZF
