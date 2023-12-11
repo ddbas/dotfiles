@@ -25,3 +25,9 @@ vim.opt.colorcolumn = "80"
 vim.api.nvim_set_option("mouse", "")
 
 vim.g.mapleader = " "
+
+vim.filetype.add({
+  extension = {
+    mdx = 'mdx'
+  }
+})

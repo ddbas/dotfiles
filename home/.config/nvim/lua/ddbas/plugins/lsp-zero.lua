@@ -21,16 +21,27 @@ return {
   config = function()
     local lsp_zero = require("lsp-zero")
 
-    local lua_opts = lsp_zero.nvim_lua_ls()
-    require('lspconfig').lua_ls.setup(lua_opts)
 
     require("mason").setup({})
     require("mason-lspconfig").setup({
-      ensure_installed = { 'bashls', 'cssls', 'html', 'rust_analyzer', 'tailwindcss', 'tsserver' },
+      ensure_installed = {
+        'astro',
+        'bashls',
+        'cssls',
+        'html',
+        'lua_ls',
+        'marksman',
+        'rust_analyzer',
+        'tailwindcss',
+        'tsserver'
+      },
       handlers = {
-        lsp_zero.default_setup
+        lsp_zero.default_setup,
       }
     })
+
+    local lua_opts = lsp_zero.nvim_lua_ls()
+    require('lspconfig').lua_ls.setup(lua_opts)
 
     local cmp = require('cmp')
     local cmp_action = require('lsp-zero').cmp_action()
