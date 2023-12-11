@@ -9,7 +9,9 @@ return {
 
     -- Autocompletion
     "hrsh7th/nvim-cmp",
+    "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
+    "saadparwaiz1/cmp_luasnip",
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-nvim-lua",
 
@@ -24,14 +26,24 @@ return {
 
     require("mason").setup({})
     require("mason-lspconfig").setup({
-      ensure_installed = {'bashls', 'cssls', 'html', 'rust_analyzer', 'tailwindcss', 'tsserver'},
+      ensure_installed = { 'bashls', 'cssls', 'html', 'rust_analyzer', 'tailwindcss', 'tsserver' },
       handlers = {
         lsp_zero.default_setup
       }
     })
 
+    local cmp = require('cmp')
+    local cmp_action = require('lsp-zero').cmp_action()
+
+    cmp.setup({
+      mapping = cmp.mapping.preset.insert({
+        -- `Enter` key to confirm completion
+        ['<CR>'] = cmp.mapping.confirm({ select = false }),
+      })
+    })
+
     lsp_zero.on_attach(function(_, bufnr)
-      local opts = {buffer = bufnr, remap = false}
+      local opts = { buffer = bufnr, remap = false }
 
       vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
       vim.keymap.set("n", "<leader>k", function() vim.lsp.buf.hover() end, opts)
@@ -40,6 +52,7 @@ return {
       vim.keymap.set("n", "<leader>r", function() vim.lsp.buf.rename() end, opts)
       vim.keymap.set("n", "<leader>d", function() vim.diagnostic.open_float() end, opts)
       vim.keymap.set("n", "gs", function() vim.lsp.buf.workspace_symbol() end, opts)
+      vim.keymap.set("n", "<leader>F", function() vim.lsp.buf.format() end, opts)
     end)
 
     lsp_zero.setup()
