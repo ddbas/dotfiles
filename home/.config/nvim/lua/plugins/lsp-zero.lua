@@ -32,7 +32,6 @@ return {
       vim.keymap.set("n", "<leader>r", function() vim.lsp.buf.rename() end, opts)
       vim.keymap.set("n", "<leader>d", function() vim.diagnostic.open_float() end, opts)
       vim.keymap.set("n", "gs", function() vim.lsp.buf.workspace_symbol() end, opts)
-      vim.keymap.set("n", "<leader>F", function() vim.lsp.buf.format() end, opts)
     end)
 
     -- mason.nvim
