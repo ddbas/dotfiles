@@ -41,7 +41,7 @@ return {
         'astro',
         'bashls',
         'cssls',
-        'groovyls',
+        -- 'groovyls', -- not working
         'html',
         'lua_ls',
         'marksman',
