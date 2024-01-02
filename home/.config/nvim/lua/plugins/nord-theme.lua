@@ -1,7 +1,7 @@
 return {
   "shaunsingh/nord.nvim",
   name = "nord",
-  priority = 1000,
+  lazy = true,
   config = function()
     -- https://github.com/shaunsingh/nord.nvim/issues/143
     vim.api.nvim_create_autocmd('LspAttach', {
