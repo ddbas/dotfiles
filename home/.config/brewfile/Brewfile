@@ -20,6 +20,7 @@ brew "fzf"
 brew "ripgrep"
 brew "stow"
 brew "tree"
+brew "eza"
 
 # Programming tools
 brew "rust"
