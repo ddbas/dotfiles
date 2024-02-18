@@ -10,6 +10,32 @@ return {
     local builtin = require('telescope.builtin')
 
     telescope.setup({
+      defaults = {
+        vimgrep_arguments = {
+          'rg',
+          '--color=never',
+          '--no-heading',
+          '--with-filename',
+          '--line-number',
+          '--column',
+          '--smart-case',
+          '--hidden',
+          '--iglob',
+          '!.git'
+        },
+        layout_config = {
+          prompt_position = "top",
+        },
+      },
+      pickers = {
+        find_files = {
+          find_command = { 'fd', '--hidden', '--color', 'never' },
+          hidden = true
+        },
+        live_grep = {
+          hidden = true
+        }
+      },
       extensions = {
           fzf = {
               fuzzy = true,
@@ -23,9 +49,7 @@ return {
     telescope.load_extension("fzf")
 
     vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-    vim.keymap.set('n', '<leader>fF', builtin.git_files, {})
     vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-    vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
     vim.keymap.set('n', '<leader>fm', builtin.marks, {})
     vim.keymap.set('n', 'gd', builtin.lsp_definitions, {})
     vim.keymap.set('n', 'gi', builtin.lsp_implementations, {})
