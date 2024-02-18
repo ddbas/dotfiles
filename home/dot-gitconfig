@@ -8,3 +8,12 @@
 	template = ~/.gitmessage
 [push]
 	autoSetupRemote = true
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[user]
+	name = ddbas
+	email = velours.ingrate_00@icloud.com

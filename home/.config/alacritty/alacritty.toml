@@ -12,19 +12,19 @@ shape = "Block"
 size = 18
 
 [font.bold]
-family = "JetBrainsMono NFM"
+family = "Iosevka"
 style = "Bold"
 
 [font.bold_italic]
-family = "JetBrainsMono NFM"
+family = "Iosevka"
 style = "Bold Italic"
 
 [font.italic]
-family = "JetBrainsMono NFM"
+family = "Iosevka"
 style = "Italic"
 
 [font.normal]
-family = "JetBrainsMono NFM"
+family = "Iosevka"
 style = "Regular"
 
 [[keyboard.bindings]]
