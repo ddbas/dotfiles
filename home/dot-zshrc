@@ -23,11 +23,8 @@ else
 fi
 
 # Setup prompt
-if [ -x "$(command -v starship)" ]; then
-    eval "$(starship init zsh)"
-else
-    echo "Error: starship is not installed"
-fi
+# Export a pink prompt, where the prompt is just a dollar sign
+export PROMPT='%F{010}$%f '
 
 # Setup autocompletion system
 autoload -Uz compinit

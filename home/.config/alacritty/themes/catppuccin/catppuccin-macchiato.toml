@@ -20,6 +20,10 @@ background = "#A5ADCB"
 foreground = "#24273A"
 background = "#A6DA95"
 
+[colors.footer_bar]
+foreground = "#24273A"
+background = "#A5ADCB"
+
 [colors.hints.start]
 foreground = "#24273A"
 background = "#EED49F"
@@ -69,4 +73,3 @@ color = "#F5A97F"
 [[colors.indexed_colors]]
 index = 17
 color = "#F4DBD6"
-

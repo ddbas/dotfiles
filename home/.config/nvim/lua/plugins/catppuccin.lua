@@ -5,7 +5,6 @@ return {
   config = function()
     local catppuccin = require("catppuccin")
     catppuccin.setup({
-      flavour = "macchiato",
       integrations = {
         cmp = true,
         mason = true,

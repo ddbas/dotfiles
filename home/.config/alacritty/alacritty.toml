@@ -1,4 +1,4 @@
-import = ["~/.config/alacritty/themes/nord.toml"]
+import = ["~/.config/alacritty/themes/catppuccin/catppuccin-frappe.toml"]
 
 [cursor]
 blink_interval = 300
@@ -9,7 +9,7 @@ blinking = "Always"
 shape = "Block"
 
 [font]
-size = 18
+size = 20
 
 [font.bold]
 family = "Iosevka"
