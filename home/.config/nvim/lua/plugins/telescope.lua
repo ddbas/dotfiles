@@ -11,6 +11,22 @@ return {
 
     telescope.setup({
       defaults = {
+        layout_strategy = 'flex',
+        sorting_strategy = 'ascending',
+        layout_config = {
+          horizontal = {
+            height = 0.9,
+            preview_width = 0.5,
+            prompt_position = 'top',
+            width = 0.9,
+          },
+          vertical = {
+            height = 0.9,
+            preview_height = 0.5,
+            prompt_position = 'top',
+            width = 0.9,
+          },
+        },
         vimgrep_arguments = {
           'rg',
           '--color=never',
@@ -22,10 +38,7 @@ return {
           '--hidden',
           '--iglob',
           '!.git'
-        },
-        layout_config = {
-          prompt_position = "top",
-        },
+        }
       },
       pickers = {
         find_files = {
