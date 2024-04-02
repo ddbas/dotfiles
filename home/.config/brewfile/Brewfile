@@ -37,3 +37,4 @@ cask "drawio"
 cask "syncthing"
 cask "rectangle"
 cask "arc"
+brew "sshpass" # for ansible
