@@ -30,6 +30,7 @@ brew "fnm"
 brew "marksman"
 cask "docker"
 brew "bun"
+brew "ansible"
 
 # Other
 cask "drawio"
