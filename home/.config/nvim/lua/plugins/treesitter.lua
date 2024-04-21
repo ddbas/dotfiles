@@ -15,6 +15,7 @@ return {
           'lua',
           'markdown',
           'rust',
+          'terraform',
           'tsx',
           'typescript',
           'vimdoc'
