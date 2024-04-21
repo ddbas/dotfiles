@@ -1,6 +1,7 @@
 # Taps
 tap "homebrew/cask-fonts"
 tap "oven-sh/bun"
+tap "hashicorp/tap"
 
 # Terminal
 cask "alacritty"
@@ -31,6 +32,7 @@ brew "marksman"
 cask "docker"
 brew "bun"
 brew "ansible"
+brew "hashicorp/tap/terraform"
 
 # Other
 cask "drawio"
