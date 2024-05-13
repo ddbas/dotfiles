@@ -42,7 +42,7 @@ return {
       },
       pickers = {
         find_files = {
-          find_command = { 'fd', '--hidden', '--color', 'never' },
+          find_command = { 'fd', '--hidden', '--color', 'never', '-E', '.git' },
           hidden = true
         },
         live_grep = {
