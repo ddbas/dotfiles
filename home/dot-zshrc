@@ -22,9 +22,7 @@ else
     echo "Error: tmux is not installed"
 fi
 
-# Setup prompt
-# Export a pink prompt, where the prompt is just a dollar sign
-export PROMPT='%F{010}$%f '
+eval "$(starship init zsh)"
 
 # Setup autocompletion system
 autoload -Uz compinit
