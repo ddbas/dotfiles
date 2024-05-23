@@ -853,45 +853,45 @@
         "bottle": false
       },
       "ansible": {
-        "version": "9.5.1_2",
+        "version": "9.6.0",
         "bottle": {
           "rebuild": 0,
           "root_url": "https://ghcr.io/v2/homebrew/core",
           "files": {
             "arm64_sonoma": {
               "cellar": ":any",
-              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:08e657da2df4fab133a4947fc1992e172a90c4f2a3fe7151f7c4fb6d9c90672b",
-              "sha256": "08e657da2df4fab133a4947fc1992e172a90c4f2a3fe7151f7c4fb6d9c90672b"
+              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:70eae7955d1e2c41a1327666a0a78ab12605cca35a91ceef4488066b6667fb09",
+              "sha256": "70eae7955d1e2c41a1327666a0a78ab12605cca35a91ceef4488066b6667fb09"
             },
             "arm64_ventura": {
               "cellar": ":any",
-              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:03457ca41509408c2c1fe128cd12d1c461972bc99ce90180ecf559931b926d16",
-              "sha256": "03457ca41509408c2c1fe128cd12d1c461972bc99ce90180ecf559931b926d16"
+              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:3cb3fa989a5847a162daec5f537e1242b60d007a56578bd253c8eb575e958a2e",
+              "sha256": "3cb3fa989a5847a162daec5f537e1242b60d007a56578bd253c8eb575e958a2e"
             },
             "arm64_monterey": {
               "cellar": ":any",
-              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:8e260dae9fa3b9045048fff891738078502e9d81e8cf1472a113e45b2a9e4350",
-              "sha256": "8e260dae9fa3b9045048fff891738078502e9d81e8cf1472a113e45b2a9e4350"
+              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:d4cf6d8b1282c2e74ac5e0e6c1bbaa2a6af0f68c4ec5e70b91e92c36668ac7da",
+              "sha256": "d4cf6d8b1282c2e74ac5e0e6c1bbaa2a6af0f68c4ec5e70b91e92c36668ac7da"
             },
             "sonoma": {
               "cellar": ":any",
-              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:36be1c15e5d5786eb3508c3e84a8845bf2ac20392361ef4777fcd5d2528069b4",
-              "sha256": "36be1c15e5d5786eb3508c3e84a8845bf2ac20392361ef4777fcd5d2528069b4"
+              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:48fc5f5a2ca48c10a528f85b83135b9771b5f2e061fc7262a6e38009ee9ef360",
+              "sha256": "48fc5f5a2ca48c10a528f85b83135b9771b5f2e061fc7262a6e38009ee9ef360"
             },
             "ventura": {
               "cellar": ":any",
-              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:ebc8bf95c36e532100fcb249ccd09a2e0d55a9a997546b3213e540f659de978f",
-              "sha256": "ebc8bf95c36e532100fcb249ccd09a2e0d55a9a997546b3213e540f659de978f"
+              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:96f2f6a205c4b6f34fc021f0107880aeac53d3fd7a9fe5e715c2af8a5e0e3158",
+              "sha256": "96f2f6a205c4b6f34fc021f0107880aeac53d3fd7a9fe5e715c2af8a5e0e3158"
             },
             "monterey": {
               "cellar": ":any",
-              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:4ffe7ff1de3cab070bf41433058858e77faea74272a29abebbfaf4bddc5bf094",
-              "sha256": "4ffe7ff1de3cab070bf41433058858e77faea74272a29abebbfaf4bddc5bf094"
+              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:716cb6b977c9b7dc2e0d53b1f5e2ca37dc4d7bb9e0147879a0249e960ae5f220",
+              "sha256": "716cb6b977c9b7dc2e0d53b1f5e2ca37dc4d7bb9e0147879a0249e960ae5f220"
             },
             "x86_64_linux": {
               "cellar": ":any_skip_relocation",
-              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:a0cc2f931ffe8ed65455c87c6ab4023beed8355d9440e2e26a3cbd55a43e8ab7",
-              "sha256": "a0cc2f931ffe8ed65455c87c6ab4023beed8355d9440e2e26a3cbd55a43e8ab7"
+              "url": "https://ghcr.io/v2/homebrew/core/ansible/blobs/sha256:dff8f2f14b11da8eba0a35c52273bf1dd99b7adb6dc2248f4a131888ae9c9320",
+              "sha256": "dff8f2f14b11da8eba0a35c52273bf1dd99b7adb6dc2248f4a131888ae9c9320"
             }
           }
         }
@@ -941,7 +941,7 @@
         }
       },
       "hashicorp/tap/terraform": {
-        "version": "1.8.1",
+        "version": "1.5.7",
         "bottle": false
       },
       "bat": {
@@ -996,9 +996,9 @@
         "HOMEBREW_VERSION": "4.3.1",
         "HOMEBREW_PREFIX": "/opt/homebrew",
         "Homebrew/homebrew-core": "api",
-        "CLT": "15.1.0.0.1.1700200546",
+        "CLT": "15.0.0.0.1.1694021235",
         "Xcode": "15.1",
-        "macOS": "14.3"
+        "macOS": "14.4.1"
       }
     }
   }
