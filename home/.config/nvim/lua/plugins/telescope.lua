@@ -1,9 +1,10 @@
 return {
   "nvim-telescope/telescope.nvim",
-  tag = "0.1.5",
+  tag = "0.1.6",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    "nvim-tree/nvim-web-devicons"
   },
   config = function ()
     local telescope = require('telescope')
@@ -11,22 +12,6 @@ return {
 
     telescope.setup({
       defaults = {
-        layout_strategy = 'flex',
-        sorting_strategy = 'ascending',
-        layout_config = {
-          horizontal = {
-            height = 0.9,
-            preview_width = 0.5,
-            prompt_position = 'top',
-            width = 0.9,
-          },
-          vertical = {
-            height = 0.9,
-            preview_height = 0.5,
-            prompt_position = 'top',
-            width = 0.9,
-          },
-        },
         vimgrep_arguments = {
           'rg',
           '--color=never',
