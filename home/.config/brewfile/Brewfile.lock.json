@@ -53,6 +53,12 @@
         "options": {
           "full_name": "arc"
         }
+      },
+      "font-iosevka-term-nerd-font": {
+        "version": "3.2.1",
+        "options": {
+          "full_name": "font-iosevka-term-nerd-font"
+        }
       }
     },
     "brew": {

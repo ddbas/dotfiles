@@ -9,7 +9,7 @@ brew "zsh"
 brew "zsh-autosuggestions"
 brew "tmux"
 brew "tpm"
-cask "font-iosevka-nerd-font"
+cask "font-iosevka-term-nerd-font"
 brew "starship"
 
 # CLIs

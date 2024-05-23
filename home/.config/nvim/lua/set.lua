@@ -23,6 +23,8 @@ vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
 
+vim.opt.shortmess:append("I")
+
 vim.api.nvim_set_option("mouse", "")
 
 vim.g.netrw_banner = 0
