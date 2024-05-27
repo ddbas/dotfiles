@@ -19,3 +19,11 @@ Clean
 ```sh
 ./clean-configurations.sh
 ```
+
+## Notes
+
+### Themes I like
+
+- catppuccin
+- everforest dark
+- deep space

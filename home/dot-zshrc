@@ -4,7 +4,7 @@ export PATH=$PATH:$HOME/.local/bin
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 
-# Initialize Brew
+# Brew
 export HOMEBREW_BUNDLE_FILE=$XDG_CONFIG_HOME/brewfile/Brewfile
 if [ -f /usr/local/bin/brew ]; then
     # Intel MacOS
@@ -13,16 +13,13 @@ elif [ -f /opt/homebrew/bin/brew ]; then
     # ARM MacOS
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# Start tmux
-if [ -x "$(command -v tmux)" ]; then
-    export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo # See https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
-else
-    echo "Error: tmux is not installed"
-fi
-
+# Starship
 eval "$(starship init zsh)"
+
+# ZSH plugins
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Setup autocompletion system
 autoload -Uz compinit
@@ -40,19 +37,16 @@ else
 fi
 
 # FZF
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='rg --files --hidden --glob=\!.git/'
-export FZF_DEFAULT_OPTS="--border=rounded \
-  --color=bg+:#313244,bg:-1,gutter:-1,spinner:#f5e0dc,hl:#f38ba8 \
-  --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
-  --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8" # catppuccin mocha
-# export FZF_DEFAULT_OPTS="
-#   --color=fg:#e5e9f0,hl:#81a1c1
-#   --color=fg+:#e5e9f0,hl+:#81a1c1
-#   --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
-#   --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b" # nord
-export FZF_CTRL_T_COMMAND='fd --hidden --exclude ".git"'
-export FZF_CTRL_T_OPTS="--border=rounded --color='border:12'"
+eval "$(fzf --zsh)"
+export FZF_DEFAULT_COMMAND='fd --hidden --exclude ".git" --strip-cwd-prefix'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
+_fzf_compgen_path() {
+  fd --hidden --exclude .git . "$1"
+}
+_fzf_compgen_dir() {
+  fd --type d --hidden --exclude .git . "$1"
+}
 
 # FNM
 if [ -x "$(command -v fnm)" ]; then
@@ -60,6 +54,9 @@ if [ -x "$(command -v fnm)" ]; then
 else
     echo "Error: fnm is not installed"
 fi
+
+# Bat
+export BAT_THEME="Nord"
 
 # Other environment variables
 if [ -f ~/.env.zsh ]; then
@@ -70,3 +67,6 @@ fi
 if [ -f ~/.secrets.zsh ]; then
     source ~/.secrets.zsh
 fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -15,8 +15,8 @@ vim.opt.backup = false
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
-vim.opt.termguicolors = true
-vim.cmd.colorscheme "catppuccin-frappe"
+vim.o.termguicolors = true
+vim.cmd.colorscheme "everforest"
 
 vim.opt.scrolloff = 8
 vim.opt.updatetime = 50

@@ -7,10 +7,11 @@ tap "hashicorp/tap"
 cask "alacritty"
 brew "zsh"
 brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
 brew "tmux"
 brew "tpm"
-cask "font-iosevka-term-nerd-font"
 brew "starship"
+cask "font-iosevka-term-nerd-font"
 
 # CLIs
 brew "git"
@@ -22,6 +23,8 @@ brew "ripgrep"
 brew "stow"
 brew "tree"
 brew "eza"
+brew "bat"
+brew "tlrc"
 
 # Programming tools
 brew "rust"
