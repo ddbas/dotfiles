@@ -12,9 +12,11 @@ return {
 					require("formatter.filetypes.html").prettier,
 				},
 				javascript = {
+          require("formatter.filetypes.javascript").biome,
 					require("formatter.filetypes.javascript").prettier,
 				},
 				javascriptreact = {
+					require("formatter.filetypes.javascriptreact").biome,
 					require("formatter.filetypes.javascriptreact").prettier,
 				},
 				json = {
@@ -30,9 +32,11 @@ return {
 					require("formatter.filetypes.rust").rustfmt,
 				},
 				typescript = {
+					require("formatter.filetypes.typescript").biome,
 					require("formatter.filetypes.typescript").prettier,
 				},
 				typescriptreact = {
+					require("formatter.filetypes.typescriptreact").biome,
 					require("formatter.filetypes.typescriptreact").prettier,
 				},
 				["*"] = {

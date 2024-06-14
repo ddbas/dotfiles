@@ -37,6 +37,7 @@ return {
       ensure_installed = {
         'astro',
         'bashls',
+        'biome',
         'cssls',
         -- 'groovyls', -- not working
         'html',
