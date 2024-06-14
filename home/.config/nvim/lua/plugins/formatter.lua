@@ -20,6 +20,7 @@ return {
 					require("formatter.filetypes.javascriptreact").prettier,
 				},
 				json = {
+					require("formatter.filetypes.json").biome,
 					require("formatter.filetypes.json").prettier,
 				},
 				lua = {
