@@ -36,6 +36,8 @@ cask "docker"
 brew "bun"
 brew "ansible"
 brew "hashicorp/tap/terraform"
+brew "helm"
+brew "helmfile"
 
 # Other
 cask "drawio"
