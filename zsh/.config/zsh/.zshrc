@@ -23,3 +23,8 @@ export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$XDG_CONFIG_HOME/npm/node_modules/.bin
 export BAT_THEME="Nord"
 export PS1="%F{red}>%f "
+
+# Work
+if [ -d $XDG_CONFIG_HOME/work ]; then
+  export WORK=$XDG_CONFIG_HOME/work/zsh/.zshrc
+fi
