@@ -1,14 +1,13 @@
-[include]
-	# A gitconfig outside of version control.
-	# It is silently ignored if it doesn't exist.
-	path = ~/.gitconfig-local
 [init]
 	defaultBranch = main
 [push]
 	autoSetupRemote = true
 [credential "https://github.com"]
-	helper = 
+	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
+	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
+
+[include]
+	path = ~/.config/work/git/.gitconfig
