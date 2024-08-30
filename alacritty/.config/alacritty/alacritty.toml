@@ -8,6 +8,8 @@ TERM = "xterm-256color"
 blur = true
 decorations = "buttonless"
 option_as_alt = "Both"
+dimensions.columns = 100
+dimensions.lines = 30
 padding.x = 10
 padding.y = 10
 
