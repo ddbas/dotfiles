@@ -44,3 +44,6 @@ cask "syncthing"
 cask "rectangle"
 cask "arc"
 brew "sshpass" # for ansible
+
+# Work
+load "~/.config/work/brewfile/Brewfile" if File.exist?("~/.config/work/brewfile/Brewfile")
