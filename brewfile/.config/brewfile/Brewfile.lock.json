@@ -931,7 +931,7 @@
         }
       },
       "hashicorp/tap/terraform": {
-        "version": "1.8.1",
+        "version": "1.5.7",
         "bottle": false
       },
       "bat": {
