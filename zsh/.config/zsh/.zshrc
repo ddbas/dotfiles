@@ -2,7 +2,7 @@
 
 # Brew
 eval "$(/opt/homebrew/bin/brew shellenv)"
-export HOMEBREW_BUNDLE_FILE_GLOBAL=$XDG_CONFIG_HOME/brewfile/Brewfile
+export HOMEBREW_BUNDLE_FILE=$XDG_CONFIG_HOME/brewfile/Brewfile
 
 # Tmux
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
