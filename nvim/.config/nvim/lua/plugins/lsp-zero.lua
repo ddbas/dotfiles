@@ -38,6 +38,7 @@ return {
         'astro',
         'bashls',
         'biome',
+        'clangd',
         'cssls',
         -- 'groovyls', -- not working
         'html',

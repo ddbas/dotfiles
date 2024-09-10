@@ -44,3 +44,5 @@ cask "syncthing"
 cask "rectangle"
 cask "arc"
 brew "sshpass" # for ansible
+brew "glfw"
+brew "pkg-config" # for glfw
