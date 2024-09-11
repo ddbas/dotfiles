@@ -28,3 +28,7 @@ export PS1="%B%F{green}>%f%b "
 if [ -d $XDG_CONFIG_HOME/work ]; then
   export WORK=$XDG_CONFIG_HOME/work/zsh/.zshrc
 fi
+
+# Aliases
+alias gs='git status'
+alias ll='eza -la'
