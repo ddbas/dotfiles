@@ -22,7 +22,7 @@ source $XDG_CONFIG_HOME/zsh/plugins/zsh-syntax-highlighting.zsh
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$XDG_CONFIG_HOME/npm/node_modules/.bin
 export BAT_THEME="Nord"
-export PS1="%F{green}>%f "
+export PS1="%B%F{green}>%f%b "
 
 # Work
 if [ -d $XDG_CONFIG_HOME/work ]; then
