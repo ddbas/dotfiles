@@ -33,5 +33,6 @@ if [ -d $XDG_CONFIG_HOME/work ]; then
 fi
 
 # Aliases
+alias gb='git branch'
 alias gs='git status'
 alias ll='eza -la'
