@@ -14,6 +14,9 @@ if [ -x "$(command -v nvim)" ]; then
   export VISUAL=nvim
 fi
 
+# Setup autocomplete
+autoload -U compinit; compinit
+
 source $XDG_CONFIG_HOME/zsh/plugins/fnm.zsh
 source $XDG_CONFIG_HOME/zsh/plugins/fzf.zsh
 source $XDG_CONFIG_HOME/zsh/plugins/zsh-autosuggestions.zsh
