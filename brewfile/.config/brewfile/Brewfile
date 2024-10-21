@@ -36,8 +36,3 @@ brew "zk"
 brew "zsh"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
-
-cask "arc"
-cask "drawio"
-cask "rectangle"
-cask "syncthing"
