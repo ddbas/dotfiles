@@ -28,8 +28,8 @@ export BAT_THEME="Nord"
 export PS1="%B%F{green}>%f%b "
 
 # Work
-if [ -d $XDG_CONFIG_HOME/work ]; then
-  export WORK=$XDG_CONFIG_HOME/work/zsh/.zshrc
+if [ -f $XDG_CONFIG_HOME/work/zsh/.zshrc ]; then
+  source $XDG_CONFIG_HOME/work/zsh/.zshrc
 fi
 
 # Aliases
