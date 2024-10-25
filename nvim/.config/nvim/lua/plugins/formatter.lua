@@ -40,6 +40,9 @@ return {
 					require("formatter.filetypes.typescriptreact").biome,
 					require("formatter.filetypes.typescriptreact").prettier,
 				},
+        xml = {
+          require("formatter.filetypes.xml").tidy,
+        },
 				["*"] = {
 					require("formatter.filetypes.any").remove_trailing_whitespace,
 				},

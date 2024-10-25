@@ -24,7 +24,7 @@ source $XDG_CONFIG_HOME/zsh/plugins/zsh-syntax-highlighting.zsh
 
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$XDG_CONFIG_HOME/npm/node_modules/.bin
-export BAT_THEME="Nord"
+export BAT_THEME="everforest-dark"
 export PS1="%B%F{green}>%f%b "
 
 # Work
