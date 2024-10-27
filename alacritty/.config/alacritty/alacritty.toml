@@ -1,5 +1,3 @@
-# https://github.com/alacritty/alacritty-theme/
-import = ["~/.config/alacritty/themes/themes/everforest_dark.toml"]
 
 [env]
 TERM = "xterm-256color"
@@ -29,3 +27,7 @@ unfocused_hollow = true
 
 [scrolling]
 history = 0
+
+[general]
+# https://github.com/alacritty/alacritty-theme/
+import = ["~/.config/alacritty/themes/themes/everforest_dark.toml"]
