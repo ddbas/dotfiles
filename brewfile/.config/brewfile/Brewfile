@@ -1,7 +1,8 @@
 # Taps
+tap "hashicorp/tap"
 tap "homebrew/cask-fonts"
 tap "oven-sh/bun"
-tap "hashicorp/tap"
+tap "xwmx/taps"
 
 cask "alacritty"
 brew "ansible"
@@ -32,7 +33,7 @@ brew "tlrc"
 brew "tree"
 brew "tmux"
 brew "tpm"
-brew "zk"
+brew "nb"
 brew "zsh"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
