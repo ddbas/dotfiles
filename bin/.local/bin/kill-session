@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 current_session=$(tmux display-message -p '#S')
-if ! tmux switch-client -p 2> /dev/null; then
-    # If there is no remaining sessions, create a new one in the home directory
-    if [[ "$current_session" == "home" ]]; then
-        exit 0
-    fi
+if ! tmux switch-client -p 2>/dev/null; then
+  # If there is no remaining sessions, create a new one in the home directory
+  if [[ "$current_session" == "home" ]]; then
+    exit 0
+  fi
 
-    tmux new-session -ds home -c $HOME
-    tmux switch-client -t home
+  tmux new-session -ds home -c $HOME
+  tmux switch-client -t home
 fi
 
 tmux kill-session -t $current_session
