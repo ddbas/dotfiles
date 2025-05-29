@@ -1,6 +1,7 @@
 return {
   "shaunsingh/nord.nvim",
   name = "nord",
+  enabled = false,
   lazy = true,
   config = function()
     -- https://github.com/shaunsingh/nord.nvim/issues/143
