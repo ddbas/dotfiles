@@ -4,6 +4,7 @@ return {
 	config = function()
 		require("conform").setup({
 			formatters_by_ft = {
+				c = { "clang-format" },
 				css = { "biome", "prettier", stop_after_first = true },
 				html = { "prettier" },
 				javascript = { "biome", "prettier", stop_after_first = true },
@@ -12,6 +13,7 @@ return {
 				lua = { "stylua" },
 				markdown = { "prettier" },
 				rust = { "rustfmt" },
+				sh = { "shfmt" },
 				typescript = { "biome", "prettier", stop_after_first = true },
 				typescriptreact = { "biome", "prettier", stop_after_first = true },
 				yaml = { "prettier" },
