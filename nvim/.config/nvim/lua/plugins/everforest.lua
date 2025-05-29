@@ -1,6 +1,6 @@
 return {
   "neanias/everforest-nvim",
-  lazy = true,
+  priority = 1000,
   config = function ()
     local everforest = require('everforest')
     everforest.setup({

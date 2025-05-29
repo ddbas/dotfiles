@@ -28,3 +28,7 @@ vim.opt.shortmess:append("I")
 vim.api.nvim_set_option("mouse", "")
 
 vim.g.netrw_banner = 0
+
+-- For Avante.nvim
+-- https://github.com/yetone/avante.nvim
+vim.opt.laststatus = 3

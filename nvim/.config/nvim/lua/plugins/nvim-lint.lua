@@ -8,10 +8,9 @@ return {
       typescript = {'eslint'},
       typescriptreact = {'eslint'},
     }
-    vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+    vim.api.nvim_create_autocmd({ "BufWritePost" }, {
       callback = function()
-        -- lint.try_lint(nil, { ignore_errors = true })
-        lint.try_lint()
+        lint.try_lint(nil, { ignore_errors = true })
       end,
     })
   end
