@@ -1,16 +1,14 @@
 return {
 	"yetone/avante.nvim",
-  enable = false,
+  enable = true,
   lazy = true,
 	event = "VeryLazy",
 	version = false, -- Never set this value to "*"! Never!
 	opts = {
     -- https://github.com/yetone/avante.nvim?tab=readme-ov-file#default-setup-configuration
+    -- Default: https://github.com/yetone/avante.nvim/blob/main/lua/avante/config.lua
 		provider = "copilot",
-    mode = "agentic",
 	},
-	-- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-	build = "make",
 	-- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter",
