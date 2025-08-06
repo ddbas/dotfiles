@@ -1,19 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
   config = function()
-    vim.keymap.set("n", "<leader>k", function()
-      vim.lsp.buf.hover()
-    end, opts)
-    vim.keymap.set("n", "<leader>a", function()
-      vim.lsp.buf.code_action()
-    end, opts)
-    vim.keymap.set("n", "<leader>r", function()
-      vim.lsp.buf.rename()
-    end, opts)
-    vim.keymap.set("n", "<leader>d", function()
-      vim.diagnostic.open_float()
-    end, opts)
-
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
     vim.lsp.enable('bashls')
     vim.lsp.enable("biome")
