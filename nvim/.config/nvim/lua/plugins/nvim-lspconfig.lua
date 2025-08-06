@@ -55,6 +55,7 @@ return {
     vim.lsp.enable("bashls")
     vim.lsp.enable("biome")
     vim.lsp.enable("cssls")
+    vim.lsp.enable('dockerls')
     vim.lsp.enable("eslint")
     vim.lsp.enable("html")
     vim.lsp.enable("jsonls")
