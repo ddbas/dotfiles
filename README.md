@@ -18,4 +18,3 @@
 
 - catppuccin
 - everforest dark
-- deep space
