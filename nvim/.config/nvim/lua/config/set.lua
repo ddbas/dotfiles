@@ -1,33 +1,17 @@
-vim.opt.nu = true
-vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
-
+vim.opt.number = true
+vim.opt.relativenumber = true
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
-
 vim.opt.smartindent = true
+vim.opt.winborder = "rounded"
 vim.opt.wrap = false
-
+vim.opt.termguicolors = true
 vim.opt.swapfile = false
-vim.opt.backup = false
-
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
+vim.opt.laststatus = 3 -- For Avante.nvim
 
-vim.o.termguicolors = true
 vim.cmd.colorscheme "everforest"
-
-vim.opt.scrolloff = 8
-vim.opt.updatetime = 50
-
-vim.opt.colorcolumn = "80"
-
-vim.api.nvim_set_option("mouse", "")
-
-vim.g.netrw_banner = 0
-
--- For Avante.nvim
--- https://github.com/yetone/avante.nvim
-vim.opt.laststatus = 3
