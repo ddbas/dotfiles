@@ -2,6 +2,7 @@
 tap "hashicorp/tap"
 tap "homebrew/cask-fonts"
 tap "oven-sh/bun"
+tap "sst/tap"
 tap "xwmx/taps"
 
 cask "alacritty"
@@ -30,6 +31,7 @@ brew "rust"
 brew "rust-analyzer"
 brew "shfmt"
 brew "sshpass" # for ansible
+brew "sst/tap/opencode"
 brew "stow"
 brew "stylua"
 brew "tlrc"
