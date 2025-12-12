@@ -1,5 +1,6 @@
 {
 	"$schema": "https://opencode.ai/config.json",
+	"autoupdate": false,
 	"share": "disabled",
-  "theme": "everforest"
+	"theme": "everforest"
 }

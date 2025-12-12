@@ -12,6 +12,5 @@ vim.opt.termguicolors = true
 vim.opt.swapfile = false
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
-vim.opt.laststatus = 3 -- For Avante.nvim
 
 vim.cmd.colorscheme "everforest"
