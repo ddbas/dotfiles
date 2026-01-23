@@ -12,6 +12,7 @@ fi
 # Editor
 if [ -x "$(command -v nvim)" ]; then
   export VISUAL=nvim
+  export EDITOR=$VISUAL
 fi
 
 # Setup autocomplete
