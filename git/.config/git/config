@@ -9,4 +9,4 @@
 
 [include]
 	path = ~/.config/personal/git/.gitconfig
-	path = ~/.config/work/git/.gitconfig
+	path = ~/.config/custom/git/.gitconfig
