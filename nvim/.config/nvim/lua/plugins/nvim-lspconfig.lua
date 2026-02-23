@@ -60,6 +60,7 @@ return {
     vim.lsp.enable("html")
     vim.lsp.enable("jsonls")
     vim.lsp.enable("lua_ls")
+    vim.lsp.enable("markdown_oxide")
     vim.lsp.enable("marksman")
     vim.lsp.enable("rust_analyzer")
     vim.lsp.enable("ts_ls")
