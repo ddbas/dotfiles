@@ -31,6 +31,9 @@ return {
 				markdown = {
 					require("formatter.filetypes.markdown").prettier,
 				},
+				python = {
+					require("formatter.filetypes.python").ruff,
+				},
 				rust = {
 					require("formatter.filetypes.rust").rustfmt,
 				},
