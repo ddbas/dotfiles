@@ -8,5 +8,6 @@
       "type": "local",
       "command": ["npx", "@playwright/mcp@latest"]
     }
-  }
+  },
+  "plugin": ["@mohak34/opencode-notifier@latest", "opencode-beads@latest"]
 }
