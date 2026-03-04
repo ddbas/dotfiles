@@ -1,10 +1,12 @@
 # Taps
+tag "anomalyco/tap"
 tap "hashicorp/tap"
 tap "homebrew/cask-fonts"
 tap "oven-sh/bun"
 tap "xwmx/taps"
 
 cask "alacritty"
+brew "anomalyco/tap/opencode" # instead of `opencode`, as its updated more frequently
 brew "ansible"
 brew "bat"
 brew "clang-format"

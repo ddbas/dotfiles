@@ -2,5 +2,11 @@
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": false,
   "share": "disabled",
-  "theme": "everforest"
+  "mcp": {
+    "playwright": {
+      "enabled": false,
+      "type": "local",
+      "command": ["npx", "@playwright/mcp@latest"]
+    }
+  }
 }
