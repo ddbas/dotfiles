@@ -3,6 +3,11 @@
   "autoupdate": false,
   "share": "disabled",
   "mcp": {
+    "chrome": {
+      "enabled": false,
+      "type": "local",
+      "command": ["npx", "chrome-devtools-mcp@latest", "--no-usage-statistics"]
+    },
     "playwright": {
       "enabled": false,
       "type": "local",
