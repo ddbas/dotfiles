@@ -17,4 +17,8 @@ brew bundle install
 
 # Install npm packages
 echo -e "\n--- Npm install ---\n"
-cd ~/.config/npm && npm ci
+if [ -f ~/.config/npm/package-lock.json ]; then
+  cd ~/.config/npm && npm ci
+else
+  cd ~/.config/npm && npm install
+fi
