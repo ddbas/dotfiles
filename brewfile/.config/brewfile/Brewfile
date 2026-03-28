@@ -9,6 +9,7 @@ cask "alacritty"
 brew "anomalyco/tap/opencode" # instead of `opencode`, as its updated more frequently
 brew "ansible"
 brew "bat"
+brew "beads"
 brew "clang-format"
 cask "docker-desktop"
 brew "dockerfile-language-server"
