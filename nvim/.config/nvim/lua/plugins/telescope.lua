@@ -30,7 +30,7 @@ return {
       },
       pickers = {
         find_files = {
-          find_command = { "fd", "--hidden", "--color", "never", "-E", ".git" },
+          find_command = { "fd", "--type", "f", "--hidden", "--color", "never", "-E", ".git" },
           hidden = true,
         },
         live_grep = {
