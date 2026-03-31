@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "command": "~/.claude/hooks/notify.sh",
+            "type": "command"
+          }
+        ],
+        "matcher": "idle_prompt|permission_prompt"
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "command": "bd prime --stealth",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      },
+      {
+        "hooks": [
+          {
+            "command": "bd prime",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "bd prime --stealth",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      },
+      {
+        "hooks": [
+          {
+            "command": "bd prime",
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ]
+  },
+  "model": "opus[1m]",
+  "permissions": {
+    "allow": [
+      "Bash(bd *)",
+      "Bash(brew *)",
+      "Bash(stow *)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(git *)",
+      "Bash(gh *)",
+      "Bash(ls *)",
+      "Bash(find *)",
+      "Bash(tree *)",
+      "Bash(stat *)",
+      "Bash(file *)",
+      "Bash(pwd)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(wc *)",
+      "Bash(grep *)",
+      "Bash(rg *)",
+      "Bash(cut *)",
+      "Bash(jq *)",
+      "Bash(which *)",
+      "Bash(type *)",
+      "Bash(env)",
+      "Bash(printenv *)",
+      "Bash(whoami)",
+      "Bash(uname *)",
+      "Bash(* --version)",
+      "Bash(* --help *)"
+    ]
+  }
+}

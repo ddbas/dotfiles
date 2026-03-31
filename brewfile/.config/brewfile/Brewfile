@@ -10,6 +10,7 @@ brew "anomalyco/tap/opencode" # instead of `opencode`, as its updated more frequ
 brew "ansible"
 brew "bat"
 brew "beads"
+cask "claude-code"
 brew "clang-format"
 cask "docker-desktop"
 brew "dockerfile-language-server"

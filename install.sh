@@ -18,7 +18,11 @@ brew bundle install
 # Install npm packages
 echo -e "\n--- Npm install ---\n"
 if [ -f ~/.config/npm/package-lock.json ]; then
-  cd ~/.config/npm && npm ci
+  (cd ~/.config/npm && npm ci)
 else
-  cd ~/.config/npm && npm install
+  (cd ~/.config/npm && npm install)
 fi
+
+# Configure Claude Code
+echo -e "\n--- Claude Code ---\n"
+./claude/install.sh
