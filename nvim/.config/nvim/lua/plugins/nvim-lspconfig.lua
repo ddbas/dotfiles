@@ -70,6 +70,7 @@ return {
 		-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 		vim.lsp.enable("bashls")
 		vim.lsp.enable("biome")
+		vim.lsp.enable("clangd")
 		vim.lsp.enable("copilot")
 		vim.lsp.enable("csharp_ls")
 		vim.lsp.enable("cssls")

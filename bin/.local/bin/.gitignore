@@ -1,0 +1,5 @@
+# Files auto-installed by a project
+env
+env.fish
+uv
+uvx
