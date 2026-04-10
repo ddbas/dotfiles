@@ -1,6 +1,6 @@
 return {
   "nvim-telescope/telescope.nvim",
-  tag = "0.1.8",
+  tag = "v0.2.2",
   dependencies = {
     "nvim-lua/plenary.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -55,5 +55,10 @@ return {
     vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
     vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
     vim.keymap.set("n", "<leader>fm", builtin.marks, {})
+    vim.keymap.set("n", "gd", builtin.lsp_definitions, {})
+    vim.keymap.set("n", "gi", builtin.lsp_implementations, {})
+    vim.keymap.set("n", "gr", builtin.lsp_references, {})
+    vim.keymap.set("n", "gs", builtin.lsp_document_symbols, {})
+    vim.keymap.set("n", "gw", builtin.lsp_workspace_symbols, {})
   end,
 }
