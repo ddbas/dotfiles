@@ -5,7 +5,11 @@ agent: build
 
 ## Your Task
 
-Review the planning context from this conversation and file the appropriate beads.
+The user has provided the following input: '$1'.
+
+- If input was provided, use it as the primary basis for the bead(s), supplemented by any relevant conversation context.
+- If no input was provided, derive the work entirely from the planning context in this conversation.
+
 Do NOT start any work. Your only output is the created beads.
 
 ## Deciding on Structure
