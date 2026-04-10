@@ -53,6 +53,20 @@ return {
 			},
 		})
 
+		-- https://oxide.md/Setup+Instructions#!%20README%20Neovim
+		local capabilities = vim.lsp.protocol.make_client_capabilities()
+		vim.lsp.config("markdown_oxide", {
+			-- Ensure that dynamicRegistration is enabled! This allows the LS to take into account actions like the
+			-- Create Unresolved File code action, resolving completions for unindexed code blocks, ...
+			capabilities = vim.tbl_deep_extend("force", capabilities, {
+				workspace = {
+					didChangeWatchedFiles = {
+						dynamicRegistration = true,
+					},
+				},
+			}),
+		})
+
 		-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 		vim.lsp.enable("bashls")
 		vim.lsp.enable("biome")
