@@ -18,5 +18,8 @@ export EDITOR=$VISUAL
 # Homebrew
 export HOMEBREW_BUNDLE_FILE=$XDG_CONFIG_HOME/brewfile/Brewfile
 
+# Development
+export REPO_DIR=$HOME/repos
+
 # Customizations
 export CUSTOMIZATIONS_DIR=$XDG_CONFIG_HOME/custom

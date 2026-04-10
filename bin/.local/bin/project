@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-REPO_DIR=~/repos
+repo_dir=${REPO_DIR:-$HOME/repos}
 
 if [[ $# -eq 1 ]]; then
   selected=$1
 else
-  selected=$(fd --exact-depth=1 --type=d -L --format {/} . $REPO_DIR | fzf)
+  selected=$(fd --exact-depth=1 --type=d -L --format {/} . $repo_dir | fzf)
 fi
 
 if [[ -z $selected ]]; then
@@ -14,14 +14,14 @@ fi
 
 tmux_running=$(pgrep tmux)
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-  tmux new-session -s $selected -c $REPO_DIR/$selected
+  tmux new-session -s $selected -c $repo_dir/$selected
   exit 0
 fi
 
 previous_dir=$(pwd)
 previous_session=$(tmux display-message -p '#S')
 if ! tmux has-session -t=$selected 2>/dev/null; then
-  tmux new-session -ds $selected -c $REPO_DIR/$selected
+  tmux new-session -ds $selected -c $repo_dir/$selected
 fi
 
 tmux switch-client -t $selected
