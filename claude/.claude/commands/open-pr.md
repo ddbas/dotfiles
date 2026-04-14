@@ -7,7 +7,7 @@ agent: build
 
 Open a pull request for the current branch in the browser using `gh pr create --web`.
 
-The optional base branch is: '$1'.
+The optional base branch is: '$ARGUMENTS'.
 
 ## Steps
 
@@ -17,7 +17,7 @@ The optional base branch is: '$1'.
    ```
 
 2. Determine the base branch:
-   - If '$1' was provided, use it as the base.
+   - If '$ARGUMENTS' was provided, use it as the base.
    - Otherwise, detect the repo's default branch:
      ```
      gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name'

@@ -5,7 +5,7 @@ agent: build
 
 ## Your Task
 
-The user has provided the following input: '$1'.
+The user has provided the following input: '$ARGUMENTS'.
 
 - If input was provided, use it as the primary basis for the bead(s), supplemented by any relevant conversation context.
 - If no input was provided, derive the work entirely from the planning context in this conversation.
