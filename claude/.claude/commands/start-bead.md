@@ -5,7 +5,11 @@ agent: build
 
 ## Setup
 
-- The bead id is '$1'. If no id was provided, run `bd ready` to list available work and ask me to choose one.
+- The bead id is '$1'. If no id was provided:
+  1. Check the current git branch name: `git branch --show-current`
+  2. Run `bd show <branchName>` to see if a bead exists with that id.
+  3. If a matching bead is found, confirm with the developer: "I found bead `<id>` (`<title>`) based on the current branch name `<branch>`. Should I proceed with this bead?"
+  4. If no bead is found, or the developer declines, run `bd ready` to list available work and ask me to choose one.
 - Run `bd show $1` to review the bead's description, acceptance criteria, and dependencies before touching any code.
 - If the bead is blocked, surface the blocker before proceeding.
 
