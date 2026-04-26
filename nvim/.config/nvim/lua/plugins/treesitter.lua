@@ -4,6 +4,10 @@ return {
   build = ":TSUpdate",
   config = function()
     require("nvim-treesitter").install({
+      "bash",
+      "c",
+      "c_sharp",
+      "cpp",
       "css",
       "dockerfile",
       "html",
@@ -12,6 +16,7 @@ return {
       "lua",
       "markdown",
       "markdown_inline",
+      "python",
       "rust",
       "hcl",
       "tsx",
@@ -21,6 +26,10 @@ return {
 
     vim.api.nvim_create_autocmd("FileType", {
       pattern = {
+        "bash",
+        "c",
+        "cpp",
+        "cs",
         "css",
         "dockerfile",
         "html",
@@ -28,6 +37,7 @@ return {
         "json",
         "lua",
         "markdown",
+        "python",
         "rust",
         "hcl",
         "terraform",
