@@ -4,15 +4,16 @@ set -euo pipefail
 
 usage() {
   cat <<EOF
-usage: worktree-create [-h] <branch> [base-branch]
+usage: worktree-create [-h] [-b] <branch> [base-branch]
 
 Create a new git worktree for the given branch.
 
 arguments:
-  branch        name of the branch to create
-  base-branch   branch or commit to base off (default: HEAD)
+  branch        name of the branch to check out or create
+  base-branch   branch or commit to base off (default: HEAD, only with -b)
 
 options:
+  -b            create the branch before creating the worktree
   -h, --help    show this help message and exit
 
 the worktree is created at \$REPO_DIR/worktree-<repo>-<branch>.
@@ -33,9 +34,19 @@ if [[ -z "${REPO_DIR:-}" ]]; then
   exit 1
 fi
 
+# Parse -b flag
+create_branch=false
+while getopts "b" opt; do
+  case $opt in
+    b) create_branch=true ;;
+    *) usage >&2; exit 1 ;;
+  esac
+done
+shift $((OPTIND - 1))
+
 # Validate branch name argument
 if [[ $# -lt 1 ]]; then
-  echo "usage: worktree-create <branch> [base-branch]" >&2
+  usage >&2
   exit 1
 fi
 
@@ -51,8 +62,12 @@ repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
 repo_name=$(basename "$repo_root")
 worktree_dir="$REPO_DIR/worktree-${repo_name}-${branch}"
 
-# Create the branch and worktree
-git worktree add -b "$branch" "$worktree_dir" "$base"
+# Create the worktree
+if [[ "$create_branch" == true ]]; then
+  git worktree add -b "$branch" "$worktree_dir" "$base"
+else
+  git worktree add "$worktree_dir" "$branch"
+fi
 
 echo "worktree created at: $worktree_dir"
 
