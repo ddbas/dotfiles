@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  cat <<EOF
+usage: note-create-zettel [-h] [title]
+
+Create a new zettel note in the notes repository.
+
+arguments:
+  title   optional title of the note (used as the markdown H1 and frontmatter alias)
+          if omitted, the timestamp is used as the frontmatter alias and no H1 is written
+
+options:
+  -h, --help    show this help message and exit
+
+reads note body content from stdin.
+requires NOTES_DIR environment variable to be set.
+EOF
+}
+
+for arg in "$@"; do
+  case $arg in
+    -h|--help) usage; exit 0 ;;
+  esac
+done
+
+if [[ -z "${NOTES_DIR:-}" ]]; then
+  echo "error: NOTES_DIR environment variable is not set" >&2
+  exit 1
+fi
+
+timestamp="$(date +%Y%m%d%H%M%S)"
+filename="${timestamp}.md"
+notepath="$NOTES_DIR/notes/$filename"
+
+if [[ $# -ge 1 ]]; then
+  title=$1
+  if [[ -t 0 ]]; then
+    printf -- '---\naliases: %s\n---\n# %s\n\n' "$title" "$title" > "$notepath"
+  else
+    { printf -- '---\naliases: %s\n---\n# %s\n\n' "$title" "$title"; cat; } > "$notepath"
+  fi
+else
+  if [[ -t 0 ]]; then
+    printf -- '---\naliases: %s\n---\n' "$timestamp" > "$notepath"
+  else
+    { printf -- '---\naliases: %s\n---\n' "$timestamp"; cat; } > "$notepath"
+  fi
+fi
+
+echo "created note: $filename"
