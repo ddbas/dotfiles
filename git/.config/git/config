@@ -6,7 +6,8 @@
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = !/opt/homebrew/bin/gh auth git-credential
-
+[beads]
+	role = maintainer
 [include]
 	path = ~/.config/personal/git/.gitconfig
 	path = ~/.config/custom/git/.gitconfig
