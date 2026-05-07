@@ -1,5 +1,5 @@
 ---
-name: create-git-worktree
+name: worktree-create
 description: Create a new git worktree for the current repository.
 ---
 

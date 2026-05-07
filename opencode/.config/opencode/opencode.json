@@ -6,7 +6,12 @@
     "chrome": {
       "enabled": false,
       "type": "local",
-      "command": ["npx", "chrome-devtools-mcp@latest", "--headless", "--no-usage-statistics"]
+      "command": [
+        "npx",
+        "chrome-devtools-mcp@latest",
+        "--headless",
+        "--no-usage-statistics"
+      ]
     },
     "playwright": {
       "enabled": false,
@@ -14,5 +19,5 @@
       "command": ["npx", "@playwright/mcp@latest"]
     }
   },
-  "plugin": ["@mohak34/opencode-notifier@latest", "opencode-beads@latest"]
+  "plugin": ["@mohak34/opencode-notifier@latest"]
 }
