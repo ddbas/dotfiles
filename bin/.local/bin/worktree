@@ -1,0 +1,282 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  cat <<EOF
+usage: worktree <command> [options]
+
+Manage git worktrees.
+
+commands:
+  init      initialize a .worktree.config.json file in the current repo
+  create    create a new git worktree for a branch
+  remove    remove a git worktree by branch name
+
+Run 'worktree <command> --help' for command-specific help.
+EOF
+}
+
+cmd_init() {
+  local_usage() {
+    cat <<EOF
+usage: worktree init [-h] [-f <file>]...
+
+Initialize a .worktree.config.json file in the current git repo.
+
+options:
+  -f <file>     file to add to the copy list (can be repeated)
+  -h, --help    show this help message and exit
+
+errors if .worktree.config.json already exists.
+EOF
+  }
+
+  for arg in "$@"; do
+    case $arg in
+      -h|--help) local_usage; return 0 ;;
+    esac
+  done
+
+  # Validate we're inside a git repo
+  repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+    echo "error: not inside a git repository" >&2
+    return 1
+  }
+
+  config_file="$repo_root/.worktree.config.json"
+
+  # Error if config already exists
+  if [[ -f "$config_file" ]]; then
+    echo "error: .worktree.config.json already exists" >&2
+    return 1
+  fi
+
+  # Parse -f flags
+  copy_files=()
+  while getopts "f:" opt; do
+    case $opt in
+      f) copy_files+=("$OPTARG") ;;
+      *) local_usage >&2; return 1 ;;
+    esac
+  done
+
+  # Build JSON and write config
+  jq -n --argjson copy "$(printf '%s\n' "${copy_files[@]+"${copy_files[@]}"}" | jq -R . | jq -s .)" \
+    '{ copy: $copy }' > "$config_file"
+
+  echo "initialized: $config_file"
+}
+
+cmd_create() {
+  local_usage() {
+    cat <<EOF
+usage: worktree create [-h] [-b] <branch> [base-branch]
+
+Create a new git worktree for the given branch.
+
+arguments:
+  branch        name of the branch to check out or create
+  base-branch   branch or commit to base off (default: HEAD, only with -b)
+
+options:
+  -b            create the branch before creating the worktree
+  -h, --help    show this help message and exit
+
+the worktree is created at \$REPO_DIR/worktree-<repo>-<branch>.
+if .worktree.config.json exists in the current repo, files listed
+under "copy" will be copied into the new worktree.
+EOF
+  }
+
+  for arg in "$@"; do
+    case $arg in
+      -h|--help) local_usage; return 0 ;;
+    esac
+  done
+
+  # Validate REPO_DIR is set
+  if [[ -z "${REPO_DIR:-}" ]]; then
+    echo "error: REPO_DIR environment variable is not set" >&2
+    return 1
+  fi
+
+  # Parse -b flag
+  create_branch=false
+  while getopts "b" opt; do
+    case $opt in
+      b) create_branch=true ;;
+      *) local_usage >&2; return 1 ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
+  # Validate branch name argument
+  if [[ $# -lt 1 ]]; then
+    local_usage >&2
+    return 1
+  fi
+
+  branch=$1
+  base=${2:-HEAD}
+
+  # Validate we're inside a git repo
+  repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+    echo "error: not inside a git repository" >&2
+    return 1
+  }
+
+  repo_name=$(basename "$repo_root")
+  worktree_dir="$REPO_DIR/worktree-${repo_name}-${branch}"
+
+  # Create the worktree
+  if [[ "$create_branch" == true ]]; then
+    git worktree add -b "$branch" "$worktree_dir" "$base"
+  else
+    git worktree add "$worktree_dir" "$branch"
+  fi
+
+  echo "worktree created at: $worktree_dir"
+
+  # Copy files listed in .worktree.config.json if it exists
+  config_file="$repo_root/.worktree.config.json"
+  if [[ -f "$config_file" ]]; then
+    copy_files=$(jq -r '.copy[]?' "$config_file")
+    if [[ -n "$copy_files" ]]; then
+      while IFS= read -r file; do
+        src="$repo_root/$file"
+        dest="$worktree_dir/$file"
+        if [[ -f "$src" ]]; then
+          mkdir -p "$(dirname "$dest")"
+          cp -f "$src" "$dest"
+          echo "copied: $file"
+        else
+          echo "warning: $file not found, skipping" >&2
+        fi
+      done <<< "$copy_files"
+    fi
+  fi
+}
+
+cmd_remove() {
+  local_usage() {
+    cat <<EOF
+usage: worktree remove [-d | -D] [-f] [-h] <branch>
+
+Remove a git worktree by branch name.
+
+arguments:
+  branch        name of the branch whose worktree to remove
+
+options:
+  -d            also delete the local branch after removing (safe, refuses if unmerged)
+  -D            also force-delete the local branch after removing
+  -f, --force   force-remove the worktree even if it has uncommitted changes
+  -h, --help    show this help message and exit
+
+the worktree is expected at \$REPO_DIR/worktree-<repo>-<branch>.
+EOF
+  }
+
+  delete_branch=
+  force=false
+
+  # Pre-process --force and --help long flags
+  args=()
+  for arg in "$@"; do
+    case $arg in
+      --force) args+=("-f") ;;
+      -h|--help) local_usage; return 0 ;;
+      *) args+=("$arg") ;;
+    esac
+  done
+  set -- "${args[@]+"${args[@]}"}"
+
+  while getopts "dDfh" opt; do
+    case $opt in
+      d)
+        if [[ "$delete_branch" == "D" ]]; then
+          echo "error: -d and -D are mutually exclusive" >&2
+          return 1
+        fi
+        delete_branch="d"
+        ;;
+      D)
+        if [[ "$delete_branch" == "d" ]]; then
+          echo "error: -d and -D are mutually exclusive" >&2
+          return 1
+        fi
+        delete_branch="D"
+        ;;
+      f) force=true ;;
+      h) local_usage; return 0 ;;
+      *) local_usage >&2; return 1 ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
+  # Validate REPO_DIR is set
+  if [[ -z "${REPO_DIR:-}" ]]; then
+    echo "error: REPO_DIR environment variable is not set" >&2
+    return 1
+  fi
+
+  # Validate branch name argument
+  if [[ $# -lt 1 ]]; then
+    local_usage >&2
+    return 1
+  fi
+
+  branch=$1
+
+  # Validate we're inside a git repo
+  repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+    echo "error: not inside a git repository" >&2
+    return 1
+  }
+
+  repo_name=$(basename "$repo_root")
+  worktree_dir="$REPO_DIR/worktree-${repo_name}-${branch}"
+
+  # Validate the worktree exists
+  if ! git worktree list --porcelain | grep -q "^worktree $worktree_dir$"; then
+    echo "error: no worktree found at $worktree_dir" >&2
+    return 1
+  fi
+
+  # Remove the worktree
+  if [[ "$force" == true ]]; then
+    git worktree remove --force "$worktree_dir"
+  else
+    git worktree remove "$worktree_dir"
+  fi
+
+  echo "worktree removed: $worktree_dir"
+
+  # Optionally delete the local branch
+  if [[ -n "$delete_branch" ]]; then
+    if git branch "-$delete_branch" "$branch"; then
+      echo "branch deleted: $branch"
+    else
+      echo "warning: failed to delete branch $branch" >&2
+    fi
+  fi
+}
+
+# Main dispatch
+if [[ $# -lt 1 ]]; then
+  usage >&2
+  exit 1
+fi
+
+case $1 in
+  -h|--help) usage; exit 0 ;;
+  init)   shift; cmd_init "$@" ;;
+  create) shift; cmd_create "$@" ;;
+  remove) shift; cmd_remove "$@" ;;
+  *)
+    echo "error: unknown command '$1'" >&2
+    usage >&2
+    exit 1
+    ;;
+esac
