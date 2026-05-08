@@ -11,10 +11,25 @@ Manage git worktrees.
 commands:
   init      initialize a .worktree.config.json file in the current repo
   create    create a new git worktree for a branch
+  list      list worktree branches for the current repo
   remove    remove a git worktree by branch name
 
 Run 'worktree <command> --help' for command-specific help.
 EOF
+}
+
+# Path to the main worktree of the current repo.
+# Always returns the main worktree, even when called from a linked worktree.
+main_worktree_root() {
+  git worktree list --porcelain | awk '/^worktree /{print substr($0,10); exit}'
+}
+
+# Compute the wrapper-managed worktree path for a given branch name.
+worktree_path_for() {
+  local branch=$1 main_root repo_name
+  main_root=$(main_worktree_root)
+  repo_name=$(basename "$main_root")
+  printf '%s/worktree-%s-%s\n' "$REPO_DIR" "$repo_name" "${branch//\//-}"
 }
 
 cmd_init() {
@@ -71,20 +86,19 @@ EOF
 cmd_create() {
   local_usage() {
     cat <<EOF
-usage: worktree create [-h] [-b] <branch> [base-branch]
+usage: worktree create [-h] [-b] <branch>
 
 Create a new git worktree for the given branch.
 
 arguments:
-  branch        name of the branch to check out or create
-  base-branch   branch or commit to base off (default: HEAD, only with -b)
+  branch        name of the branch to check out
 
 options:
-  -b            create the branch before creating the worktree
+  -b            create the branch (must not already exist)
   -h, --help    show this help message and exit
 
 the worktree is created at \$REPO_DIR/worktree-<repo>-<branch>.
-if .worktree.config.json exists in the current repo, files listed
+if .worktree.config.json exists in the main repo, files listed
 under "copy" will be copied into the new worktree.
 EOF
   }
@@ -111,40 +125,39 @@ EOF
   done
   shift $((OPTIND - 1))
 
-  # Validate branch name argument
-  if [[ $# -lt 1 ]]; then
+  # Require exactly one positional argument: <branch>
+  if [[ $# -ne 1 ]]; then
     local_usage >&2
     return 1
   fi
 
   branch=$1
-  base=${2:-HEAD}
 
   # Validate we're inside a git repo
-  repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+  git rev-parse --show-toplevel >/dev/null 2>&1 || {
     echo "error: not inside a git repository" >&2
     return 1
   }
 
-  repo_name=$(basename "$repo_root")
-  worktree_dir="$REPO_DIR/worktree-${repo_name}-${branch//\//-}"
+  main_root=$(main_worktree_root)
+  worktree_dir=$(worktree_path_for "$branch")
 
-  # Create the worktree
+  # Hand off to git worktree add
   if [[ "$create_branch" == true ]]; then
-    git worktree add -b "$branch" "$worktree_dir" "$base"
+    git worktree add -b "$branch" "$worktree_dir"
   else
     git worktree add "$worktree_dir" "$branch"
   fi
 
   echo "worktree created at: $worktree_dir"
 
-  # Copy files listed in .worktree.config.json if it exists
-  config_file="$repo_root/.worktree.config.json"
+  # Copy files listed in the main repo's .worktree.config.json if present
+  config_file="$main_root/.worktree.config.json"
   if [[ -f "$config_file" ]]; then
     copy_files=$(jq -r '.copy[]?' "$config_file")
     if [[ -n "$copy_files" ]]; then
       while IFS= read -r file; do
-        src="$repo_root/$file"
+        src="$main_root/$file"
         dest="$worktree_dir/$file"
         if [[ -f "$src" ]]; then
           mkdir -p "$(dirname "$dest")"
@@ -158,10 +171,68 @@ EOF
   fi
 }
 
+cmd_list() {
+  local_usage() {
+    cat <<EOF
+usage: worktree list [-h]
+
+List branches of worktrees for the current repo.
+
+Outputs one branch name per line, suitable for piping to other
+worktree subcommands (e.g. 'worktree remove').
+
+Only worktrees located under \$REPO_DIR/worktree-<repo>-* are listed.
+
+options:
+  -h, --help    show this help message and exit
+EOF
+  }
+
+  for arg in "$@"; do
+    case $arg in
+      -h|--help) local_usage; return 0 ;;
+      *) local_usage >&2; return 1 ;;
+    esac
+  done
+
+  # Validate REPO_DIR is set
+  if [[ -z "${REPO_DIR:-}" ]]; then
+    echo "error: REPO_DIR environment variable is not set" >&2
+    return 1
+  fi
+
+  # Validate we're inside a git repo
+  git rev-parse --show-toplevel >/dev/null 2>&1 || {
+    echo "error: not inside a git repository" >&2
+    return 1
+  }
+
+  main_root=$(main_worktree_root)
+  repo_name=$(basename "$main_root")
+  prefix="$REPO_DIR/worktree-${repo_name}-"
+
+  # Walk porcelain output, emitting branch names for matching worktrees
+  current_path=
+  while IFS= read -r line; do
+    case $line in
+      "worktree "*) current_path=${line#worktree } ;;
+      "branch "*)
+        if [[ "$current_path" == "$prefix"* ]]; then
+          # strip refs/heads/ prefix
+          echo "${line#branch refs/heads/}"
+        fi
+        ;;
+      "")
+        current_path=
+        ;;
+    esac
+  done < <(git worktree list --porcelain)
+}
+
 cmd_remove() {
   local_usage() {
     cat <<EOF
-usage: worktree remove [-d | -D] [-f] [-h] <branch>
+usage: worktree remove [-f] [-h] <branch>
 
 Remove a git worktree by branch name.
 
@@ -169,8 +240,6 @@ arguments:
   branch        name of the branch whose worktree to remove
 
 options:
-  -d            also delete the local branch after removing (safe, refuses if unmerged)
-  -D            also force-delete the local branch after removing
   -f, --force   force-remove the worktree even if it has uncommitted changes
   -h, --help    show this help message and exit
 
@@ -178,7 +247,6 @@ the worktree is expected at \$REPO_DIR/worktree-<repo>-<branch>.
 EOF
   }
 
-  delete_branch=
   force=false
 
   # Pre-process --force and --help long flags
@@ -192,22 +260,8 @@ EOF
   done
   set -- "${args[@]+"${args[@]}"}"
 
-  while getopts "dDfh" opt; do
+  while getopts "fh" opt; do
     case $opt in
-      d)
-        if [[ "$delete_branch" == "D" ]]; then
-          echo "error: -d and -D are mutually exclusive" >&2
-          return 1
-        fi
-        delete_branch="d"
-        ;;
-      D)
-        if [[ "$delete_branch" == "d" ]]; then
-          echo "error: -d and -D are mutually exclusive" >&2
-          return 1
-        fi
-        delete_branch="D"
-        ;;
       f) force=true ;;
       h) local_usage; return 0 ;;
       *) local_usage >&2; return 1 ;;
@@ -221,8 +275,8 @@ EOF
     return 1
   fi
 
-  # Validate branch name argument
-  if [[ $# -lt 1 ]]; then
+  # Require exactly one positional argument: <branch>
+  if [[ $# -ne 1 ]]; then
     local_usage >&2
     return 1
   fi
@@ -230,21 +284,13 @@ EOF
   branch=$1
 
   # Validate we're inside a git repo
-  repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+  git rev-parse --show-toplevel >/dev/null 2>&1 || {
     echo "error: not inside a git repository" >&2
     return 1
   }
 
-  repo_name=$(basename "$repo_root")
-  worktree_dir="$REPO_DIR/worktree-${repo_name}-${branch//\//-}"
+  worktree_dir=$(worktree_path_for "$branch")
 
-  # Validate the worktree exists
-  if ! git worktree list --porcelain | grep -q "^worktree $worktree_dir$"; then
-    echo "error: no worktree found at $worktree_dir" >&2
-    return 1
-  fi
-
-  # Remove the worktree
   if [[ "$force" == true ]]; then
     git worktree remove --force "$worktree_dir"
   else
@@ -252,15 +298,6 @@ EOF
   fi
 
   echo "worktree removed: $worktree_dir"
-
-  # Optionally delete the local branch
-  if [[ -n "$delete_branch" ]]; then
-    if git branch "-$delete_branch" "$branch"; then
-      echo "branch deleted: $branch"
-    else
-      echo "warning: failed to delete branch $branch" >&2
-    fi
-  fi
 }
 
 # Main dispatch
@@ -273,6 +310,7 @@ case $1 in
   -h|--help) usage; exit 0 ;;
   init)   shift; cmd_init "$@" ;;
   create) shift; cmd_create "$@" ;;
+  list)   shift; cmd_list "$@" ;;
   remove) shift; cmd_remove "$@" ;;
   *)
     echo "error: unknown command '$1'" >&2
