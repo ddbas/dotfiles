@@ -127,7 +127,7 @@ EOF
   }
 
   repo_name=$(basename "$repo_root")
-  worktree_dir="$REPO_DIR/worktree-${repo_name}-${branch}"
+  worktree_dir="$REPO_DIR/worktree-${repo_name}-${branch//\//-}"
 
   # Create the worktree
   if [[ "$create_branch" == true ]]; then
@@ -236,7 +236,7 @@ EOF
   }
 
   repo_name=$(basename "$repo_root")
-  worktree_dir="$REPO_DIR/worktree-${repo_name}-${branch}"
+  worktree_dir="$REPO_DIR/worktree-${repo_name}-${branch//\//-}"
 
   # Validate the worktree exists
   if ! git worktree list --porcelain | grep -q "^worktree $worktree_dir$"; then
