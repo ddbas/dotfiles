@@ -98,15 +98,16 @@ EOF
 cmd_add() {
   local_usage() {
     cat <<EOF
-usage: worktree add [-h] [-b] <branch>
+usage: worktree add [-h] [-b] <branch> [<ref>]
 
 Create a new git worktree for the given branch.
 
 arguments:
-  branch        name of the branch to check out
+  branch        name of the branch to check out (or create with -b)
+  ref           commit-ish to create the branch from (required with -b)
 
 options:
-  -b            create the branch (must not already exist)
+  -b            create the branch (must not already exist); requires <ref>
   -h, --help    show this help message and exit
 
 the worktree is created at \$REPO_DIR/worktree-<repo>-<branch>.
@@ -137,13 +138,22 @@ EOF
   done
   shift $((OPTIND - 1))
 
-  # Require exactly one positional argument: <branch>
-  if [[ $# -ne 1 ]]; then
-    local_usage >&2
-    return 1
+  # Require correct number of positional arguments
+  if [[ "$create_branch" == true ]]; then
+    if [[ $# -ne 2 ]]; then
+      local_usage >&2
+      return 1
+    fi
+    branch=$1
+    ref=$2
+  else
+    if [[ $# -ne 1 ]]; then
+      local_usage >&2
+      return 1
+    fi
+    branch=$1
+    ref=
   fi
-
-  branch=$1
 
   # Validate we're inside a git repo
   git rev-parse --show-toplevel >/dev/null 2>&1 || {
@@ -156,7 +166,7 @@ EOF
 
   # Hand off to git worktree add
   if [[ "$create_branch" == true ]]; then
-    git worktree add -b "$branch" "$worktree_dir"
+    git worktree add -b "$branch" "$worktree_dir" "$ref"
   else
     git worktree add "$worktree_dir" "$branch"
   fi
