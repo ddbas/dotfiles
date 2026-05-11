@@ -10,7 +10,7 @@ Manage git worktrees.
 
 commands:
   init      initialize a .worktree.config.json file in the current repo
-  create    create a new git worktree for a branch
+  add       create a new git worktree for a branch
   list      list worktree branches for the current repo
   remove    remove a git worktree by branch name
 
@@ -83,10 +83,10 @@ EOF
   echo "initialized: $config_file"
 }
 
-cmd_create() {
+cmd_add() {
   local_usage() {
     cat <<EOF
-usage: worktree create [-h] [-b] <branch>
+usage: worktree add [-h] [-b] <branch>
 
 Create a new git worktree for the given branch.
 
@@ -309,7 +309,7 @@ fi
 case $1 in
   -h|--help) usage; exit 0 ;;
   init)   shift; cmd_init "$@" ;;
-  create) shift; cmd_create "$@" ;;
+  add)    shift; cmd_add "$@" ;;
   list)   shift; cmd_list "$@" ;;
   remove) shift; cmd_remove "$@" ;;
   *)

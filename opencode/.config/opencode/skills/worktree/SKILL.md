@@ -34,13 +34,13 @@ every new worktree automatically.
 ## Creating
 
 ```
-worktree create <branch>       # Check out existing branch in a new worktree
-worktree create -b <branch>    # Create new branch and check it out
+worktree add <branch>          # Check out existing branch in a new worktree
+worktree add -b <branch>       # Create new branch and check it out
 ```
 
 If the user wants to start work on a new feature or change, ask whether they
 want a worktree. If yes, propose a branch name derived from the task, confirm
-with the user, then run `worktree create -b <branch>`.
+with the user, then run `worktree add -b <branch>`.
 
 ## Listing
 
