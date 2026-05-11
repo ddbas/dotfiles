@@ -67,7 +67,10 @@ Prints the full contents of a zettel note. `<id>` must be a zettel (14-digit tim
 
 ```
 note zettel create [title]
+note create-zettel [title]
 ```
+
+`note create-zettel` is a top-level alias for `note zettel create`. Both forms are equivalent.
 
 Reads the note body from stdin. Title is optional — ask the user whether they want one before creating the note.
 
@@ -112,7 +115,10 @@ Deletes a zettel note. `<id>` must be a zettel (14-digit timestamp filename). Th
 
 ```
 note daily create [-f] [date]
+note create-daily [-f] [date]
 ```
+
+`note create-daily` is a top-level alias for `note daily create`. Both forms are equivalent.
 
 Creates a daily note for the given date (defaults to today). The filename is always `<yyyy>-<mm>-<dd>.md` (e.g. `2024-05-11.md`), stored in `$NOTES_DIR/notes/`.
 

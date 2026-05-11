@@ -9,10 +9,12 @@ usage: note <command> [options]
 Manage notes in the notes repository.
 
 commands:
-  daily     manage daily notes
-  list      list notes with optional filtering and sorting
-  show      print the contents of a note by id
-  zettel    manage Zettelkasten-style notes
+  daily           manage daily notes
+  list            list notes with optional filtering and sorting
+  show            print the contents of a note by id
+  zettel          manage Zettelkasten-style notes
+  create-zettel   alias for 'note zettel create'
+  create-daily    alias for 'note daily create'
 
 Run 'note <command> --help' for command-specific help.
 EOF
@@ -900,10 +902,12 @@ fi
 
 case $1 in
   -h|--help) usage; exit 0 ;;
-  daily)  shift; cmd_daily "$@" ;;
-  list)   shift; cmd_list "$@" ;;
-  show)   shift; cmd_show "$@" ;;
-  zettel) shift; cmd_zettel "$@" ;;
+  daily)          shift; cmd_daily "$@" ;;
+  list)           shift; cmd_list "$@" ;;
+  show)           shift; cmd_show "$@" ;;
+  zettel)         shift; cmd_zettel "$@" ;;
+  create-zettel)  shift; cmd_zettel_create "$@" ;;
+  create-daily)   shift; cmd_daily_create "$@" ;;
   *)
     echo "error: unknown command '$1'" >&2
     usage >&2
