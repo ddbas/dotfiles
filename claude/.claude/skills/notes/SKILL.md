@@ -43,6 +43,14 @@ note show <id>
 
 Prints the full contents of a note. `<id>` is the note filename, with or without the `.md` extension.
 
+## Showing a Zettel
+
+```
+note zettel show <id>
+```
+
+Prints the full contents of a zettel note. `<id>` must be a zettel (14-digit timestamp filename). Returns an error if the id is not a zettel.
+
 ## Creating a Zettel
 
 ```

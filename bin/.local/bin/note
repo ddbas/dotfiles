@@ -23,6 +23,7 @@ usage: note zettel <command> [options]
 
 commands:
   create    create a new zettel note
+  show      show a zettel note by id
 
 Run 'note zettel <command> --help' for command-specific help.
 EOF
@@ -257,6 +258,48 @@ EOF
   cat "$notepath"
 }
 
+cmd_zettel_show() {
+  local_usage() {
+    cat <<EOF
+usage: note zettel show [-h] <id>
+
+Print the contents of a zettel note by filename.
+
+arguments:
+  id    zettel note filename, with or without .md extension (e.g. 20240511143022)
+        must be a zettel (timestamp-based) note, not a daily note
+
+options:
+  -h, --help    show this help message and exit
+
+requires NOTES_DIR environment variable to be set.
+EOF
+  }
+
+  for arg in "$@"; do
+    case $arg in
+      -h|--help) local_usage; return 0 ;;
+    esac
+  done
+
+  if [[ $# -ne 1 ]]; then
+    local_usage >&2
+    return 1
+  fi
+
+  local id=$1
+  # Strip .md extension for type check
+  local base="${id%.md}"
+
+  # Verify this is a zettel (14-digit timestamp), not a daily note
+  if [[ ! "$base" =~ ^[0-9]{14}$ ]]; then
+    echo "error: '$id' is not a zettel id (expected 14-digit timestamp like 20240511143022)" >&2
+    return 1
+  fi
+
+  cmd_show "$id"
+}
+
 cmd_zettel() {
   if [[ $# -lt 1 ]]; then
     usage_zettel >&2
@@ -266,6 +309,7 @@ cmd_zettel() {
   case $1 in
     -h|--help) usage_zettel; return 0 ;;
     create) shift; cmd_zettel_create "$@" ;;
+    show)   shift; cmd_zettel_show "$@" ;;
     *)
       echo "error: unknown command '$1'" >&2
       usage_zettel >&2
