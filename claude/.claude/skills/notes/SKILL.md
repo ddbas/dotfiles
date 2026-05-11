@@ -107,3 +107,23 @@ note zettel remove -f <id>
 ```
 
 Deletes a zettel note. `<id>` must be a zettel (14-digit timestamp filename). The `-f/--force` flag is required to confirm deletion (the CLI is non-interactive and will error without it).
+
+## Creating a Daily Note
+
+```
+note daily create [-f] [date]
+```
+
+Creates a daily note for the given date (defaults to today). The filename is always `<yyyy>-<mm>-<dd>.md` (e.g. `2024-05-11.md`), stored in `$NOTES_DIR/notes/`.
+
+- `date` — optional date in `YYYY-MM-DD` format; defaults to today
+- `-f/--force` — overwrite if the note already exists
+
+The note is created with frontmatter containing the `date` field. Optional body content can be piped via stdin.
+
+When the user asks to create a daily note:
+
+1. Determine the date (ask if ambiguous, otherwise use today).
+2. Compose the body if the user provided content to capture.
+3. Run `note daily create [date]` (pipe body via stdin if any).
+4. Report the created filename to the user.
