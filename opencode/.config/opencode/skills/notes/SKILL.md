@@ -128,6 +128,18 @@ When the user asks to create a daily note:
 3. Run `note daily create [date]` (pipe body via stdin if any).
 4. Report the created filename to the user.
 
+## Listing Daily Notes
+
+```
+note daily list [-T tag] [--sort date|name]
+```
+
+Lists only daily notes. Equivalent to `note list -t daily`. Options:
+
+- `-T tag` — filter by tag (searches for `#tag` in file content)
+- `--sort date` — sort by modification date, newest first (default)
+- `--sort name` — sort by filename, ascending
+
 ## Showing a Daily Note
 
 ```

@@ -24,6 +24,7 @@ usage: note daily <command> [options]
 
 commands:
   create    create a daily note for a given date
+  list      list daily notes
   show      show the daily note for a given date
 
 Run 'note daily <command> --help' for command-specific help.
@@ -170,6 +171,31 @@ EOF
   cat "$notepath"
 }
 
+cmd_daily_list() {
+  local_usage() {
+    cat <<EOF
+usage: note daily list [-h] [-T tag] [--sort date|name]
+
+List daily notes in the notes repository.
+
+options:
+  -T tag        filter by tag (searches for #tag in file content)
+  --sort field  sort by: date (default, descending) or name (ascending)
+  -h, --help    show this help message and exit
+
+requires NOTES_DIR environment variable to be set.
+EOF
+  }
+
+  for arg in "$@"; do
+    case $arg in
+      -h|--help) local_usage; return 0 ;;
+    esac
+  done
+
+  cmd_list -t daily "$@"
+}
+
 cmd_daily() {
   if [[ $# -lt 1 ]]; then
     usage_daily >&2
@@ -179,6 +205,7 @@ cmd_daily() {
   case $1 in
     -h|--help) usage_daily; return 0 ;;
     create) shift; cmd_daily_create "$@" ;;
+    list)   shift; cmd_daily_list "$@" ;;
     show)   shift; cmd_daily_show "$@" ;;
     *)
       echo "error: unknown command '$1'" >&2
