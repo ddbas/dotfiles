@@ -127,3 +127,21 @@ When the user asks to create a daily note:
 2. Compose the body if the user provided content to capture.
 3. Run `note daily create [date]` (pipe body via stdin if any).
 4. Report the created filename to the user.
+
+## Showing a Daily Note
+
+```
+note daily show [date]
+```
+
+Shows the daily note for the given date (defaults to today). Prints the full note contents to stdout.
+
+- `date` — optional date in `YYYY-MM-DD` format; defaults to today
+
+Daily notes follow the predictable `<yyyy>-<mm>-<dd>.md` filename pattern stored in `$NOTES_DIR/notes/`. Agents can derive the filename directly from the date without listing files — e.g. for `2024-05-11`, the path is `$NOTES_DIR/notes/2024-05-11.md`.
+
+When the user asks to show or read a daily note:
+
+1. Determine the date (use today unless the user specifies one).
+2. Run `note daily show [date]`.
+3. Display the contents to the user.
