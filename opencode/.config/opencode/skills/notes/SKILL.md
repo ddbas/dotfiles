@@ -99,3 +99,11 @@ When the user asks to update, append, or add tags to an existing zettel:
 2. Use the appropriate flags for the requested update.
 3. If appending content, pipe it via stdin with `--append`.
 4. Report the updated filename to the user.
+
+## Removing a Zettel
+
+```
+note zettel remove -f <id>
+```
+
+Deletes a zettel note. `<id>` must be a zettel (14-digit timestamp filename). The `-f/--force` flag is required to confirm deletion (the CLI is non-interactive and will error without it).

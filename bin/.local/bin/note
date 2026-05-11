@@ -26,6 +26,7 @@ commands:
   list      list zettel notes
   show      show a zettel note by id
   update    update a zettel note (append content, update title/tags)
+  remove    delete a zettel note
 
 Run 'note zettel <command> --help' for command-specific help.
 EOF
@@ -457,6 +458,73 @@ EOF
   echo "updated note: ${base}.md"
 }
 
+cmd_zettel_remove() {
+  local_usage() {
+    cat <<EOF
+usage: note zettel remove [-f] [-h] <id>
+
+Delete a zettel note from the notes repository.
+
+arguments:
+  id            zettel note filename, with or without .md extension (e.g. 20240511143022)
+                must be a zettel (14-digit timestamp) note, not a daily note
+
+options:
+  -f, --force   skip confirmation (required for non-interactive use)
+  -h, --help    show this help message and exit
+
+requires NOTES_DIR environment variable to be set.
+EOF
+  }
+
+  local force=0
+
+  # Pre-scan for --help and --force
+  local args=()
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      -h|--help) local_usage; return 0 ;;
+      -f|--force) force=1 ;;
+      *) args+=("$1") ;;
+    esac
+    shift
+  done
+  set -- "${args[@]+"${args[@]}"}"
+
+  if [[ $# -ne 1 ]]; then
+    local_usage >&2
+    return 1
+  fi
+
+  local id=$1
+  local base="${id%.md}"
+
+  # Verify zettel id format
+  if [[ ! "$base" =~ ^[0-9]{14}$ ]]; then
+    echo "error: '$id' is not a zettel id (expected 14-digit timestamp like 20240511143022)" >&2
+    return 1
+  fi
+
+  if [[ -z "${NOTES_DIR:-}" ]]; then
+    echo "error: NOTES_DIR environment variable is not set" >&2
+    return 1
+  fi
+
+  local notepath="$NOTES_DIR/notes/${base}.md"
+  if [[ ! -f "$notepath" ]]; then
+    echo "error: note not found: $notepath" >&2
+    return 1
+  fi
+
+  if [[ $force -eq 0 ]]; then
+    echo "error: use -f/--force to confirm deletion of note: ${base}.md" >&2
+    return 1
+  fi
+
+  rm -f "$notepath"
+  echo "removed note: ${base}.md"
+}
+
 cmd_zettel() {
   if [[ $# -lt 1 ]]; then
     usage_zettel >&2
@@ -469,6 +537,7 @@ cmd_zettel() {
     list)   shift; cmd_zettel_list "$@" ;;
     show)   shift; cmd_zettel_show "$@" ;;
     update) shift; cmd_zettel_update "$@" ;;
+    remove) shift; cmd_zettel_remove "$@" ;;
     *)
       echo "error: unknown command '$1'" >&2
       usage_zettel >&2
