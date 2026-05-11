@@ -1,194 +1,58 @@
 ---
 name: notes
-description: Managing notes — create, list
+description: Managing notes — create, list, show, update, remove
 ---
 
 # Notes
 
-Notes are stored as markdown files in the notes repository.
+Notes are stored as markdown files in `$NOTES_DIR/notes/`. Always use the `note` CLI — never write files directly. Run `note --help` or `note <command> --help` for full option details.
 
 ## Note Types
 
-**Zettel** — atomic, evergreen notes identified by a timestamp filename (e.g. `20240511143022.md`). Used for notes that span several days of work, such as research or feature development.
+**Zettel** — atomic, evergreen notes. Filename: 14-digit timestamp (e.g. `20240511143022.md`).
 
-**Daily note** — represents a full day. Meeting notes, quick thoughts, and other time-bound content go into the daily note for the day they were written, identified by a date filename (e.g. `2024-05-11.md`).
+**Daily** — one note per day. Filename: `YYYY-MM-DD.md` (e.g. `2024-05-11.md`). The path is always derivable from the date — no need to list files to find it.
 
-## CLI
-
-Always use the `note` CLI — never write note files directly or call internal scripts.
-The CLI enforces all note conventions automatically.
-
-The `note` CLI requires the `NOTES_DIR` environment variable to be set.
-
-Use the `--help` flag on any subcommand to get detailed usage information.
-
-## Listing Notes
+## Listing
 
 ```
-note list [-t type] [-T tag] [--sort date|name]
+note list
+note zettel list
+note daily list
 ```
 
-Lists notes from the notes directory. Options:
-
-- `-t type` — filter by type: `zettel` or `daily`
-- `-T tag` — filter by tag (searches for `#tag` in file content)
-- `--sort date` — sort by modification date, newest first (default)
-- `--sort name` — sort by filename, ascending
-
-## Showing a Note
+## Showing
 
 ```
 note show <id>
-```
-
-Prints the full contents of a note. `<id>` is the note filename, with or without the `.md` extension.
-
-## Listing Zettel Notes
-
-```
-note zettel list [-T tag] [--sort date|name]
-```
-
-Lists only zettel notes. Equivalent to `note list -t zettel`. Options:
-
-- `-T tag` — filter by tag (searches for `#tag` in file content)
-- `--sort date` — sort by modification date, newest first (default)
-- `--sort name` — sort by filename, ascending
-
-## Showing a Zettel
-
-```
 note zettel show <id>
+note daily show [date]          # date defaults to today
 ```
 
-Prints the full contents of a zettel note. `<id>` must be a zettel (14-digit timestamp filename). Returns an error if the id is not a zettel.
-
-## Creating a Zettel
+## Creating
 
 ```
-note zettel create [title]
-note create-zettel [title]
+note zettel create [title]      # alias: note create-zettel; reads body from stdin
+note daily create [date]        # alias: note create-daily; date defaults to today
 ```
 
-`note create-zettel` is a top-level alias for `note zettel create`. Both forms are equivalent.
+When the user asks to save or capture information as a zettel:
 
-Reads the note body from stdin. Title is optional — ask the user whether they want one before creating the note.
+1. Ask if they want a title.
+2. Compose the note body.
+3. Pipe the body: `note zettel create [title]`
+4. Report the created filename.
 
-When the user asks to save, persist, or capture information from the conversation:
-
-1. Ask the user if they want a title for the note.
-2. Compose the full note body.
-3. Pipe the body to `note zettel create` (with title if provided).
-4. Report the created filename to the user.
-
-If the user provides a focus or clarification, use it to narrow what gets captured.
-
-## Updating a Zettel
+## Updating
 
 ```
-note zettel update [--append] [--title <title>] [-t tag] <id>
+note zettel update <id>
+note daily update [date]        # date defaults to today
 ```
 
-Updates an existing zettel note. `<id>` must be a zettel (14-digit timestamp filename).
-
-Options:
-- `--append` — append content from stdin to the end of the note body
-- `--title <title>` — update the frontmatter alias and H1 heading
-- `-t tag` — add a tag to the note (can be repeated)
-
-When the user asks to update, append, or add tags to an existing zettel:
-
-1. Determine the zettel id from context or ask the user.
-2. Use the appropriate flags for the requested update.
-3. If appending content, pipe it via stdin with `--append`.
-4. Report the updated filename to the user.
-
-## Removing a Zettel
+## Removing
 
 ```
 note zettel remove -f <id>
+note daily remove -f [date]     # date defaults to today; -f required
 ```
-
-Deletes a zettel note. `<id>` must be a zettel (14-digit timestamp filename). The `-f/--force` flag is required to confirm deletion (the CLI is non-interactive and will error without it).
-
-## Creating a Daily Note
-
-```
-note daily create [-f] [date]
-note create-daily [-f] [date]
-```
-
-`note create-daily` is a top-level alias for `note daily create`. Both forms are equivalent.
-
-Creates a daily note for the given date (defaults to today). The filename is always `<yyyy>-<mm>-<dd>.md` (e.g. `2024-05-11.md`), stored in `$NOTES_DIR/notes/`.
-
-- `date` — optional date in `YYYY-MM-DD` format; defaults to today
-- `-f/--force` — overwrite if the note already exists
-
-The note is created with frontmatter containing the `date` field. Optional body content can be piped via stdin.
-
-When the user asks to create a daily note:
-
-1. Determine the date (ask if ambiguous, otherwise use today).
-2. Compose the body if the user provided content to capture.
-3. Run `note daily create [date]` (pipe body via stdin if any).
-4. Report the created filename to the user.
-
-## Listing Daily Notes
-
-```
-note daily list [-T tag] [--sort date|name]
-```
-
-Lists only daily notes. Equivalent to `note list -t daily`. Options:
-
-- `-T tag` — filter by tag (searches for `#tag` in file content)
-- `--sort date` — sort by modification date, newest first (default)
-- `--sort name` — sort by filename, ascending
-
-## Showing a Daily Note
-
-```
-note daily show [date]
-```
-
-Shows the daily note for the given date (defaults to today). Prints the full note contents to stdout.
-
-- `date` — optional date in `YYYY-MM-DD` format; defaults to today
-
-Daily notes follow the predictable `<yyyy>-<mm>-<dd>.md` filename pattern stored in `$NOTES_DIR/notes/`. Agents can derive the filename directly from the date without listing files — e.g. for `2024-05-11`, the path is `$NOTES_DIR/notes/2024-05-11.md`.
-
-## Removing a Daily Note
-
-```
-note daily remove -f [date]
-```
-
-Deletes a daily note for the given date (defaults to today). The `-f/--force` flag is required to confirm deletion (the CLI is non-interactive and will error without it).
-
-- `date` — optional date in `YYYY-MM-DD` format; defaults to today
-- `-f/--force` — required to confirm deletion
-
-## Updating a Daily Note
-
-```
-note daily update [--append] [date]
-```
-
-Updates an existing daily note for the given date (defaults to today). Returns an error if the note does not exist.
-
-- `date` — optional date in `YYYY-MM-DD` format; defaults to today
-- `--append` — append content from stdin to the end of the note body
-
-When the user asks to update or append content to a daily note:
-
-1. Determine the date (use today unless the user specifies one).
-2. Compose the content to append.
-3. Run `note daily update --append [date]` (pipe content via stdin with `--append`).
-4. Report the updated filename to the user.
-
-When the user asks to show or read a daily note:
-
-1. Determine the date (use today unless the user specifies one).
-2. Run `note daily show [date]`.
-3. Display the contents to the user.
