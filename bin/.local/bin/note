@@ -9,6 +9,7 @@ usage: note <command> [options]
 Manage notes in the notes repository.
 
 commands:
+  list      list notes with optional filtering and sorting
   show      print the contents of a note by id
   zettel    manage Zettelkasten-style notes
 
@@ -105,6 +106,108 @@ EOF
   echo "created note: $filename"
 }
 
+cmd_list() {
+  local_usage() {
+    cat <<EOF
+usage: note list [-h] [-t type] [-T tag] [--sort date|name]
+
+List notes in the notes repository.
+
+options:
+  -t type       filter by note type: zettel or daily
+  -T tag        filter by tag (searches for #tag in file content)
+  --sort field  sort by: date (default, descending) or name (ascending)
+  -h, --help    show this help message and exit
+
+requires NOTES_DIR environment variable to be set.
+EOF
+  }
+
+  local filter_type="" filter_tag="" sort_by="date"
+
+  # Pre-scan for --help and --sort (getopts doesn't handle long opts)
+  local args=()
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      -h|--help) local_usage; return 0 ;;
+      --sort)
+        shift
+        sort_by="${1:-date}"
+        ;;
+      --sort=*) sort_by="${1#--sort=}" ;;
+      *) args+=("$1") ;;
+    esac
+    shift
+  done
+  set -- "${args[@]+"${args[@]}"}"
+
+  while getopts "t:T:" opt; do
+    case $opt in
+      t) filter_type="$OPTARG" ;;
+      T) filter_tag="$OPTARG" ;;
+      *) local_usage >&2; return 1 ;;
+    esac
+  done
+
+  if [[ -z "${NOTES_DIR:-}" ]]; then
+    echo "error: NOTES_DIR environment variable is not set" >&2
+    return 1
+  fi
+
+  local notes_dir="$NOTES_DIR/notes"
+  if [[ ! -d "$notes_dir" ]]; then
+    echo "error: notes directory not found: $notes_dir" >&2
+    return 1
+  fi
+
+  # Collect matching files
+  local files=()
+  while IFS= read -r -d '' f; do
+    local base
+    base="$(basename "$f")"
+    # Determine type
+    local note_type=""
+    if [[ "$base" =~ ^[0-9]{14}\.md$ ]]; then
+      note_type="zettel"
+    elif [[ "$base" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}\.md$ ]]; then
+      note_type="daily"
+    fi
+
+    # Filter by type
+    if [[ -n "$filter_type" && "$note_type" != "$filter_type" ]]; then
+      continue
+    fi
+
+    # Filter by tag
+    if [[ -n "$filter_tag" ]]; then
+      if ! grep -q "#${filter_tag}" "$f" 2>/dev/null; then
+        continue
+      fi
+    fi
+
+    files+=("$f")
+  done < <(find "$notes_dir" -maxdepth 1 -name '*.md' -print0)
+
+  if [[ ${#files[@]} -eq 0 ]]; then
+    return 0
+  fi
+
+  # Sort
+  case "$sort_by" in
+    name)
+      printf '%s\n' "${files[@]}" | sort | while IFS= read -r f; do
+        basename "$f"
+      done
+      ;;
+    date|*)
+      # Sort by modification time descending using ls -t
+      printf '%s\0' "${files[@]}" | xargs -0 ls -t | while IFS= read -r f; do
+        basename "$f"
+      done
+      ;;
+  esac
+}
+
 cmd_show() {
   local_usage() {
     cat <<EOF
@@ -179,6 +282,7 @@ fi
 
 case $1 in
   -h|--help) usage; exit 0 ;;
+  list)   shift; cmd_list "$@" ;;
   show)   shift; cmd_show "$@" ;;
   zettel) shift; cmd_zettel "$@" ;;
   *)

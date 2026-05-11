@@ -1,6 +1,6 @@
 ---
 name: notes
-description: Managing notes — create
+description: Managing notes — create, list
 ---
 
 # Notes
@@ -21,6 +21,19 @@ The CLI enforces all note conventions automatically.
 The `note` CLI requires the `NOTES_DIR` environment variable to be set.
 
 Use the `--help` flag on any subcommand to get detailed usage information.
+
+## Listing Notes
+
+```
+note list [-t type] [-T tag] [--sort date|name]
+```
+
+Lists notes from the notes directory. Options:
+
+- `-t type` — filter by type: `zettel` or `daily`
+- `-T tag` — filter by tag (searches for `#tag` in file content)
+- `--sort date` — sort by modification date, newest first (default)
+- `--sort name` — sort by filename, ascending
 
 ## Showing a Note
 
