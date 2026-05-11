@@ -43,6 +43,18 @@ note show <id>
 
 Prints the full contents of a note. `<id>` is the note filename, with or without the `.md` extension.
 
+## Listing Zettel Notes
+
+```
+note zettel list [-T tag] [--sort date|name]
+```
+
+Lists only zettel notes. Equivalent to `note list -t zettel`. Options:
+
+- `-T tag` — filter by tag (searches for `#tag` in file content)
+- `--sort date` — sort by modification date, newest first (default)
+- `--sort name` — sort by filename, ascending
+
 ## Showing a Zettel
 
 ```

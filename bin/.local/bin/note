@@ -23,6 +23,7 @@ usage: note zettel <command> [options]
 
 commands:
   create    create a new zettel note
+  list      list zettel notes
   show      show a zettel note by id
 
 Run 'note zettel <command> --help' for command-specific help.
@@ -258,6 +259,31 @@ EOF
   cat "$notepath"
 }
 
+cmd_zettel_list() {
+  local_usage() {
+    cat <<EOF
+usage: note zettel list [-h] [-T tag] [--sort date|name]
+
+List zettel notes in the notes repository.
+
+options:
+  -T tag        filter by tag (searches for #tag in file content)
+  --sort field  sort by: date (default, descending) or name (ascending)
+  -h, --help    show this help message and exit
+
+requires NOTES_DIR environment variable to be set.
+EOF
+  }
+
+  for arg in "$@"; do
+    case $arg in
+      -h|--help) local_usage; return 0 ;;
+    esac
+  done
+
+  cmd_list -t zettel "$@"
+}
+
 cmd_zettel_show() {
   local_usage() {
     cat <<EOF
@@ -309,6 +335,7 @@ cmd_zettel() {
   case $1 in
     -h|--help) usage_zettel; return 0 ;;
     create) shift; cmd_zettel_create "$@" ;;
+    list)   shift; cmd_zettel_list "$@" ;;
     show)   shift; cmd_zettel_show "$@" ;;
     *)
       echo "error: unknown command '$1'" >&2
