@@ -5,7 +5,13 @@ description: Managing notes — create
 
 # Notes
 
-Notes are stored as Zettelkasten-style markdown files in the notes repository.
+Notes are stored as markdown files in the notes repository.
+
+## Note Types
+
+**Zettel** — atomic, evergreen notes identified by a timestamp filename (e.g. `20240511143022.md`). Used for notes that span several days of work, such as research or feature development.
+
+**Daily note** — represents a full day. Meeting notes, quick thoughts, and other time-bound content go into the daily note for the day they were written, identified by a date filename (e.g. `2024-05-11.md`).
 
 ## CLI
 
@@ -15,6 +21,14 @@ The CLI enforces all note conventions automatically.
 The `note` CLI requires the `NOTES_DIR` environment variable to be set.
 
 Use the `--help` flag on any subcommand to get detailed usage information.
+
+## Showing a Note
+
+```
+note show <id>
+```
+
+Prints the full contents of a note. `<id>` is the note filename, with or without the `.md` extension.
 
 ## Creating a Zettel
 

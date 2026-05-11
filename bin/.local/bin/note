@@ -4,14 +4,15 @@ set -euo pipefail
 
 usage() {
   cat <<EOF
-usage: note <group> <command> [options]
+usage: note <command> [options]
 
 Manage notes in the notes repository.
 
-groups:
-  zettel    Zettelkasten-style notes
+commands:
+  show      print the contents of a note by id
+  zettel    manage Zettelkasten-style notes
 
-Run 'note <group> --help' for group-specific help.
+Run 'note <command> --help' for command-specific help.
 EOF
 }
 
@@ -104,6 +105,55 @@ EOF
   echo "created note: $filename"
 }
 
+cmd_show() {
+  local_usage() {
+    cat <<EOF
+usage: note show [-h] <id>
+
+Print the contents of a note by filename.
+
+arguments:
+  id    note filename, with or without .md extension (e.g. 20240511143022 or 2024-05-11.md)
+
+options:
+  -h, --help    show this help message and exit
+
+requires NOTES_DIR environment variable to be set.
+EOF
+  }
+
+  for arg in "$@"; do
+    case $arg in
+      -h|--help) local_usage; return 0 ;;
+    esac
+  done
+
+  if [[ $# -ne 1 ]]; then
+    local_usage >&2
+    return 1
+  fi
+
+  if [[ -z "${NOTES_DIR:-}" ]]; then
+    echo "error: NOTES_DIR environment variable is not set" >&2
+    return 1
+  fi
+
+  id=$1
+  # Try with .md extension, then without
+  if [[ "$id" == *.md ]]; then
+    notepath="$NOTES_DIR/notes/$id"
+  else
+    notepath="$NOTES_DIR/notes/${id}.md"
+  fi
+
+  if [[ ! -f "$notepath" ]]; then
+    echo "error: note not found: $notepath" >&2
+    return 1
+  fi
+
+  cat "$notepath"
+}
+
 cmd_zettel() {
   if [[ $# -lt 1 ]]; then
     usage_zettel >&2
@@ -129,9 +179,10 @@ fi
 
 case $1 in
   -h|--help) usage; exit 0 ;;
+  show)   shift; cmd_show "$@" ;;
   zettel) shift; cmd_zettel "$@" ;;
   *)
-    echo "error: unknown group '$1'" >&2
+    echo "error: unknown command '$1'" >&2
     usage >&2
     exit 1
     ;;
