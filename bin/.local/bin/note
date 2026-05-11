@@ -26,6 +26,7 @@ commands:
   create    create a daily note for a given date
   list      list daily notes
   show      show the daily note for a given date
+  remove    remove a daily note
   update    update a daily note (append content)
 
 Run 'note daily <command> --help' for command-specific help.
@@ -271,6 +272,76 @@ EOF
   echo "updated note: ${date}.md"
 }
 
+cmd_daily_remove() {
+  local_usage() {
+    cat <<EOF
+usage: note daily remove [-f] [-h] [date]
+
+Delete a daily note from the notes repository.
+
+arguments:
+  date          date in YYYY-MM-DD format (default: today)
+
+options:
+  -f, --force   skip confirmation (required for non-interactive use)
+  -h, --help    show this help message and exit
+
+requires NOTES_DIR environment variable to be set.
+EOF
+  }
+
+  local force=0 date=""
+
+  # Pre-scan for --help and --force
+  local args=()
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      -h|--help) local_usage; return 0 ;;
+      -f|--force) force=1 ;;
+      *) args+=("$1") ;;
+    esac
+    shift
+  done
+  set -- "${args[@]+"${args[@]}"}"
+
+  if [[ $# -gt 1 ]]; then
+    local_usage >&2
+    return 1
+  fi
+
+  if [[ $# -eq 1 ]]; then
+    date="$1"
+  else
+    date="$(date +%Y-%m-%d)"
+  fi
+
+  # Validate date format
+  if [[ ! "$date" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+    echo "error: invalid date format '$date' (expected YYYY-MM-DD)" >&2
+    return 1
+  fi
+
+  if [[ -z "${NOTES_DIR:-}" ]]; then
+    echo "error: NOTES_DIR environment variable is not set" >&2
+    return 1
+  fi
+
+  local notepath="$NOTES_DIR/notes/${date}.md"
+
+  if [[ ! -f "$notepath" ]]; then
+    echo "error: note not found: ${date}.md" >&2
+    return 1
+  fi
+
+  if [[ $force -eq 0 ]]; then
+    echo "error: use -f/--force to confirm deletion of note: ${date}.md" >&2
+    return 1
+  fi
+
+  rm -f "$notepath"
+  echo "removed note: ${date}.md"
+}
+
 cmd_daily() {
   if [[ $# -lt 1 ]]; then
     usage_daily >&2
@@ -283,6 +354,7 @@ cmd_daily() {
     list)   shift; cmd_daily_list "$@" ;;
     show)   shift; cmd_daily_show "$@" ;;
     update) shift; cmd_daily_update "$@" ;;
+    remove) shift; cmd_daily_remove "$@" ;;
     *)
       echo "error: unknown command '$1'" >&2
       usage_daily >&2

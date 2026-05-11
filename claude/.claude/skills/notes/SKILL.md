@@ -152,6 +152,17 @@ Shows the daily note for the given date (defaults to today). Prints the full not
 
 Daily notes follow the predictable `<yyyy>-<mm>-<dd>.md` filename pattern stored in `$NOTES_DIR/notes/`. Agents can derive the filename directly from the date without listing files — e.g. for `2024-05-11`, the path is `$NOTES_DIR/notes/2024-05-11.md`.
 
+## Removing a Daily Note
+
+```
+note daily remove -f [date]
+```
+
+Deletes a daily note for the given date (defaults to today). The `-f/--force` flag is required to confirm deletion (the CLI is non-interactive and will error without it).
+
+- `date` — optional date in `YYYY-MM-DD` format; defaults to today
+- `-f/--force` — required to confirm deletion
+
 ## Updating a Daily Note
 
 ```
