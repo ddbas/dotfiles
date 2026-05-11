@@ -25,6 +25,7 @@ commands:
   create    create a new zettel note
   list      list zettel notes
   show      show a zettel note by id
+  update    update a zettel note (append content, update title/tags)
 
 Run 'note zettel <command> --help' for command-specific help.
 EOF
@@ -326,6 +327,136 @@ EOF
   cmd_show "$id"
 }
 
+cmd_zettel_update() {
+  local_usage() {
+    cat <<EOF
+usage: note zettel update [-h] [--append] [--title <title>] [-t tag] <id>
+
+Update an existing zettel note.
+
+arguments:
+  id              zettel note filename, with or without .md extension (e.g. 20240511143022)
+                  must be a zettel (14-digit timestamp) note, not a daily note
+
+options:
+  --append        append content from stdin to the note body
+  --title title   update the frontmatter alias and H1 heading
+  -t tag          add a tag (can be repeated: -t tag1 -t tag2)
+  -h, --help      show this help message and exit
+
+requires NOTES_DIR environment variable to be set.
+EOF
+  }
+
+  local do_append=0 new_title="" id=""
+  local tags=()
+
+  # Pre-scan for --help and long options
+  local args=()
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      -h|--help) local_usage; return 0 ;;
+      --append) do_append=1 ;;
+      --title)
+        shift
+        new_title="${1:-}"
+        ;;
+      --title=*) new_title="${1#--title=}" ;;
+      --tag)
+        shift
+        tags+=("${1:-}")
+        ;;
+      --tag=*) tags+=("${1#--tag=}") ;;
+      *) args+=("$1") ;;
+    esac
+    shift
+  done
+  set -- "${args[@]+"${args[@]}"}"
+
+  # getopts for short options
+  while getopts "t:" opt; do
+    case $opt in
+      t) tags+=("$OPTARG") ;;
+      *) local_usage >&2; return 1 ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
+  if [[ $# -ne 1 ]]; then
+    local_usage >&2
+    return 1
+  fi
+
+  id=$1
+  local base="${id%.md}"
+
+  # Verify zettel id format
+  if [[ ! "$base" =~ ^[0-9]{14}$ ]]; then
+    echo "error: '$id' is not a zettel id (expected 14-digit timestamp like 20240511143022)" >&2
+    return 1
+  fi
+
+  if [[ -z "${NOTES_DIR:-}" ]]; then
+    echo "error: NOTES_DIR environment variable is not set" >&2
+    return 1
+  fi
+
+  local notepath="$NOTES_DIR/notes/${base}.md"
+  if [[ ! -f "$notepath" ]]; then
+    echo "error: note not found: $notepath" >&2
+    return 1
+  fi
+
+  # Update title: replace frontmatter alias and H1 heading
+  if [[ -n "$new_title" ]]; then
+    # Update frontmatter aliases line
+    sed -i '' "s/^aliases: .*/aliases: ${new_title}/" "$notepath"
+    # Update or insert H1 heading
+    if grep -q '^# ' "$notepath"; then
+      sed -i '' "s/^# .*$/# ${new_title}/" "$notepath"
+    else
+      # Insert H1 after frontmatter closing ---
+      sed -i '' "/^---$/a\\
+# ${new_title}
+" "$notepath"
+    fi
+  fi
+
+  # Add tags: insert tag line after frontmatter if not already present
+  if [[ ${#tags[@]} -gt 0 ]]; then
+    for tag in "${tags[@]}"; do
+      if ! grep -q "^#${tag}\b\|#${tag} \| #${tag}" "$notepath" 2>/dev/null; then
+        # Find the line after the closing --- of frontmatter and add tag there
+        # Strategy: append tag block before the first non-frontmatter content line
+        # We'll look for the second --- line and insert tags after it
+        local fm_end
+        fm_end=$(awk '/^---$/{c++; if(c==2){print NR; exit}}' "$notepath")
+        if [[ -n "$fm_end" ]]; then
+          sed -i '' "${fm_end}a\\
+#${tag}
+" "$notepath"
+        else
+          # No frontmatter, prepend tag
+          sed -i '' "1i\\
+#${tag}
+" "$notepath"
+        fi
+      fi
+    done
+  fi
+
+  # Append content from stdin
+  if [[ $do_append -eq 1 ]]; then
+    if [[ -t 0 ]]; then
+      echo "error: --append requires content from stdin" >&2
+      return 1
+    fi
+    cat >> "$notepath"
+  fi
+
+  echo "updated note: ${base}.md"
+}
+
 cmd_zettel() {
   if [[ $# -lt 1 ]]; then
     usage_zettel >&2
@@ -337,6 +468,7 @@ cmd_zettel() {
     create) shift; cmd_zettel_create "$@" ;;
     list)   shift; cmd_zettel_list "$@" ;;
     show)   shift; cmd_zettel_show "$@" ;;
+    update) shift; cmd_zettel_update "$@" ;;
     *)
       echo "error: unknown command '$1'" >&2
       usage_zettel >&2

@@ -79,3 +79,23 @@ When the user asks to save, persist, or capture information from the conversatio
 4. Report the created filename to the user.
 
 If the user provides a focus or clarification, use it to narrow what gets captured.
+
+## Updating a Zettel
+
+```
+note zettel update [--append] [--title <title>] [-t tag] <id>
+```
+
+Updates an existing zettel note. `<id>` must be a zettel (14-digit timestamp filename).
+
+Options:
+- `--append` — append content from stdin to the end of the note body
+- `--title <title>` — update the frontmatter alias and H1 heading
+- `-t tag` — add a tag to the note (can be repeated)
+
+When the user asks to update, append, or add tags to an existing zettel:
+
+1. Determine the zettel id from context or ask the user.
+2. Use the appropriate flags for the requested update.
+3. If appending content, pipe it via stdin with `--append`.
+4. Report the updated filename to the user.
