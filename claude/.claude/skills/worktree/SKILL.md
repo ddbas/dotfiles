@@ -1,6 +1,6 @@
 ---
 name: worktree
-description: Managing git worktrees — init, create, list, remove
+description: Managing git worktrees — add, list, remove, config
 ---
 
 # Worktree Management
@@ -11,7 +11,7 @@ multiple branches simultaneously without stashing or switching.
 ## CLI
 
 Always use the `worktree` CLI — never call `git worktree` directly. The CLI
-enforces path conventions and handles file copying from `.worktree.config.json`.
+enforces path conventions and handles file copying from git config.
 
 ## Convention
 
@@ -20,18 +20,23 @@ to compute or enforce this path yourself — the `worktree` CLI handles it
 automatically. It is described here only for reference when communicating
 paths to the user.
 
-## Initializing
+## Configuration
+
+Configuration is stored under the `personal.worktree.*` namespace in the
+repo's local git config. It is visible from all worktrees of the same repo.
+Values support multiple entries for the same key via `--add`.
 
 ```
-worktree init [-f <file>]...   # Create .worktree.config.json in the repo root
+worktree config --list                               # list all personal.worktree.* keys
+worktree config --add personal.worktree.copy .env    # add a file to the copy list
+worktree config --unset personal.worktree.copy .env  # remove a specific value
 ```
 
-This is a one-time setup step for repos that haven't used the `worktree` CLI
-before. Run it once at the repo root to create `.worktree.config.json`. Use
-`-f <file>` to register files (e.g. `.env`, secrets) that should be copied into
-every new worktree automatically.
+The `personal.worktree.copy` key lists files that are automatically copied
+from the main worktree into each new worktree at creation time (e.g. `.env`,
+secrets). Multiple files are registered with repeated `--add` calls.
 
-## Creating
+## Adding
 
 ```
 worktree add <branch>          # Check out existing branch in a new worktree

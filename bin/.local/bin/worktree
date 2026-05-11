@@ -9,10 +9,10 @@ usage: worktree <command> [options]
 Manage git worktrees.
 
 commands:
-  init      initialize a .worktree.config.json file in the current repo
   add       create a new git worktree for a branch
   list      list worktree branches for the current repo
   remove    remove a git worktree by branch name
+  config    get or set repo-level worktree configuration
 
 Run 'worktree <command> --help' for command-specific help.
 EOF
@@ -32,18 +32,30 @@ worktree_path_for() {
   printf '%s/worktree-%s-%s\n' "$REPO_DIR" "$repo_name" "${branch//\//-}"
 }
 
-cmd_init() {
+cmd_config() {
   local_usage() {
     cat <<EOF
-usage: worktree init [-h] [-f <file>]...
+usage: worktree config [-h] [--unset] [--list] <key> [<value>]
 
-Initialize a .worktree.config.json file in the current git repo.
+Get or set repo-level worktree configuration via git config.
+
+Configuration is stored under the 'personal.worktree' namespace in the
+local git config (.git/config) and is visible from all worktrees of the
+same repo.
+
+arguments:
+  key           config key (e.g. personal.worktree.copy)
+  value         value to set or unset
 
 options:
-  -f <file>     file to add to the copy list (can be repeated)
+  --list        list all personal.worktree.* config keys
+  --unset       remove a specific value for the given key
   -h, --help    show this help message and exit
 
-errors if .worktree.config.json already exists.
+examples:
+  worktree config --list
+  worktree config --add personal.worktree.copy .env
+  worktree config --unset personal.worktree.copy .env
 EOF
   }
 
@@ -54,33 +66,33 @@ EOF
   done
 
   # Validate we're inside a git repo
-  repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+  git rev-parse --show-toplevel >/dev/null 2>&1 || {
     echo "error: not inside a git repository" >&2
     return 1
   }
 
-  config_file="$repo_root/.worktree.config.json"
-
-  # Error if config already exists
-  if [[ -f "$config_file" ]]; then
-    echo "error: .worktree.config.json already exists" >&2
+  if [[ $# -eq 0 ]]; then
+    local_usage >&2
     return 1
   fi
 
-  # Parse -f flags
-  copy_files=()
-  while getopts "f:" opt; do
-    case $opt in
-      f) copy_files+=("$OPTARG") ;;
-      *) local_usage >&2; return 1 ;;
-    esac
-  done
-
-  # Build JSON and write config
-  jq -n --argjson copy "$(printf '%s\n' "${copy_files[@]+"${copy_files[@]}"}" | jq -R . | jq -s .)" \
-    '{ copy: $copy }' > "$config_file"
-
-  echo "initialized: $config_file"
+  case $1 in
+    --list)
+      git config --local --get-regexp '^personal\.worktree\.' 2>/dev/null || true
+      ;;
+    --add)
+      if [[ $# -ne 3 ]]; then local_usage >&2; return 1; fi
+      git config --local --add "$2" "$3"
+      ;;
+    --unset)
+      if [[ $# -ne 3 ]]; then local_usage >&2; return 1; fi
+      git config --local --unset "$2" "^${3}$"
+      ;;
+    *)
+      local_usage >&2
+      return 1
+      ;;
+  esac
 }
 
 cmd_add() {
@@ -98,8 +110,8 @@ options:
   -h, --help    show this help message and exit
 
 the worktree is created at \$REPO_DIR/worktree-<repo>-<branch>.
-if .worktree.config.json exists in the main repo, files listed
-under "copy" will be copied into the new worktree.
+files listed under personal.worktree.copy in git config will be
+copied into the new worktree if present in the main worktree.
 EOF
   }
 
@@ -151,23 +163,20 @@ EOF
 
   echo "worktree created at: $worktree_dir"
 
-  # Copy files listed in the main repo's .worktree.config.json if present
-  config_file="$main_root/.worktree.config.json"
-  if [[ -f "$config_file" ]]; then
-    copy_files=$(jq -r '.copy[]?' "$config_file")
-    if [[ -n "$copy_files" ]]; then
-      while IFS= read -r file; do
-        src="$main_root/$file"
-        dest="$worktree_dir/$file"
-        if [[ -f "$src" ]]; then
-          mkdir -p "$(dirname "$dest")"
-          cp -f "$src" "$dest"
-          echo "copied: $file"
-        else
-          echo "warning: $file not found, skipping" >&2
-        fi
-      done <<< "$copy_files"
-    fi
+  # Copy files listed in personal.worktree.copy git config if any
+  copy_files=$(git config --local --get-all personal.worktree.copy 2>/dev/null || true)
+  if [[ -n "$copy_files" ]]; then
+    while IFS= read -r file; do
+      src="$main_root/$file"
+      dest="$worktree_dir/$file"
+      if [[ -f "$src" ]]; then
+        mkdir -p "$(dirname "$dest")"
+        cp -f "$src" "$dest"
+        echo "copied: $file"
+      else
+        echo "warning: $file not found, skipping" >&2
+      fi
+    done <<< "$copy_files"
   fi
 }
 
@@ -308,10 +317,10 @@ fi
 
 case $1 in
   -h|--help) usage; exit 0 ;;
-  init)   shift; cmd_init "$@" ;;
   add)    shift; cmd_add "$@" ;;
   list)   shift; cmd_list "$@" ;;
   remove) shift; cmd_remove "$@" ;;
+  config) shift; cmd_config "$@" ;;
   *)
     echo "error: unknown command '$1'" >&2
     usage >&2
