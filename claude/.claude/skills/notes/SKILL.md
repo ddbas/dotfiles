@@ -152,6 +152,24 @@ Shows the daily note for the given date (defaults to today). Prints the full not
 
 Daily notes follow the predictable `<yyyy>-<mm>-<dd>.md` filename pattern stored in `$NOTES_DIR/notes/`. Agents can derive the filename directly from the date without listing files — e.g. for `2024-05-11`, the path is `$NOTES_DIR/notes/2024-05-11.md`.
 
+## Updating a Daily Note
+
+```
+note daily update [--append] [date]
+```
+
+Updates an existing daily note for the given date (defaults to today). Returns an error if the note does not exist.
+
+- `date` — optional date in `YYYY-MM-DD` format; defaults to today
+- `--append` — append content from stdin to the end of the note body
+
+When the user asks to update or append content to a daily note:
+
+1. Determine the date (use today unless the user specifies one).
+2. Compose the content to append.
+3. Run `note daily update --append [date]` (pipe content via stdin with `--append`).
+4. Report the updated filename to the user.
+
 When the user asks to show or read a daily note:
 
 1. Determine the date (use today unless the user specifies one).
