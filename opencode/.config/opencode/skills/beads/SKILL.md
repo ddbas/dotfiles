@@ -1,71 +1,69 @@
 ---
 name: beads
-description: Managing tasks (beads) — create, start, complete, and track work
+description: Managing tasks (also called beads) — create, start, track, and complete work
 ---
 
 # Beads
 
 Beads are tasks tracked with the `bd` CLI. Run `bd prime` for full workflow context.
+Use `--help` flag on any command for details on usage and options.
 
-## Creating Beads
+## Creating & updating
 
-When asked to file beads based on a planning session or described work:
+When asked to create a task or bead.
 
-- Do NOT start any work. Only create beads.
-- Choose one of two structures:
-  - **Single bead** — self-contained work completable in one sitting, one logical commit.
-  - **Epic + children** — multiple independent units. Create the epic first (`--type=epic`), then each child (`--parent=<epic-id>`).
-  - When in doubt, break the work up.
-- Wire up ordering with `bd dep add <blocked> <blocker>` when children must be completed in sequence.
-
-Each bead must be fully self-contained — assume the agent picking it up has zero context:
-
-```
-bd create \
-  --title "short, action-oriented summary" \
-  --description "why, current state, what done looks like, all context and constraints" \
-  --acceptance "concrete, verifiable criteria" \
-  --notes "supplementary context" \
-  --design "design decisions and trade-offs" \
-  --type bug|feature|task|epic|chore|decision \
-  --priority 0|1|2|3|4   # 0=critical, 1=high, 2=medium, 3=low, 4=backlog
+```sh
+bd create "title"                         # Create a bead with a title
+bd create "title" -t bug                  # Create a bead of type bug. Types: bug|feature|task|epic|chore
+bd create "title" -p 0                    # Create a bead with priority 0. 0=highest, 4=lowest, 2=default
+bd create "title" -d "description"        # Create a bead with a description. Use --stdin to read from stdin instead of the flag.
+bd create "title" --parent=<epic-id>      # Create a bead as a child of an epic
+bd create "title" --acceptance="criteria" # Create a bead with acceptance criteria
+bd update <id> ...                        # Update an existing bead with the same options as create, plus `--title`.
 ```
 
-Use `--validate` to check that required sections are present before filing.
+Use `bd dep add <issue-id> <depends-on-id>` to add a dependency between two beads.
 
-When done, list created bead ids and titles for review.
+## Finding work
 
-## Starting a Bead
+```sh
+bd ready     # Show issues ready to work (no blockers)
+bd list      # List all open beads
+bd show <id> # Show details of a bead
+```
 
-When asked to start work on a bead:
+## Starting a bead
 
-1. **Resolve the id** — if no id is given:
-   - Check current branch: `git branch --show-current`
-   - Run `bd show <branch>` — if a bead matches, confirm with the user.
-   - If no match or user declines, run `bd ready` and ask them to choose.
+When asked to start work on a bead or task, follow these steps:
+
+1. **Resolve the id** — if no id is given, infer from context or run `bd ready` and ask the user to choose.
 2. **Review before touching code**: `bd show <id>` — check description, acceptance criteria, dependencies.
 3. **Surface blockers** — if the bead is blocked, stop and inform the user.
 4. **Claim atomically**: `bd update <id> --claim`
 5. **If epic**: `bd show <id> --children`, then work through children in dependency order.
 
+**IMPORTANT**: Always keep the bead's status updated to reflect the current state of work.
+
 ## During Work
 
-Append notes for significant decisions (trade-offs, alternatives rejected, context for future readers):
+Append notes for significant decisions (trade-offs, alternatives rejected, solutions
+for issues encountered, context for future readers):
 
-```
+```sh
 bd update <id> --append-notes "..."
 ```
 
 ## Completing a Bead
 
-1. Run relevant tests, lint, and build steps.
-2. Commit with conventional commits using the bead id as scope, choosing the type that best matches the nature of the change:
-   ```
-   git commit -m "type(bd-xxx): description"
-   ```
-   For epic children, use the child's own id as scope — one commit per child.
-3. Add a closing note: `bd update <id> --append-notes "Completed: ..."`
-4. Close and surface next work: `bd close <id> --suggest-next`
-   - Multiple beads can be closed at once: `bd close <id1> <id2> ...`
+Always follow these steps when completing a bead:
 
-For epics: complete steps 1–4 for each child before closing the parent.
+1. `bd show <id>` - review the acceptance criteria with and ensure all are met.
+   If not, iterate until they are.
+2. `bd update <id> --append-notes "Completed: ..."` - add closing note summarizing
+   work and relevant context for future readers.
+3. `bd close <id>` - mark the bead as complete.
+4. `git commit -m "type(bd-xxx): description"` - commit with a message referencing
+   the bead id. Use conventional commits format.
+5. **IMPORTANT** - For parent beads (e.g. epics), complete these steps separately
+   for each child bead, referencing the child's id in the commit message. Close
+   the parent only after all children are complete.

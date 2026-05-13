@@ -1,6 +1,6 @@
 ---
-name: notes
-description: Managing notes — create, list, show, update, remove
+name: personal-notes
+description: Managing the user's personal notes — create, list, show, update, remove
 ---
 
 # Notes
