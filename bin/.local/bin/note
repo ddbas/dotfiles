@@ -679,16 +679,17 @@ EOF
 cmd_zettel_update() {
   local_usage() {
     cat <<EOF
-usage: note zettel update [-h] [--append] [--title <title>] [-t tag] <id>
+usage: note zettel update [-h] [--append] [--title <title>] [-t tag] <id> [content]
 
 Update an existing zettel note.
 
 arguments:
   id              zettel note filename, with or without .md extension (e.g. 20240511143022)
                   must be a zettel (14-digit timestamp) note, not a daily note
+  content         optional body content; mutually exclusive with stdin
 
 options:
-  --append        append content from stdin to the note body
+  --append        append content (from stdin or argument) to the note body
   --title title   update the frontmatter alias and H1 heading
   -t tag          add a tag (can be repeated: -t tag1 -t tag2)
   -h, --help      show this help message and exit
@@ -731,12 +732,16 @@ EOF
   done
   shift $((OPTIND - 1))
 
-  if [[ $# -ne 1 ]]; then
+  if [[ $# -lt 1 || $# -gt 2 ]]; then
     local_usage >&2
     return 1
   fi
 
   id=$1
+  local content_arg=""
+  if [[ $# -eq 2 ]]; then
+    content_arg="$2"
+  fi
   local base="${id%.md}"
 
   # Verify zettel id format
@@ -794,13 +799,49 @@ EOF
     done
   fi
 
-  # Append content from stdin
-  if [[ $do_append -eq 1 ]]; then
-    if [[ -t 0 ]]; then
-      echo "error: --append requires content from stdin" >&2
-      return 1
+  # Handle body content (stdin or argument)
+  local has_stdin=0
+  local has_arg=0
+  [[ -n "$content_arg" ]] && has_arg=1
+  [[ ! -t 0 ]] && has_stdin=1
+
+  if [[ $has_stdin -eq 1 && $has_arg -eq 1 ]]; then
+    echo "error: content argument and stdin are mutually exclusive" >&2
+    return 1
+  fi
+
+  if [[ $has_stdin -eq 1 || $has_arg -eq 1 ]]; then
+    if [[ $do_append -eq 1 ]]; then
+      if [[ $has_arg -eq 1 ]]; then
+        printf '%s' "$content_arg" >> "$notepath"
+      else
+        cat >> "$notepath"
+      fi
+    else
+      # Overwrite body, preserving frontmatter
+      local fm_end
+      fm_end=$(awk '/^---$/{c++; if(c==2){print NR; exit}}' "$notepath")
+      if [[ $has_arg -eq 1 ]]; then
+        if [[ -n "$fm_end" ]]; then
+          local header
+          header=$(head -n "$fm_end" "$notepath")
+          { printf '%s\n' "$header"; printf '%s' "$content_arg"; } > "$notepath"
+        else
+          printf '%s' "$content_arg" > "$notepath"
+        fi
+      else
+        if [[ -n "$fm_end" ]]; then
+          local header
+          header=$(head -n "$fm_end" "$notepath")
+          { printf '%s\n' "$header"; cat; } > "$notepath"
+        else
+          cat > "$notepath"
+        fi
+      fi
     fi
-    cat >> "$notepath"
+  elif [[ $do_append -eq 1 ]]; then
+    echo "error: --append requires content from stdin or a content argument" >&2
+    return 1
   fi
 
   echo "updated note: ${base}.md"
