@@ -1,12 +1,11 @@
 ---
-description: Open a pull request for the current branch in the browser.
+name: open-pr
+description: Opening a pull request for the current branch in the browser
 ---
 
-## Your Task
+# Open Pull Request
 
 Open a pull request for the current branch in the browser using `gh pr create --web`.
-
-The optional base branch is: '$1'.
 
 ## Steps
 
@@ -16,7 +15,7 @@ The optional base branch is: '$1'.
    ```
 
 2. Determine the base branch:
-   - If '$1' was provided, use it as the base.
+   - If the user specified a base branch, use it.
    - Otherwise, detect the repo's default branch:
      ```
      gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name'
