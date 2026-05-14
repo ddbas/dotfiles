@@ -5,7 +5,11 @@ description: Opening a pull request for the current branch in the browser
 
 # Open Pull Request
 
-Open a pull request for the current branch in the browser using `gh pr create --web`.
+> **CRITICAL: You MUST NOT create the pull request yourself.** Your only job is
+> to prepare the title and body, then open the GitHub PR form in the browser
+> with `gh pr create --web` so the user can review and submit it themselves.
+> Omitting `--web` and letting `gh` create the PR directly is **never**
+> acceptable.
 
 ## Steps
 
@@ -51,14 +55,21 @@ Open a pull request for the current branch in the browser using `gh pr create --
    If no template is found (after checking all locations above), write a
    brief body summarising what the PR does and why.
 
-6. Run:
+6. Open the PR form in the browser — **do not omit `--web`**:
    ```
    gh pr create --web --base <base-branch> --title "<title>" --body "<body>"
    ```
+   This opens the GitHub PR form pre-filled with the title and body.
+   Your work is done once the browser opens. The user will review and submit.
 
 ## Important
 
-- Do NOT create the PR yourself. `--web` opens the GitHub PR form in the browser pre-filled with the title and body — your job is done once the browser opens. The user will review and submit.
-- The `--title` and `--body` flags pre-populate the form; the user can still edit everything before submitting.
-- If a PR body template exists in the repo, you MUST use it. Never substitute it with a free-form summary.
-- Never include internal issue-tracker references (e.g. beads IDs) in the PR title or body. These are private tracking details not meant for the shared pull request history.
+- **NEVER run `gh pr create` without `--web`.** That would create the PR
+  immediately without the user's review. Always use `--web`.
+- The `--title` and `--body` flags pre-populate the form; the user can still
+  edit everything before submitting.
+- If a PR body template exists in the repo, you MUST use it. Never substitute
+  it with a free-form summary.
+- Never include internal issue-tracker references (e.g. beads IDs) in the PR
+  title or body. These are private tracking details not meant for the shared
+  pull request history.
