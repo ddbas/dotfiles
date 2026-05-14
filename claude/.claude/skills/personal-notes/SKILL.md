@@ -1,6 +1,6 @@
 ---
-name: notes
-description: Managing notes — create, list, show, update, remove
+name: personal-notes
+description: Managing the user's personal notes — create, list, show, update, remove
 ---
 
 # Notes
@@ -46,9 +46,14 @@ When the user asks to save or capture information as a zettel:
 ## Updating
 
 ```
-note zettel update <id>
-note daily update [date]        # date defaults to today
+note zettel update [--append] [--title <title>] [-t tag] <id> [content]
+note daily update [--append] [date]        # date defaults to today
 ```
+
+For `note zettel update`:
+- Pipe body or pass `[content]` arg to overwrite the note body (frontmatter is preserved)
+- Use `--append` to append instead of overwrite
+- Stdin and `[content]` arg are mutually exclusive
 
 ## Removing
 
