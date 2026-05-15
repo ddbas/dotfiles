@@ -47,6 +47,14 @@ If the user wants to start work on a new feature or change, ask whether they
 want a worktree. If yes, propose a branch name derived from the task, confirm
 with the user, then run `worktree add -b <branch>`.
 
+## Current
+
+```
+worktree current               # Print branch name of the current worktree
+```
+
+Use this when the user asks which worktree or branch they are currently in.
+
 ## Listing
 
 ```

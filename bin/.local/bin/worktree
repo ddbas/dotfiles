@@ -10,6 +10,7 @@ Manage git worktrees.
 
 commands:
   add       create a new git worktree for a branch
+  current   print the branch name of the current worktree
   list      list worktree branches for the current repo
   remove    remove a git worktree by branch name
   config    get or set repo-level worktree configuration
@@ -194,6 +195,60 @@ EOF
   fi
 }
 
+cmd_current() {
+  local_usage() {
+    cat <<EOF
+usage: worktree current [-h]
+
+Print the branch name of the worktree you are currently in.
+
+options:
+  -h, --help    show this help message and exit
+EOF
+  }
+
+  for arg in "$@"; do
+    case $arg in
+      -h|--help) local_usage; return 0 ;;
+      *) local_usage >&2; return 1 ;;
+    esac
+  done
+
+  # Validate we're inside a git repo
+  git rev-parse --show-toplevel >/dev/null 2>&1 || {
+    echo "error: not inside a git repository" >&2
+    return 1
+  }
+
+  local current_path branch
+  current_path=
+  branch=
+
+  while IFS= read -r line; do
+    case $line in
+      "worktree "*) current_path=${line#worktree } ;;
+      "branch "*)
+        if [[ "$PWD" == "$current_path" || "$PWD" == "$current_path/"* ]]; then
+          branch=${line#branch refs/heads/}
+        fi
+        ;;
+      "HEAD "*)
+        # detached HEAD: no branch line follows; check path match
+        if [[ "$PWD" == "$current_path" || "$PWD" == "$current_path/"* ]]; then
+          branch=${line#HEAD }
+        fi
+        ;;
+    esac
+  done < <(git worktree list --porcelain)
+
+  if [[ -z "$branch" ]]; then
+    echo "error: could not determine current worktree branch" >&2
+    return 1
+  fi
+
+  echo "$branch"
+}
+
 cmd_list() {
   local_usage() {
     cat <<EOF
@@ -331,10 +386,11 @@ fi
 
 case $1 in
   -h|--help) usage; exit 0 ;;
-  add)    shift; cmd_add "$@" ;;
-  list)   shift; cmd_list "$@" ;;
-  remove) shift; cmd_remove "$@" ;;
-  config) shift; cmd_config "$@" ;;
+  add)     shift; cmd_add "$@" ;;
+  current) shift; cmd_current "$@" ;;
+  list)    shift; cmd_list "$@" ;;
+  remove)  shift; cmd_remove "$@" ;;
+  config)  shift; cmd_config "$@" ;;
   *)
     echo "error: unknown command '$1'" >&2
     usage >&2
