@@ -310,37 +310,42 @@ EOF
 cmd_remove() {
   local_usage() {
     cat <<EOF
-usage: worktree remove [-f] [-h] <branch>
+usage: worktree remove [-f] [-D] [-h] <branch>
 
 Remove a git worktree by branch name.
 
 arguments:
-  branch        name of the branch whose worktree to remove
+  branch              name of the branch whose worktree to remove
 
 options:
-  -f, --force   force-remove the worktree even if it has uncommitted changes
-  -h, --help    show this help message and exit
+  -D, --delete-branch force-delete the branch after removing the worktree
+                      (equivalent to git branch -D; skips merge safety check)
+  -f, --force         force-remove the worktree even if it has uncommitted changes
+  -h, --help          show this help message and exit
 
 the worktree is expected at \$REPO_DIR/worktree-<repo>-<branch>.
 EOF
   }
 
   force=false
+  delete_branch=false
 
-  # Pre-process --force and --help long flags
+  # Pre-process long flags
   args=()
   for arg in "$@"; do
     case $arg in
       --force) args+=("-f") ;;
+      --delete-branch) args+=("-D") ;;
       -h|--help) local_usage; return 0 ;;
       *) args+=("$arg") ;;
     esac
   done
   set -- "${args[@]+"${args[@]}"}"
 
-  while getopts "fh" opt; do
+  while getopts "fDh" opt; do
     case $opt in
       f) force=true ;;
+      D) delete_branch=true ;;
       h) local_usage; return 0 ;;
       *) local_usage >&2; return 1 ;;
     esac
@@ -376,6 +381,11 @@ EOF
   fi
 
   echo "worktree removed: $worktree_dir"
+
+  if [[ "$delete_branch" == true ]]; then
+    git branch -D "$branch"
+    echo "branch deleted: $branch"
+  fi
 }
 
 # Main dispatch
