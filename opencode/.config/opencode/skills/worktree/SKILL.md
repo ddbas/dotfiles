@@ -1,5 +1,5 @@
 ---
-name: worktree
+name: git-worktree
 description: Managing git worktrees — add, list, remove, config
 ---
 

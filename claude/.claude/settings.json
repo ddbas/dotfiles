@@ -35,7 +35,7 @@
       "mcp__wiki__getConfluencePage",
       "mcp__wiki__searchAtlassian"
     ],
-    "defaultMode": "default"
+    "defaultMode": "auto"
   },
   "model": "sonnet",
   "hooks": {
@@ -91,5 +91,6 @@
       }
     ]
   },
-  "theme": "dark-ansi"
+  "theme": "dark-ansi",
+  "skipAutoPermissionPrompt": true
 }
