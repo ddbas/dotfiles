@@ -1,7 +1,6 @@
 # Taps
 tap "anomalyco/tap"
 tap "hashicorp/tap"
-tap "homebrew/cask-fonts"
 tap "oven-sh/bun"
 tap "xwmx/taps"
 
