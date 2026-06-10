@@ -1,6 +1,6 @@
 {
-  "defaultProvider": "github-copilot",
-  "defaultModel": "claude-sonnet-4.6",
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-sonnet-4-6",
   "theme": "everforest-dark",
   "lastChangelogVersion": "0.78.1"
 }
