@@ -1,5 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "CLAUDE_CODE_ATTRIBUTION_HEADER": "0"
+  },
   "permissions": {
     "allow": [
       "Bash(bd *)",
@@ -38,9 +41,6 @@
     "defaultMode": "plan"
   },
   "model": "sonnet",
-  "env": {
-    "CLAUDE_CODE_ATTRIBUTION_HEADER": "0"
-  },
   "hooks": {
     "Notification": [
       {
