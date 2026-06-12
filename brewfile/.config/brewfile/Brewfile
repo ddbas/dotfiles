@@ -1,8 +1,5 @@
 # Taps
 tap "anomalyco/tap"
-tap "hashicorp/tap"
-tap "oven-sh/bun"
-tap "xwmx/taps"
 
 cask "alacritty"
 brew "anomalyco/tap/opencode" # instead of `opencode`, as its updated more frequently
