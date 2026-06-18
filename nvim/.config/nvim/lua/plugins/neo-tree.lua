@@ -11,7 +11,7 @@ return {
       require('neo-tree').setup({
         filesystem = {
           filtered_items = {
-            visible = true,
+            visible = false,
             hide_dotfiles = false,
             hide_gitignored = true,
           },
@@ -35,7 +35,7 @@ return {
                 desc = "Telescope: find files/dirs (respects .gitignore)",
               },
               ["I"] = {
-                "toggle_gitignored",
+                "toggle_hidden",
                 desc = "Toggle visibility of gitignored files",
               },
             },
