@@ -13,7 +13,33 @@ return {
           filtered_items = {
             visible = true,
             hide_dotfiles = false,
-          }
+            hide_gitignored = true,
+          },
+          find_by_full_path_words = true,
+          window = {
+            mappings = {
+              ["<C-f>"] = {
+                function(state)
+                  require("telescope.builtin").find_files({
+                    cwd = state.path,
+                    find_command = {
+                      "fd",
+                      "--type", "f",
+                      "--type", "d",
+                      "--hidden",
+                      "--color", "never",
+                      "-E", ".git",
+                    },
+                  })
+                end,
+                desc = "Telescope: find files/dirs (respects .gitignore)",
+              },
+              ["I"] = {
+                "toggle_gitignored",
+                desc = "Toggle visibility of gitignored files",
+              },
+            },
+          },
         }
       })
     end
