@@ -34,10 +34,6 @@ return {
                 end,
                 desc = "Telescope: find files/dirs (respects .gitignore)",
               },
-              ["I"] = {
-                "toggle_hidden",
-                desc = "Toggle visibility of gitignored files",
-              },
             },
           },
         }
