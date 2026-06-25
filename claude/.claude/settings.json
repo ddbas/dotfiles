@@ -36,7 +36,15 @@
       "Bash(* --help *)",
       "mcp__jira__jira_get_issue",
       "mcp__wiki__getConfluencePage",
-      "mcp__wiki__searchAtlassian"
+      "mcp__wiki__searchAtlassian",
+      "mcp__codegraph__codegraph_explore",
+      "mcp__codegraph__codegraph_search",
+      "mcp__codegraph__codegraph_node",
+      "mcp__codegraph__codegraph_callers",
+      "mcp__codegraph__codegraph_callees",
+      "mcp__codegraph__codegraph_impact",
+      "mcp__codegraph__codegraph_files",
+      "mcp__codegraph__codegraph_status"
     ],
     "defaultMode": "plan"
   },
@@ -94,9 +102,9 @@
       }
     ]
   },
-  "theme": "dark-ansi",
-  "skipAutoPermissionPrompt": true,
   "enabledPlugins": {
     "figma@claude-plugins-official": true
-  }
+  },
+  "theme": "dark-ansi",
+  "skipAutoPermissionPrompt": true
 }
