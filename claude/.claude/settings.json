@@ -45,10 +45,9 @@
       "mcp__codegraph__codegraph_impact",
       "mcp__codegraph__codegraph_files",
       "mcp__codegraph__codegraph_status"
-    ],
-    "defaultMode": "plan"
+    ]
   },
-  "model": "sonnet",
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [
       {
@@ -97,6 +96,17 @@
           {
             "type": "command",
             "command": "bd prime"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
           }
         ]
       }
