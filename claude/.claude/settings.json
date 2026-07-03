@@ -153,5 +153,9 @@
     "figma@claude-plugins-official": true
   },
   "theme": "dark-ansi",
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  }
 }
