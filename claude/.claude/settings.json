@@ -20,6 +20,7 @@
       "Bash(ls *)",
       "Bash(npm *)",
       "Bash(npx *)",
+      "Bash(openspec instructions *)",
       "Bash(openspec list *)",
       "Bash(openspec show *)",
       "Bash(openspec status *)",
