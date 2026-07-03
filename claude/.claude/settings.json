@@ -20,6 +20,9 @@
       "Bash(ls *)",
       "Bash(npm *)",
       "Bash(npx *)",
+      "Bash(openspec list *)",
+      "Bash(openspec show *)",
+      "Bash(openspec status *)",
       "Bash(printenv *)",
       "Bash(pwd)",
       "Bash(rg *)",
@@ -84,7 +87,7 @@
       "mcp__wiki__searchAtlassian"
     ]
   },
-  "model": "sonnet",
+  "model": "sonnet[1m]",
   "hooks": {
     "Notification": [
       {
@@ -149,13 +152,14 @@
       }
     ]
   },
-  "enabledPlugins": {
-    "figma@claude-plugins-official": true
-  },
-  "theme": "dark-ansi",
-  "skipAutoPermissionPrompt": true,
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
-  }
+  },
+  "enabledPlugins": {
+    "figma@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
+  "theme": "dark-ansi",
+  "skipAutoPermissionPrompt": true
 }
