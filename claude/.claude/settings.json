@@ -159,7 +159,8 @@
   },
   "enabledPlugins": {
     "figma@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "personal@skills-dir": true
   },
   "theme": "dark-ansi",
   "skipAutoPermissionPrompt": true

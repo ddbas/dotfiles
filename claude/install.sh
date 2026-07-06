@@ -1,19 +1,8 @@
 #!/usr/bin/env bash
 
-# Configure Claude Code MCP servers (user scope)
+# Claude Code configuration is managed entirely via stow and settings.json.
+# The personal plugin lives at ~/.claude/skills/personal/ (via claude-marketplace stow package)
+# and is enabled via "personal@skills-dir" in settings.json.
+# No additional configuration is required here.
 
-echo "Configuring Claude Code MCP servers..."
-
-claude mcp remove --scope user chrome 2>/dev/null
-claude mcp add-json --scope user chrome '{
-  "command": "npx",
-  "args": ["chrome-devtools-mcp@latest", "--headless", "--no-usage-statistics"]
-}'
-
-claude mcp remove --scope user playwright 2>/dev/null
-claude mcp add-json --scope user playwright '{
-  "command": "npx",
-  "args": ["@playwright/mcp@latest", "--headless"]
-}'
-
-echo "Done."
+echo "Claude Code: personal plugin delivered via stow — nothing to install."

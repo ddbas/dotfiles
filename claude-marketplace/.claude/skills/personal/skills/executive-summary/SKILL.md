@@ -1,6 +1,7 @@
 ---
+name: executive-summary
 description: Analyze the current git repository and return an executive summary answering a question.
-agent: build
+argument-hint: <question>
 ---
 
 The question to answer is: '$ARGUMENTS'

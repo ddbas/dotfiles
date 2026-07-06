@@ -1,0 +1,10 @@
+{
+  "chrome": {
+    "command": "npx",
+    "args": ["chrome-devtools-mcp@latest", "--headless", "--no-usage-statistics"]
+  },
+  "playwright": {
+    "command": "npx",
+    "args": ["@playwright/mcp@latest", "--headless"]
+  }
+}
