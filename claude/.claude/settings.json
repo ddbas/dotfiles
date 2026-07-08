@@ -89,6 +89,7 @@
       "mcp__git__search_pull_requests",
       "mcp__git__search_repositories",
       "mcp__git__search_users",
+      "mcp__atlassian__getAccessibleAtlassianResources",
       "mcp__atlassian__getConfluencePage",
       "mcp__atlassian__getConfluencePageDescendants",
       "mcp__atlassian__getJiraIssue",
