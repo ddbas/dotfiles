@@ -5,12 +5,12 @@
   },
   "permissions": {
     "allow": [
-      "Read(/tmp/**)",
-      "Read(/private/tmp/**)",
-      "Edit(/tmp/**)",
-      "Edit(/private/tmp/**)",
-      "Write(/tmp/**)",
-      "Write(/private/tmp/**)",
+      "Read(//tmp/**)",
+      "Read(//private/tmp/**)",
+      "Edit(//tmp/**)",
+      "Edit(//private/tmp/**)",
+      "Write(//tmp/**)",
+      "Write(//private/tmp/**)",
       "Bash(bd *)",
       "Bash(brew *)",
       "Bash(cat *)",
