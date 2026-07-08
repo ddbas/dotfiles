@@ -29,15 +29,3 @@ alias ll='eza -la'
 if [ -f $CUSTOMIZATIONS_DIR/zsh/.zshrc ]; then
   source $CUSTOMIZATIONS_DIR/zsh/.zshrc
 fi
-
-# kiln credentials
-set -a
-source "/Users/davidbastien/repos/kiln-tyto-workspace/.env"
-set +a
-
-# kiln workspace launcher
-start-kiln() {
-  cd "/Users/davidbastien/repos/kiln-tyto-workspace" || return
-  kiln auth refresh --provider jira-cloud >/dev/null 2>&1 || kiln auth login --provider jira-cloud
-  kiln --accept-danger
-}
