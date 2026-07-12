@@ -15,6 +15,18 @@ fi
 bs_output=$(bs get -b "$branch_name" 2>&1)
 echo "$bs_output"
 
+# If the branch already exists, offer to force-reset it with -B
+if echo "$bs_output" | grep -q "a branch named '.*' already exists"; then
+  echo -n "⚠️  Branch '${branch_name}' already exists. Proceed anyway? [y/N] "
+  read -r confirm
+  if [[ ! $confirm =~ ^[Yy]$ ]]; then
+    echo "Aborted."
+    exit 1
+  fi
+  bs_output=$(bs get -B "$branch_name" 2>&1)
+  echo "$bs_output"
+fi
+
 # Extract the worktree path – the token that starts with / after the tree emoji
 # Example line: 🌳 /Users/davidbastien/.bonsai/repo-name/84cd7c88  (branch-name)
 worktree_path=$(echo "$bs_output" | grep -oE '/[^ ]+')
