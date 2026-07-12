@@ -11,4 +11,4 @@ if ! tmux switch-client -p 2>/dev/null; then
   tmux switch-client -t home
 fi
 
-tmux kill-session -t $current_session
+tmux kill-session -t "$current_session"

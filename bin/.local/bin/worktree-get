@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# Prompt for a branch name, run `bs get -b <branch>`, parse the output,
+# and attach to a new (or existing) tmux session in the resulting worktree.
+
+# Ask the user for the branch name
+echo -n "🌳 Branch Name: "
+read -r branch_name
+
+if [[ -z $branch_name ]]; then
+  exit 1
+fi
+
+# Run bs get and capture output (strip ANSI / emoji colour codes just in case)
+bs_output=$(bs get -b "$branch_name" 2>&1)
+echo "$bs_output"
+
+# Extract the worktree path – the token that starts with / after the tree emoji
+# Example line: 🌳 /Users/davidbastien/.bonsai/repo-name/84cd7c88  (branch-name)
+worktree_path=$(echo "$bs_output" | grep -oE '/[^ ]+')
+
+if [[ -z $worktree_path ]]; then
+  echo "Could not determine worktree path from bs output."
+  exit 1
+fi
+
+# Derive repo-name (second-to-last path component) and branch name from path/output
+repo_name=$(basename "$(dirname "$worktree_path")")
+branch_display=$(echo "$bs_output" | grep -oP '(?<=\()([^)]+)(?=\))')
+[[ -z $branch_display ]] && branch_display=$branch_name
+
+session_name="🌳 ${repo_name} (${branch_display})"
+
+# Create or attach to a tmux session for this worktree
+if ! tmux has-session -t="$session_name" 2>/dev/null; then
+  tmux new-session -ds "$session_name" -c "$worktree_path"
+fi
+
+tmux switch-client -t "$session_name"
