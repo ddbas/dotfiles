@@ -15,5 +15,5 @@ description: Creating a pull request for the current branch
 ## Requirements
 
 1. Only one open pull request per branch — check with `gh pr list --head <branch> --state open` before creating.
-2. Clear, imperative-mood title that accurately reflects the change.
+2. Title in conventional commit format: `<type>[optional scope]: <description>`. Type must be one of `feat`, `fix`, `chore`, `docs`, `refactor`, `perf`, `test`, `ci`, or `build`. Examples: `docs: correct spelling of CHANGELOG`, `feat(lang): add Polish language`.
 3. Fill the pull request template exactly as specified — do not add, modify, or remove anything the template doesn't ask for.
