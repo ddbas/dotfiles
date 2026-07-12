@@ -11,7 +11,6 @@
       "Edit(//private/tmp/**)",
       "Write(//tmp/**)",
       "Write(//private/tmp/**)",
-      "Bash(bd *)",
       "Bash(brew *)",
       "Bash(cat *)",
       "Bash(cut *)",
@@ -109,46 +108,8 @@
         ]
       }
     ],
-    "PreCompact": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bd prime --stealth"
-          }
-        ]
-      },
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bd prime"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bd prime --stealth"
-          }
-        ]
-      },
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bd prime"
-          }
-        ]
-      }
-    ],
+    "PreCompact": [],
+    "SessionStart": [],
     "PreToolUse": [
       {
         "matcher": "Bash",

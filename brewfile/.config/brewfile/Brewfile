@@ -5,7 +5,6 @@ cask "alacritty"
 brew "anomalyco/tap/opencode" # instead of `opencode`, as its updated more frequently
 brew "ansible"
 brew "bat"
-brew "beads"
 cask "claude-code@latest"
 brew "clang-format"
 cask "docker-desktop"
