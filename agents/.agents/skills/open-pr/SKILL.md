@@ -70,6 +70,6 @@ description: Opening a pull request for the current branch in the browser
   edit everything before submitting.
 - If a PR body template exists in the repo, you MUST use it. Never substitute
   it with a free-form summary.
-- Never include internal issue-tracker references (e.g. beads IDs) in the PR
+- Never include internal issue-tracker references in the PR
   title or body. These are private tracking details not meant for the shared
   pull request history.
