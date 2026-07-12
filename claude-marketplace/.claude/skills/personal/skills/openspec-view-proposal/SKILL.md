@@ -1,6 +1,6 @@
 ---
 name: openspec-view-proposal
-description: Share a GitHub URL to view the current openspec proposal in the browser
+description: Viewing or opening the current openspec proposal on GitHub in the browser
 ---
 
 # OpenSpec View Proposal
