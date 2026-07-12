@@ -1,5 +1,5 @@
 ---
-name: openspec-view-proposal
+name: openspec-show-proposal
 description: Viewing or opening the current openspec proposal on GitHub in the browser
 ---
 
