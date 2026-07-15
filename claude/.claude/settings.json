@@ -1,16 +1,108 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "enabledPlugins": {
+    "figma@claude-plugins-official": true,
+    "personal@skills-dir": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
   "env": {
     "CLAUDE_CODE_ATTRIBUTION_HEADER": "0"
   },
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "command": "~/.claude/hooks/notify.sh",
+            "type": "command"
+          }
+        ],
+        "matcher": "idle_prompt|permission_prompt"
+      },
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "dv set-state blocked --harness claude",
+            "type": "command"
+          }
+        ],
+        "matcher": "permission_prompt"
+      }
+    ],
+    "PreCompact": [],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "rtk hook claude",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
+      },
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "dv set-state working --harness claude",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "command": "dv clear-state",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "dv set-state idle --harness claude",
+            "type": "command"
+          }
+        ],
+        "matcher": "startup"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "dv set-state done --harness claude",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "dv set-state working --harness claude",
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  },
+  "model": "sonnet[1m]",
   "permissions": {
+    "defaultMode": "auto",
     "allow": [
       "Read(//tmp/**)",
       "Read(//private/tmp/**)",
       "Edit(//tmp/**)",
       "Edit(//private/tmp/**)",
-      "Write(//tmp/**)",
-      "Write(//private/tmp/**)",
       "Bash(brew *)",
       "Bash(cat *)",
       "Bash(cut *)",
@@ -95,42 +187,10 @@
       "mcp__atlassian__search"
     ]
   },
-  "model": "sonnet[1m]",
-  "hooks": {
-    "Notification": [
-      {
-        "matcher": "idle_prompt|permission_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/notify.sh"
-          }
-        ]
-      }
-    ],
-    "PreCompact": [],
-    "SessionStart": [],
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "rtk hook claude"
-          }
-        ]
-      }
-    ]
-  },
+  "skipAutoPermissionPrompt": true,
   "statusLine": {
-    "type": "command",
-    "command": "bash ~/.claude/statusline-command.sh"
+    "command": "bash ~/.claude/statusline-command.sh",
+    "type": "command"
   },
-  "enabledPlugins": {
-    "figma@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "personal@skills-dir": true
-  },
-  "theme": "dark-ansi",
-  "skipAutoPermissionPrompt": true
+  "theme": "dark-ansi"
 }
