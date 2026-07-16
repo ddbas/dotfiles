@@ -5,7 +5,12 @@ repo_dir=${REPO_DIR:-$HOME/repos}
 if [[ $# -eq 1 ]]; then
   selected=$1
 else
-  selected=$(fd --exact-depth=1 --type=d -L --format {/} . $repo_dir | fzf)
+  selected=$(fd --exact-depth=1 --type=d -L --format {/} . $repo_dir | fzf \
+    --prompt="🗂️  Project: " \
+    --no-sort \
+    --layout=reverse \
+    --border=rounded \
+    --border-label=" Open project ")
 fi
 
 if [[ -z $selected ]]; then
