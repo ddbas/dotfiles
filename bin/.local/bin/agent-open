@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# Navigate to an agent harness pane by picking from `dv list` via fzf.
+# Intended to be launched as a temporary tmux window (tmux neww).
+
+dv_output=$(dv list 2>/dev/null)
+
+if [[ -z $dv_output ]]; then
+  echo "No agent harness panes found."
+  sleep 2
+  exit 0
+fi
+
+selected=$(echo "$dv_output" | fzf \
+  --ansi \
+  --prompt="🤖 Agent: " \
+  --no-sort \
+  --layout=reverse \
+  --border=rounded \
+  --border-label=" Navigate to agent ")
+
+if [[ -z $selected ]]; then
+  exit 0
+fi
+
+# Output format: <agent>  <session>  <window>.<pane>  <state>
+# NF   = state
+# NF-1 = window.pane  (pattern: digits.digits)
+# $1   = agent
+# $2..(NF-2) = session name (may contain spaces)
+win_pane=$(echo "$selected" | awk '{print $(NF-1)}')
+session=$(echo "$selected" | awk '{for(i=2;i<=NF-2;i++) printf "%s%s", (i==2?"":OFS), $i; print ""}' | sed 's/[[:space:]]*$//')
+
+window="${win_pane%%.*}"
+pane="${win_pane##*.}"
+
+tmux switch-client -t "$session"
+tmux select-window -t "${session}:${window}"
+tmux select-pane -t "${session}:${window}.${pane}"
