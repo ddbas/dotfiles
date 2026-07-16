@@ -3,7 +3,7 @@
 # Navigate to an agent harness pane by picking from `dv list` via fzf.
 # Intended to be launched as a temporary tmux window (tmux neww).
 
-dv_output=$(dv list --sort-by state -r 2>/dev/null)
+dv_output=$(dv list --sort-by state 2>/dev/null)
 
 if [[ -z $dv_output ]]; then
   echo "No agent harness panes found."
