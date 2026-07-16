@@ -4,7 +4,7 @@
 # and attach to a new (or existing) tmux session in the resulting worktree.
 
 # Ask the user for the branch name
-echo -n "🌳 Branch Name: "
+echo -n "Branch Name: "
 read -r branch_name
 
 if [[ -z $branch_name ]]; then
