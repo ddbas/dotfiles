@@ -121,6 +121,7 @@
       "Bash(openspec list *)",
       "Bash(openspec show *)",
       "Bash(openspec status *)",
+      "Bash(openspec validate *)",
       "Bash(printenv *)",
       "Bash(pwd)",
       "Bash(rg *)",
