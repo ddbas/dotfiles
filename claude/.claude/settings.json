@@ -30,6 +30,17 @@
         "matcher": "permission_prompt"
       }
     ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "dv set-state working --harness claude",
+            "type": "command"
+          }
+        ]
+      }
+    ],
     "PreCompact": [],
     "PreToolUse": [
       {
@@ -45,10 +56,11 @@
         "hooks": [
           {
             "async": true,
-            "command": "dv set-state working --harness claude",
+            "command": "dv set-state blocked --harness claude",
             "type": "command"
           }
-        ]
+        ],
+        "matcher": "AskUserQuestion|ExitPlanMode"
       }
     ],
     "SessionEnd": [
@@ -69,10 +81,21 @@
             "type": "command"
           }
         ],
-        "matcher": "startup"
+        "matcher": "startup|resume|clear"
       }
     ],
     "Stop": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "dv set-state done --harness claude",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
       {
         "hooks": [
           {
@@ -97,7 +120,6 @@
   },
   "model": "sonnet[1m]",
   "permissions": {
-    "defaultMode": "auto",
     "allow": [
       "Read(//tmp/**)",
       "Read(//private/tmp/**)",
@@ -186,7 +208,8 @@
       "mcp__atlassian__getConfluencePageDescendants",
       "mcp__atlassian__getJiraIssue",
       "mcp__atlassian__search"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "skipAutoPermissionPrompt": true,
   "statusLine": {
