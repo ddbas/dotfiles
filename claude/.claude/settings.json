@@ -1,124 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "enabledPlugins": {
-    "figma@claude-plugins-official": true,
-    "personal@skills-dir": true,
-    "typescript-lsp@claude-plugins-official": true
-  },
   "env": {
     "CLAUDE_CODE_ATTRIBUTION_HEADER": "0"
   },
-  "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "command": "~/.claude/hooks/notify.sh",
-            "type": "command"
-          }
-        ],
-        "matcher": "idle_prompt|permission_prompt"
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "dv set-state blocked --harness claude",
-            "type": "command"
-          }
-        ],
-        "matcher": "permission_prompt"
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "dv set-state working --harness claude",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "PreCompact": [],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "rtk hook claude",
-            "type": "command"
-          }
-        ],
-        "matcher": "Bash"
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "dv set-state blocked --harness claude",
-            "type": "command"
-          }
-        ],
-        "matcher": "AskUserQuestion|ExitPlanMode"
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "command": "dv clear-state",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "command": "dv set-state idle --harness claude",
-            "type": "command"
-          }
-        ],
-        "matcher": "startup|resume|clear"
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "dv set-state done --harness claude",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "StopFailure": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "dv set-state done --harness claude",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "dv set-state working --harness claude",
-            "type": "command"
-          }
-        ]
-      }
-    ]
-  },
-  "model": "sonnet[1m]",
   "permissions": {
     "allow": [
       "Read(//tmp/**)",
@@ -211,10 +95,127 @@
     ],
     "defaultMode": "auto"
   },
-  "skipAutoPermissionPrompt": true,
-  "statusLine": {
-    "command": "bash ~/.claude/statusline-command.sh",
-    "type": "command"
+  "model": "sonnet[1m]",
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "idle_prompt|permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dv set-state blocked --harness claude",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dv set-state working --harness claude",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreCompact": [],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      },
+      {
+        "matcher": "AskUserQuestion|ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dv set-state blocked --harness claude",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dv clear-state"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dv set-state idle --harness claude"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dv set-state done --harness claude",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dv set-state done --harness claude",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dv set-state working --harness claude",
+            "async": true
+          }
+        ]
+      }
+    ]
   },
-  "theme": "dark-ansi"
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "figma@claude-plugins-official": true,
+    "personal@skills-dir": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
+  "theme": "dark-ansi",
+  "skipAutoPermissionPrompt": true,
+  "skipDangerousModePermissionPrompt": true
 }
