@@ -1,7 +1,7 @@
 {
   "collapseChangelog": true,
   "defaultProvider": "github-copilot",
-  "defaultModel": "claude-sonnet-4.6",
+  "defaultModel": "claude-sonnet-5",
   "enableInstallTelemetry": false,
   "theme": "everforest-dark",
   "lastChangelogVersion": "0.80.6",
