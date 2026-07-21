@@ -166,11 +166,7 @@ fi
 # ─── Step 3: npm ──────────────────────────────────────────────────────────────
 if $DO_NPM; then
   banner "npm" "📦"
-  if [ -f ~/.config/npm/package-lock.json ]; then
-    run_step "npm ci" bash -c "cd ~/.config/npm && npm ci"
-  else
-    run_step "npm install" bash -c "cd ~/.config/npm && npm install"
-  fi
+  run_step "npm install" bash -c "cd ~/.config/npm && npm install"
 fi
 
 # ─── Step 4: Claude Code ──────────────────────────────────────────────────────
