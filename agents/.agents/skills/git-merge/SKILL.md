@@ -1,6 +1,6 @@
 ---
 name: git-merge
-description: Merging another branch (default: trunk) into the current branch with conflict resolution and regression validation
+description: "Merging another branch (default: trunk) into the current branch with conflict resolution and regression validation"
 ---
 
 # Git Merge
