@@ -29,7 +29,9 @@ echo "$bs_output"
 
 # Extract the worktree path – the token that starts with / after the tree emoji
 # Example line: 🌳 /Users/davidbastien/.bonsai/repo-name/84cd7c88  (branch-name)
-worktree_path=$(echo "$bs_output" | grep -oE '/[^ ]+')
+# Anchored to the emoji line's 2nd field so slashes in the branch name (e.g.
+# "fix/circular-dependencies") aren't mistaken for another path.
+worktree_path=$(echo "$bs_output" | awk '/🌳/{print $2; exit}')
 
 if [[ -z $worktree_path ]]; then
   echo "Could not determine worktree path from bs output."
