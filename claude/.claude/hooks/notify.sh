@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 INPUT=$(cat)
+
+# Stop/StopFailure fire once per main-agent turn, including brief turns spent
+# just relaying a background subagent's progress. Skip those — only notify
+# once nothing is still running in the background.
+PENDING=$(echo "$INPUT" | jq '(.background_tasks // []) | length')
+[[ "$PENDING" -gt 0 ]] && exit 0
+
 MSG=$(echo "$INPUT" | jq -r '.message // empty')
 if [[ -z "$MSG" ]]; then
   case "$(echo "$INPUT" | jq -r '.hook_event_name // empty')" in
