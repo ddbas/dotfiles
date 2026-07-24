@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 INPUT=$(cat)
-MSG=$(echo "$INPUT" | jq -r '.message')
+MSG=$(echo "$INPUT" | jq -r '.message // empty')
+if [[ -z "$MSG" ]]; then
+  case "$(echo "$INPUT" | jq -r '.hook_event_name // empty')" in
+    StopFailure) MSG="Turn ended due to an error" ;;
+    *) MSG="Claude finished responding" ;;
+  esac
+fi
 
 SESSION=""
 if [[ -n "$TMUX" ]]; then
