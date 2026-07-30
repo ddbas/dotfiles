@@ -1,8 +1,4 @@
-# Taps
-tap "anomalyco/tap"
-
 cask "alacritty"
-brew "anomalyco/tap/opencode" # instead of `opencode`, as its updated more frequently
 brew "ansible"
 brew "bat"
 cask "claude-code@latest"
