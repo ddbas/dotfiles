@@ -1,29 +1,95 @@
 #!/usr/bin/env bash
 
-# Prompt for a branch name, run `bs get -b <branch>`, parse the output,
-# and attach to a new (or existing) tmux session in the resulting worktree.
+# One prompt for every worktree scenario. Runs in its own tmux window
+# (same shape as `project` and `agent-open`, no popup involved) so there's
+# nothing noisy behind it. fzf lists existing branches (arrow-key
+# navigation + Esc-to-cancel come for free) AND doubles as a text box:
+# type a name that doesn't match anything and it's treated as a
+# brand-new branch. If a fuzzy match happens to highlight an existing
+# branch you didn't mean to pick, Alt-Enter forces "create new" with
+# exactly what you typed, ignoring the highlight. No separate "already
+# exists, override?" flow — picking an existing branch from the list IS
+# how you get back into it.
 
-# Ask the user for the branch name
-echo -n "Branch Name: "
-read -r branch_name
+# Fail loudly instead of silently showing an empty picker: a freshly
+# spawned tmux window's shell isn't guaranteed to have the same PATH as an
+# interactive login shell.
+for cmd in git fzf bs; do
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    echo "worktree-get: '$cmd' not found on PATH in this shell."
+    read -r -p "Press Enter to close this window..." _
+    exit 1
+  fi
+done
 
-if [[ -z $branch_name ]]; then
+# $1 is the directory the shortcut was triggered from (passed explicitly by
+# tmux.conf via #{pane_current_path}), so branch listing/creation always
+# targets that repo regardless of where this window's own shell happens to
+# start. Fail loudly instead of silently showing an empty picker if that
+# directory is missing or isn't actually a git repo.
+target_dir=${1:-$PWD}
+if ! cd "$target_dir" 2>/dev/null || ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "worktree-get: '$target_dir' isn't inside a git repository (or couldn't cd there)."
+  read -r -p "Press Enter to close this window..." _
   exit 1
 fi
 
-# Run bs get and capture output (strip ANSI / emoji colour codes just in case)
-bs_output=$(bs get -b "$branch_name" 2>&1)
+active_branches=$(bs list 2>/dev/null | sed -E $'s/\x1b\\[[0-9;]*m//g' | sed -n 's/.*(\(.*\)).*/\1/p')
 
-# If the branch already exists, offer to force-reset it with -B
-if echo "$bs_output" | grep -q "a branch named '.*' already exists"; then
-  echo -n "⚠️  Branch '${branch_name}' already exists. Proceed anyway? [y/N] "
-  read -r confirm
-  if [[ ! $confirm =~ ^[Yy]$ ]]; then
-    echo "Aborted."
-    exit 1
-  fi
-  bs_output=$(bs get -B "$branch_name" 2>&1)
+# Piped straight into fzf (no intermediate variable, no `sort -u` — dedup
+# happens inline in awk via `!seen[$0]++`, and `fflush()` after each print
+# defeats awk's full-buffering-when-piped default) so fzf comes up
+# immediately and branches roll in as they're read, instead of the whole
+# list being buffered up front before anything appears.
+result=$(
+  git for-each-ref --format='%(refname)' refs/heads refs/remotes \
+    | grep -v '/HEAD$' | sed -e 's#^refs/heads/##' -e 's#^refs/remotes/origin/##' \
+    | ACTIVE_BRANCHES="$active_branches" awk '
+        BEGIN { n = split(ENVIRON["ACTIVE_BRANCHES"], a, "\n"); for (i = 1; i <= n; i++) is_active[a[i]] = 1 }
+        !seen[$0]++ { print (is_active[$0] ? "🌳 " : "   ") $0; fflush() }' \
+    | fzf --print-query --expect=alt-enter --ansi \
+        --no-sort --layout=reverse --prompt="🌳 Branch: " --border=rounded \
+        --border-label=" Open or create a worktree " \
+        --header="Enter: open highlighted match  ·  Alt-Enter: create new  ·  Esc: cancel"
+)
+
+# --print-query + --expect=alt-enter gives 3 lines: query, key pressed
+# (empty for plain Enter), then the highlighted selection if any. Alt-Enter
+# still lets fzf auto-select a highlighted fuzzy match on line 3 — we
+# deliberately ignore that line whenever $key is alt-enter and use the
+# typed query instead, regardless of what was highlighted.
+query=$(sed -n '1p' <<<"$result")
+key=$(sed -n '2p' <<<"$result")
+selection=$(sed -n '3p' <<<"$result" | sed 's/^🌳 //' | xargs)
+
+if [[ -z $query && -z $key && -z $selection ]]; then
+  exit 1                        # Esc
 fi
+
+if [[ $key == "alt-enter" ]]; then
+  branch_name=$query
+  bs_flag=(-b)                 # forced: create it, ignore any highlight
+elif [[ -n $selection ]]; then
+  branch_name=$selection
+  bs_flag=()                   # picked from the list: check out as-is
+else
+  branch_name=$query
+  bs_flag=(-b)                 # typed, nothing matched: create a new branch
+fi
+
+spin() {
+  local frames='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏' i=0
+  while :; do
+    printf '\r%s Opening worktree for %s…' "${frames:i++%${#frames}:1}" "$1"
+    sleep 0.1
+  done
+}
+
+spin "$branch_name" &
+spinner_pid=$!
+bs_output=$(bs get "${bs_flag[@]}" "$branch_name" 2>&1)
+kill "$spinner_pid" 2>/dev/null; wait "$spinner_pid" 2>/dev/null
+printf '\r\033[K'
 
 echo "$bs_output"
 
@@ -32,7 +98,6 @@ echo "$bs_output"
 # Anchored to the emoji line's 2nd field so slashes in the branch name (e.g.
 # "fix/circular-dependencies") aren't mistaken for another path.
 worktree_path=$(echo "$bs_output" | awk '/🌳/{print $2; exit}')
-
 if [[ -z $worktree_path ]]; then
   echo "Could not determine worktree path from bs output."
   exit 1
@@ -40,14 +105,12 @@ fi
 
 # Derive repo-name (second-to-last path component) and branch name from path/output
 repo_name=$(basename "$(dirname "$worktree_path")")
-branch_display=$(echo "$bs_output" | grep -oP '(?<=\()([^)]+)(?=\))')
+branch_display=$(echo "$bs_output" | sed -n 's/.*(\(.*\)).*/\1/p')
 [[ -z $branch_display ]] && branch_display=$branch_name
-
 session_name="🌳 ${repo_name} (${branch_display})"
 
 # Create or attach to a tmux session for this worktree
 if ! tmux has-session -t="$session_name" 2>/dev/null; then
   tmux new-session -ds "$session_name" -c "$worktree_path"
 fi
-
 tmux switch-client -t "$session_name"
