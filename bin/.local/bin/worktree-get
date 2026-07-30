@@ -40,15 +40,14 @@ fi
 # below already reuses an existing pool slot for the branch as-is when one
 # exists, so this list doesn't need to know that up front.
 #
-# Piped straight into fzf (no intermediate variable, no `sort -u` — dedup
-# happens inline in awk via `!seen[$0]++`, and `fflush()` after each print
-# defeats awk's full-buffering-when-piped default) so fzf comes up
-# immediately and branches roll in as they're read, instead of the whole
-# list being buffered up front before anything appears.
+# Local branches only, not `--all` — remote-tracking branches are everyone
+# else's work-in-progress too, and this picker is for jumping back into your
+# own branches. `%(refname:short)` already gives the bare name, so no sed
+# stripping or dedup needed. Piped straight into fzf (no intermediate
+# variable) so fzf comes up immediately and branches roll in as they're
+# read, instead of the whole list being buffered up front.
 result=$(
-  git branch --all --format='%(refname)' \
-    | grep -v '/HEAD$' | sed -e 's#^refs/heads/##' -e 's#^refs/remotes/origin/##' \
-    | awk '!seen[$0]++ { print; fflush() }' \
+  git branch --format='%(refname:short)' \
     | fzf --print-query --expect=alt-enter +i \
         --no-sort --layout=reverse --prompt="🌳 Branch: " --border=rounded \
         --border-label=" Open or create a worktree " \
