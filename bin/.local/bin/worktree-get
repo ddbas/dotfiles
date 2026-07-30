@@ -34,20 +34,22 @@ if ! cd "$target_dir" 2>/dev/null || ! git rev-parse --is-inside-work-tree >/dev
   exit 1
 fi
 
-active_branches=$(bs list 2>/dev/null | sed -E $'s/\x1b\\[[0-9;]*m//g' | sed -n 's/.*(\(.*\)).*/\1/p')
-
+# No "already has a worktree" marker here (that would mean asking `bs list`,
+# which checks every pool slot's availability via `lsof`+`git status` and can
+# take seconds — dead weight for a plain branch picker). `bs get <branch>`
+# below already reuses an existing pool slot for the branch as-is when one
+# exists, so this list doesn't need to know that up front.
+#
 # Piped straight into fzf (no intermediate variable, no `sort -u` — dedup
 # happens inline in awk via `!seen[$0]++`, and `fflush()` after each print
 # defeats awk's full-buffering-when-piped default) so fzf comes up
 # immediately and branches roll in as they're read, instead of the whole
 # list being buffered up front before anything appears.
 result=$(
-  git for-each-ref --format='%(refname)' refs/heads refs/remotes \
+  git branch --all --format='%(refname)' \
     | grep -v '/HEAD$' | sed -e 's#^refs/heads/##' -e 's#^refs/remotes/origin/##' \
-    | ACTIVE_BRANCHES="$active_branches" awk '
-        BEGIN { n = split(ENVIRON["ACTIVE_BRANCHES"], a, "\n"); for (i = 1; i <= n; i++) is_active[a[i]] = 1 }
-        !seen[$0]++ { print (is_active[$0] ? "🌳 " : "   ") $0; fflush() }' \
-    | fzf --print-query --expect=alt-enter --ansi \
+    | awk '!seen[$0]++ { print; fflush() }' \
+    | fzf --print-query --expect=alt-enter \
         --no-sort --layout=reverse --prompt="🌳 Branch: " --border=rounded \
         --border-label=" Open or create a worktree " \
         --header="Enter: open highlighted match  ·  Alt-Enter: create new  ·  Esc: cancel"
@@ -60,7 +62,7 @@ result=$(
 # typed query instead, regardless of what was highlighted.
 query=$(sed -n '1p' <<<"$result")
 key=$(sed -n '2p' <<<"$result")
-selection=$(sed -n '3p' <<<"$result" | sed 's/^🌳 //' | xargs)
+selection=$(sed -n '3p' <<<"$result" | xargs)
 
 if [[ -z $query && -z $key && -z $selection ]]; then
   exit 1                        # Esc
