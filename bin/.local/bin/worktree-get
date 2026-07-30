@@ -49,7 +49,7 @@ result=$(
   git branch --all --format='%(refname)' \
     | grep -v '/HEAD$' | sed -e 's#^refs/heads/##' -e 's#^refs/remotes/origin/##' \
     | awk '!seen[$0]++ { print; fflush() }' \
-    | fzf --print-query --expect=alt-enter \
+    | fzf --print-query --expect=alt-enter +i \
         --no-sort --layout=reverse --prompt="🌳 Branch: " --border=rounded \
         --border-label=" Open or create a worktree " \
         --header="Enter: open highlighted match  ·  Alt-Enter: create new  ·  Esc: cancel"
