@@ -2,7 +2,7 @@
 
 current_session=$(tmux display-message -p '#S' 2>/dev/null)
 
-selected=$(tmux list-sessions -F '#S' | grep -v "^${current_session}$" | fzf \
+selected=$(tmux list-sessions -F '#S' | grep -v "^${current_session}$" | { echo "$current_session"; cat; } | fzf \
   --prompt="🖥️  Session: " \
   --no-sort \
   --layout=reverse \
