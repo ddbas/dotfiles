@@ -17,19 +17,21 @@ if [[ -z $selected ]]; then
   exit 1
 fi
 
+session_name="🗂️  $selected"
+
 tmux_running=$(pgrep tmux)
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-  tmux new-session -s $selected -c $repo_dir/$selected
+  tmux new-session -s "$session_name" -c $repo_dir/$selected
   exit 0
 fi
 
 previous_dir=$(pwd)
 previous_session=$(tmux display-message -p '#S')
-if ! tmux has-session -t=$selected 2>/dev/null; then
-  tmux new-session -ds $selected -c $repo_dir/$selected
+if ! tmux has-session -t="$session_name" 2>/dev/null; then
+  tmux new-session -ds "$session_name" -c $repo_dir/$selected
 fi
 
-tmux switch-client -t $selected
+tmux switch-client -t "$session_name"
 
 if [[ $previous_dir == $HOME ]]; then
   tmux kill-session -t $previous_session
