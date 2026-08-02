@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
-# Navigate to an agent harness pane by picking from `dv list` via fzf.
+# Navigate to an agent harness pane by picking from `rd list` via fzf.
 # Intended to be launched as a temporary tmux window (tmux neww).
 
-dv_output=$(dv list --sort-by state 2>/dev/null)
+rd_output=$(rd list --sort-by state 2>/dev/null)
 
-if [[ -z $dv_output ]]; then
+if [[ -z $rd_output ]]; then
   echo "No agent harness panes found."
   sleep 2
   exit 0
 fi
 
-selected=$(echo "$dv_output" | fzf \
+selected=$(echo "$rd_output" | fzf \
   --ansi \
   --prompt="🤖 Agent: " \
   --no-sort \
