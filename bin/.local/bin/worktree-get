@@ -86,32 +86,17 @@ spin() {
   done
 }
 
+# `--tmux-session` (no value) makes `bs` itself create/reuse the session
+# using the exact same naming convention this script used to build by hand
+# (🌳 <repo> (<branch-or-detached>)), and switch this pane's client to it —
+# no more parsing `bs`'s stdout for the path/branch or driving tmux ourselves.
 spin "$branch_name" &
 spinner_pid=$!
-bs_output=$(bs get "${bs_flag[@]}" "$branch_name" 2>&1)
+# Branch name (whether positional or `-b`'s value) must precede
+# `--tmux-session`: clap won't accept the following `--tmux-session` token
+# as `-b`'s value.
+bs_output=$(bs get "${bs_flag[@]}" "$branch_name" --tmux-session 2>&1)
 kill "$spinner_pid" 2>/dev/null; wait "$spinner_pid" 2>/dev/null
 printf '\r\033[K'
 
 echo "$bs_output"
-
-# Extract the worktree path – the token that starts with / after the tree emoji
-# Example line: 🌳 /Users/davidbastien/.bonsai/repo-name/84cd7c88  (branch-name)
-# Anchored to the emoji line's 2nd field so slashes in the branch name (e.g.
-# "fix/circular-dependencies") aren't mistaken for another path.
-worktree_path=$(echo "$bs_output" | awk '/🌳/{print $2; exit}')
-if [[ -z $worktree_path ]]; then
-  echo "Could not determine worktree path from bs output."
-  exit 1
-fi
-
-# Derive repo-name (second-to-last path component) and branch name from path/output
-repo_name=$(basename "$(dirname "$worktree_path")")
-branch_display=$(echo "$bs_output" | sed -n 's/.*(\(.*\)).*/\1/p')
-[[ -z $branch_display ]] && branch_display=$branch_name
-session_name="🌳 ${repo_name} (${branch_display})"
-
-# Create or attach to a tmux session for this worktree
-if ! tmux has-session -t="$session_name" 2>/dev/null; then
-  tmux new-session -ds "$session_name" -c "$worktree_path"
-fi
-tmux switch-client -t "$session_name"
