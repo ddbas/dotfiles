@@ -24,12 +24,31 @@ if [[ -z $selected ]]; then
 fi
 
 # Output format: <agent>  <session>  <window>.<pane>  <state>
-# NF   = state
-# NF-1 = window.pane  (pattern: digits.digits)
-# $1   = agent
-# $2..(NF-2) = session name (may contain spaces)
-win_pane=$(echo "$selected" | awk '{print $(NF-1)}')
-session=$(echo "$selected" | awk '{for(i=2;i<=NF-2;i++) printf "%s%s", (i==2?"":OFS), $i; print ""}' | sed 's/[[:space:]]*$//')
+# The session name may contain arbitrary characters/spacing (e.g. emoji
+# with variation selectors, multi-space separators), so we don't split on
+# whitespace and rejoin (that collapses/loses the original spacing and can
+# produce a session name that doesn't match any real tmux session). Instead
+# we anchor on the two well-known trailing tokens (window.pane and state)
+# and the leading agent token, and take everything in between verbatim.
+parsed=$(python3 -c '
+import re, sys
+line = sys.stdin.readline().rstrip("\n")
+m = re.match(r"^(\S+)\s+(.*\S)\s+(\d+\.\d+)\s+(\S+)\s*$", line)
+if not m:
+    sys.exit(1)
+agent, session, win_pane, state = m.groups()
+print(session)
+print(win_pane)
+' <<<"$selected")
+
+if [[ -z $parsed ]]; then
+  echo "Failed to parse selection."
+  sleep 2
+  exit 1
+fi
+
+session=$(echo "$parsed" | sed -n '1p')
+win_pane=$(echo "$parsed" | sed -n '2p')
 
 window="${win_pane%%.*}"
 pane="${win_pane##*.}"
