@@ -69,7 +69,7 @@ usage() {
   echo -e "    ${CYAN}./install.sh${RESET} [options]"
   echo
   echo -e "  ${BOLD}OPTIONS${RESET}"
-  echo -e "    ${YELLOW}--steps${RESET}=<list>  Comma-separated steps to run: ${CYAN}stow${RESET}, ${CYAN}brew${RESET}, ${CYAN}npm${RESET}, ${CYAN}claude${RESET}"
+  echo -e "    ${YELLOW}--steps${RESET}=<list>  Comma-separated steps to run: ${CYAN}stow${RESET}, ${CYAN}brew${RESET}, ${CYAN}npm${RESET}"
   echo -e "                     ${DIM}(omit to run all steps)${RESET}"
   echo -e "    ${YELLOW}--help${RESET}           Show this help and exit"
   echo
@@ -80,16 +80,12 @@ usage() {
   echo -e "    ${DIM}# Only re-stow and refresh npm packages${RESET}"
   echo -e "    ${CYAN}./install.sh --steps=stow,npm${RESET}"
   echo
-  echo -e "    ${DIM}# Only configure Claude Code${RESET}"
-  echo -e "    ${CYAN}./install.sh --steps=claude${RESET}"
-  echo
 }
 
 # ─── Parse arguments ──────────────────────────────────────────────────────────
 DO_STOW=false
 DO_BREW=false
 DO_NPM=false
-DO_CLAUDE=false
 
 for arg in "$@"; do
   case "$arg" in
@@ -100,9 +96,8 @@ for arg in "$@"; do
           stow)   DO_STOW=true ;;
           brew)   DO_BREW=true ;;
           npm)    DO_NPM=true ;;
-          claude) DO_CLAUDE=true ;;
           *)
-            fail "Unknown step: '$s' (valid: stow, brew, npm, claude)"
+            fail "Unknown step: '$s' (valid: stow, brew, npm)"
             exit 1
             ;;
         esac
@@ -121,11 +116,10 @@ for arg in "$@"; do
 done
 
 # Default: run all steps when --steps was not given
-if ! $DO_STOW && ! $DO_BREW && ! $DO_NPM && ! $DO_CLAUDE; then
+if ! $DO_STOW && ! $DO_BREW && ! $DO_NPM; then
   DO_STOW=true
   DO_BREW=true
   DO_NPM=true
-  DO_CLAUDE=true
 fi
 
 # ─── Header ───────────────────────────────────────────────────────────────────
@@ -139,7 +133,6 @@ echo -e "  ${BOLD}Steps to run:${RESET}"
 $DO_STOW   && echo -e "    ${BULLET} stow"
 $DO_BREW   && echo -e "    ${BULLET} brew"
 $DO_NPM    && echo -e "    ${BULLET} npm"
-$DO_CLAUDE && echo -e "    ${BULLET} claude"
 hr
 
 # ─── Source env ───────────────────────────────────────────────────────────────
@@ -167,12 +160,6 @@ fi
 if $DO_NPM; then
   banner "npm" "📦"
   run_step "npm install" bash -c "cd ~/.config/npm && npm install"
-fi
-
-# ─── Step 4: Claude Code ──────────────────────────────────────────────────────
-if $DO_CLAUDE; then
-  banner "Claude Code" "🤖"
-  run_step "Configure MCP servers" ./claude/install.sh
 fi
 
 # ─── Done ─────────────────────────────────────────────────────────────────────
