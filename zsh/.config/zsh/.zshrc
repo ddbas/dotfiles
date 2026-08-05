@@ -21,7 +21,6 @@ export BAT_THEME="everforest-dark"
 export PS1="%B%F{green}>%f%b "
 
 # Aliases
-alias cc='claude --dangerously-skip-permissions'
 alias gb='git branch'
 alias gs='git status'
 alias ll='eza -la'
