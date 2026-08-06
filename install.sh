@@ -130,23 +130,16 @@ echo -e "  ${DIM}$(date '+%Y-%m-%d %H:%M:%S')${RESET}"
 # Summarise what will run
 echo
 echo -e "  ${BOLD}Steps to run:${RESET}"
-$DO_STOW   && echo -e "    ${BULLET} stow"
 $DO_BREW   && echo -e "    ${BULLET} brew"
+$DO_STOW   && echo -e "    ${BULLET} stow"
 $DO_NPM    && echo -e "    ${BULLET} npm"
 hr
 
 # ─── Source env ───────────────────────────────────────────────────────────────
 source ./env.sh
+export HOMEBREW_BUNDLE_FILE="$PWD/brewfile/.config/brewfile/Brewfile"
 
-# ─── Step 1: Stow ─────────────────────────────────────────────────────────────
-if $DO_STOW; then
-  banner "Stow" "🔗"
-  for folder in "${STOW_FOLDERS[@]}"; do
-    run_step "stow $folder" stow -R -t ~ "$folder"
-  done
-fi
-
-# ─── Step 2: Brew ─────────────────────────────────────────────────────────────
+# ─── Step 1: Brew ─────────────────────────────────────────────────────────────
 if $DO_BREW; then
   banner "Homebrew" "🍺"
   step "Running brew bundle install..."
@@ -156,10 +149,22 @@ if $DO_BREW; then
   ok "brew bundle complete"
 fi
 
+# ─── Step 2: Stow ─────────────────────────────────────────────────────────────
+if $DO_STOW; then
+  banner "Stow" "🔗"
+  run_step "git submodule update" git submodule update --init --recursive
+  for folder in "${STOW_FOLDERS[@]}"; do
+    run_step "stow $folder" stow -R -t ~ "$folder"
+  done
+fi
+
 # ─── Step 3: npm ──────────────────────────────────────────────────────────────
 if $DO_NPM; then
   banner "npm" "📦"
-  run_step "npm install" bash -c "cd ~/.config/npm && npm install"
+  # ~/.nvmrc comes from the 'npm' stow package and pins the Node version.
+  run_step "fnm install" bash -c "cd ~ && fnm install"
+  run_step "fnm default" bash -c "fnm default \$(cat ~/.nvmrc)"
+  run_step "npm install" bash -c "eval \"\$(fnm env)\" && fnm use \$(cat ~/.nvmrc) && cd ~/.config/npm && npm install"
 fi
 
 # ─── Done ─────────────────────────────────────────────────────────────────────
