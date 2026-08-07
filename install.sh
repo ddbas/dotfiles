@@ -153,7 +153,7 @@ fi
 if $DO_STOW; then
   banner "Stow" "🔗"
   run_step "git submodule update" git submodule update --init --recursive
-  run_step "claude code skills folder" mkdir ~/.claude/skills
+  run_step "claude code skills folder" mkdir -p ~/.claude/skills
   for folder in "${STOW_FOLDERS[@]}"; do
     run_step "stow $folder" stow -R -t ~ "$folder"
   done
