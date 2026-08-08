@@ -4,8 +4,9 @@
   "defaultModel": "claude-sonnet-5",
   "enableInstallTelemetry": false,
   "theme": "everforest-dark",
-  "lastChangelogVersion": "0.83.0",
+  "lastChangelogVersion": "0.84.1",
   "packages": [
-    "npm:pi-web-access"
+    "npm:pi-web-access",
+    "npm:pi-mcp-adapter"
   ]
 }
