@@ -11,5 +11,6 @@ Run the bundled script to end the current session:
 ./end-session.sh
 ```
 
-This must be run from inside a tmux session. It creates a new tmux window in
-the current session, then kills the window the agent is running in.
+This must be run from inside a tmux session. It kills the window the agent is
+running in. If that window is the only one left in the session, it first
+opens a new window so the session itself is never closed.

@@ -6,5 +6,10 @@ if [ -z "${TMUX:-}" ]; then
   exit 1
 fi
 
-tmux new-window -d
+window_count=$(tmux list-windows | wc -l)
+
+if [ "$window_count" -le 1 ]; then
+  tmux new-window -d
+fi
+
 tmux kill-window
