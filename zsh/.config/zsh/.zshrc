@@ -20,6 +20,9 @@ source $XDG_CONFIG_HOME/zsh/plugins/zsh-syntax-highlighting.zsh
 export BAT_THEME="everforest-dark"
 export PS1="%B%F{green}>%f%b "
 
+# Options
+setopt interactivecomments # Enables `#` comments in zsh
+
 # Aliases
 alias cc='claude'
 alias gb='git branch'
