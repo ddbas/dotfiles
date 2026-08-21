@@ -26,13 +26,19 @@ if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
 fi
 
 previous_dir=$(pwd)
-previous_session=$(tmux display-message -p '#S')
-if ! tmux has-session -t="$session_name" 2>/dev/null; then
-  tmux new-session -ds "$session_name" -c $repo_dir/$selected
+previous_session_id=$(tmux display-message -p '#{session_id}')
+
+# Look up (and, if needed, resolve after creation) the target session by ID,
+# not name: tmux's target syntax treats "." and ":" in a name as window/pane
+# separators, so names like "🗂️  firefly.js" break name-based targets even
+# with the "=" exact-match prefix.
+session_id=$(tmux list-sessions -F '#{session_id}	#{session_name}' 2>/dev/null | awk -F'\t' -v n="$session_name" '$2 == n {print $1; exit}')
+if [[ -z $session_id ]]; then
+  session_id=$(tmux new-session -ds "$session_name" -c $repo_dir/$selected -P -F '#{session_id}')
 fi
 
-tmux switch-client -t "$session_name"
+tmux switch-client -t "$session_id"
 
 if [[ $previous_dir == $HOME ]]; then
-  tmux kill-session -t $previous_session
+  tmux kill-session -t "$previous_session_id"
 fi
