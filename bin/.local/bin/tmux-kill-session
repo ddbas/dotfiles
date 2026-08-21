@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-current_session=$(tmux display-message -p '#S')
+current_session_name=$(tmux display-message -p '#S')
+current_session_id=$(tmux display-message -p '#{session_id}')
 if ! tmux switch-client -p 2>/dev/null; then
   # If there is no remaining sessions, create a new one in the home directory
-  if [[ "$current_session" == "home" ]]; then
+  if [[ "$current_session_name" == "home" ]]; then
     exit 0
   fi
 
@@ -11,4 +12,7 @@ if ! tmux switch-client -p 2>/dev/null; then
   tmux switch-client -t home
 fi
 
-tmux kill-session -t "$current_session"
+# Target by session_id, not name: tmux's target syntax treats "." and ":" as
+# window/pane separators, so names containing them (e.g. "foo (a.b/c)") break
+# a name-based target.
+tmux kill-session -t "$current_session_id"
