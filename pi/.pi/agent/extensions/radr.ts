@@ -30,6 +30,14 @@ export default function (pi: ExtensionAPI) {
     }
   });
 
+  pi.on("tool_call", async (event) => {
+    rd("agent", "event", "TOOL_CALL_START", "--id", event.toolCallId, "--harness", "pi");
+  });
+
+  pi.on("tool_result", async (event) => {
+    rd("agent", "event", "TOOL_CALL_RESULT", "--id", event.toolCallId, "--harness", "pi");
+  });
+
   pi.on("session_shutdown", async () => {
     rd("agent", "clear");
   });
