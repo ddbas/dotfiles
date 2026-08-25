@@ -12,16 +12,22 @@ function rd(...args: string[]): void {
 }
 
 export default function (pi: ExtensionAPI) {
+  let runId: string | undefined;
+
   pi.on("session_start", async () => {
-    rd("agent", "status", "idle", "--harness", "pi");
+    const sessionId = crypto.randomUUID();
+    rd("agent", "event", "SESSION_STARTED", "--id", sessionId, "--harness", "pi");
   });
 
   pi.on("before_agent_start", async () => {
-    rd("agent", "status", "working", "--harness", "pi");
+    runId = crypto.randomUUID();
+    rd("agent", "event", "RUN_STARTED", "--id", runId, "--harness", "pi");
   });
 
   pi.on("agent_settled", async () => {
-    rd("agent", "status", "done", "--harness", "pi");
+    if (runId) {
+      rd("agent", "event", "RUN_FINISHED", "--id", runId, "--harness", "pi");
+    }
   });
 
   pi.on("session_shutdown", async () => {
