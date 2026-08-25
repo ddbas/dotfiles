@@ -3,7 +3,7 @@
 # Navigate to an agent harness pane by picking from `rd list` via fzf.
 # Intended to be launched as a temporary tmux window (tmux neww).
 
-rd_output=$(rd list --sort-by state 2>/dev/null)
+rd_output=$(rd list --sort-by status --columns session,status,activeTools,pane 2>/dev/null)
 
 if [[ -z $rd_output ]]; then
   echo "No agent harness panes found."
@@ -23,20 +23,31 @@ if [[ -z $selected ]]; then
   exit 0
 fi
 
-# Output format: <agent>  <session>  <window>.<pane>  <state>
+# Output format: <session>  <status>  <activeTools>  <window>.<pane>
 # The session name may contain arbitrary characters/spacing (e.g. emoji
 # with variation selectors, multi-space separators), so we don't split on
 # whitespace and rejoin (that collapses/loses the original spacing and can
 # produce a session name that doesn't match any real tmux session). Instead
-# we anchor on the two well-known trailing tokens (window.pane and state)
-# and the leading agent token, and take everything in between verbatim.
+# we peel off the two trailing columns we don't need: pane (always the
+# well-known `\d+\.\d+` token) and, if present, activeTools (only rendered
+# when non-zero, as a bare digit run with no decimal point). What remains
+# after those is <session><whitespace><status>, and status is a single
+# word, so the last whitespace-delimited token is status and everything
+# before it verbatim is the session name.
 parsed=$(python3 -c '
 import re, sys
 line = sys.stdin.readline().rstrip("\n")
-m = re.match(r"^(\S+)\s+(.*\S)\s+(\d+\.\d+)\s+(\S+)\s*$", line)
+m = re.match(r"^(.*\S)\s+(\d+\.\d+)\s*$", line)
 if not m:
     sys.exit(1)
-agent, session, win_pane, state = m.groups()
+rest, win_pane = m.groups()
+m = re.match(r"^(.*\S)\s+\d+$", rest)
+if m:
+    rest = m.group(1)
+m = re.match(r"^(.*\S)\s+(\S+)$", rest)
+if not m:
+    sys.exit(1)
+session, status = m.groups()
 print(session)
 print(win_pane)
 ' <<<"$selected")
