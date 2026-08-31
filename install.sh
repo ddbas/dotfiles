@@ -153,7 +153,7 @@ fi
 if $DO_STOW; then
   banner "Stow" "🔗"
   run_step "git submodule update" git submodule update --init --recursive
-  run_step "create symlink parent folders" mkdir -p ~/.claude/skills ~/.local/bin
+  run_step "create symlink parent folders" mkdir -p ~/.agents/skills ~/.claude/skills ~/.local/bin
   for folder in "${STOW_FOLDERS[@]}"; do
     run_step "stow $folder" stow -R -t ~ "$folder"
   done
