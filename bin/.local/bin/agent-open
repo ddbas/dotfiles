@@ -28,26 +28,26 @@ fi
 # with variation selectors, multi-space separators), so we don't split on
 # whitespace and rejoin (that collapses/loses the original spacing and can
 # produce a session name that doesn't match any real tmux session). Instead
-# we peel off the two trailing columns we don't need: pane (always the
-# well-known `\d+\.\d+` token) and, if present, activeTools (only rendered
-# when non-zero, as a bare digit run with no decimal point). What remains
-# after those is <session><whitespace><status>, and status is a single
-# word, so the last whitespace-delimited token is status and everything
-# before it verbatim is the session name.
+# we peel columns off the *end* of the line, since each trailing column has
+# a predictable shape: pane is always `\d+\.\d+`; activeTools, when
+# rendered at all, is `<N> tool` or `<N> tools` (not a bare digit); status
+# is always a single word. Whatever remains after peeling all three is the
+# session name, verbatim.
 parsed=$(python3 -c '
 import re, sys
 line = sys.stdin.readline().rstrip("\n")
-m = re.match(r"^(.*\S)\s+(\d+\.\d+)\s*$", line)
+m = re.search(r"(\d+\.\d+)\s*$", line)
 if not m:
     sys.exit(1)
-rest, win_pane = m.groups()
-m = re.match(r"^(.*\S)\s+\d+$", rest)
+win_pane = m.group(1)
+rest = line[:m.start()].rstrip()
+m = re.search(r"\d+\s+tools?\s*$", rest)
 if m:
-    rest = m.group(1)
-m = re.match(r"^(.*\S)\s+(\S+)$", rest)
+    rest = rest[:m.start()].rstrip()
+m = re.search(r"(\S+)\s*$", rest)
 if not m:
     sys.exit(1)
-session, status = m.groups()
+session = rest[:m.start()].rstrip()
 print(session)
 print(win_pane)
 ' <<<"$selected")
@@ -64,6 +64,17 @@ win_pane=$(echo "$parsed" | sed -n '2p')
 window="${win_pane%%.*}"
 pane="${win_pane##*.}"
 
-tmux switch-client -t "$session"
-tmux select-window -t "${session}:${window}"
-tmux select-pane -t "${session}:${window}.${pane}"
+# Resolve by ID, not name: tmux's target syntax treats "." and ":" in a
+# name as window/pane separators, so names like "🌳 repo (branch/with.dots)"
+# break name-based targets even on an exact match (see bin/project for the
+# same fix).
+session_id=$(tmux list-sessions -F '#{session_id}	#{session_name}' 2>/dev/null | awk -F'\t' -v n="$session" '$2 == n {print $1; exit}')
+if [[ -z $session_id ]]; then
+  echo "Session '$session' not found."
+  sleep 2
+  exit 1
+fi
+
+tmux switch-client -t "$session_id"
+tmux select-window -t "${session_id}:${window}"
+tmux select-pane -t "${session_id}:${window}.${pane}"
