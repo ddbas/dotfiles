@@ -125,7 +125,7 @@
         "hooks": [
           {
             "async": true,
-            "command": "id=$(cat | jq -r '.session_id'); rd agent event RUN_FINISHED --id \"$id\" --harness claude",
+            "command": "payload=$(cat); id=$(echo \"$payload\" | jq -r '.session_id'); n=$(echo \"$payload\" | jq -r '(.background_tasks // []) | length'); rd agent event RUN_FINISHED --id \"$id\" --active-tools \"$n\" --harness claude",
             "type": "command"
           }
         ]
@@ -145,7 +145,7 @@
         "hooks": [
           {
             "async": true,
-            "command": "id=$(cat | jq -r '.session_id'); rd agent event RUN_FINISHED --id \"$id\" --harness claude",
+            "command": "payload=$(cat); id=$(echo \"$payload\" | jq -r '.session_id'); n=$(echo \"$payload\" | jq -r '(.background_tasks // []) | length'); rd agent event RUN_FINISHED --id \"$id\" --active-tools \"$n\" --harness claude",
             "type": "command"
           }
         ]
