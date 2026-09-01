@@ -262,5 +262,5 @@
     "command": "bash ~/.claude/statusline-command.sh",
     "type": "command"
   },
-  "theme": "auto"
+  "theme": "dark-ansi"
 }
