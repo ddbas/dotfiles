@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Renders one colored dot per `rd list` agent pane for the tmux status bar.
+# idle=grey, done=green, working=yellow, blocked=red, sorted in that order.
+set -euo pipefail
+
+RD_BIN=$(command -v rd || echo "$HOME/.local/bin/rd")
+
+statuses=$("$RD_BIN" list -c status 2>/dev/null) || exit 0
+[[ -z "$statuses" ]] && exit 0
+
+rank_and_color() {
+  case "$1" in
+    idle) echo "0 colour8" ;;
+    done) echo "1 green" ;;
+    working) echo "2 yellow" ;;
+    blocked) echo "3 red" ;;
+    *) echo "4 colour8" ;;
+  esac
+}
+
+ranked=""
+while IFS= read -r status; do
+  status="$(echo "$status" | xargs)"
+  [[ -z "$status" ]] && continue
+  ranked+="$(rank_and_color "$status")"$'\n'
+done <<< "$statuses"
+
+[[ -z "$ranked" ]] && exit 0
+
+dots=""
+while read -r rank color; do
+  [[ -z "$rank" ]] && continue
+  dots+="#[fg=${color}]●"
+done < <(printf '%s' "$ranked" | sort -k1,1n)
+
+printf '%s#[fg=colour8] | ' "$dots"
