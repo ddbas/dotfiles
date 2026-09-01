@@ -49,6 +49,15 @@
             "type": "command"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "id=$(cat | jq -r '.tool_use_id'); rd agent event TOOL_CALL_RESULT --id \"$id\" --harness claude",
+            "type": "command"
+          }
+        ]
       }
     ],
     "PreToolUse": [
@@ -70,6 +79,15 @@
           }
         ],
         "matcher": "AskUserQuestion|ExitPlanMode"
+      },
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "id=$(cat | jq -r '.tool_use_id'); rd agent event TOOL_CALL_START --id \"$id\" --harness claude",
+            "type": "command"
+          }
+        ]
       }
     ],
     "SessionEnd": [
@@ -244,5 +262,5 @@
     "command": "bash ~/.claude/statusline-command.sh",
     "type": "command"
   },
-  "theme": "dark-ansi"
+  "theme": "auto"
 }
