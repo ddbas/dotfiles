@@ -3,7 +3,7 @@
 # Navigate to an agent harness pane by picking from `rd list` via fzf.
 # Intended to be launched as a temporary tmux window (tmux neww).
 
-rd_output=$(rd list --sort-by status --columns session,status,activeTools,pane 2>/dev/null)
+rd_output=$(rd list --sort-by status --columns status,activeTools,pane,session 2>/dev/null)
 
 if [[ -z $rd_output ]]; then
   echo "No agent harness panes found."
@@ -23,31 +23,31 @@ if [[ -z $selected ]]; then
   exit 0
 fi
 
-# Output format: <session>  <status>  <activeTools>  <window>.<pane>
+# Output format: <status>  <activeTools>  <window>.<pane>  <session>
 # The session name may contain arbitrary characters/spacing (e.g. emoji
 # with variation selectors, multi-space separators), so we don't split on
 # whitespace and rejoin (that collapses/loses the original spacing and can
 # produce a session name that doesn't match any real tmux session). Instead
-# we peel columns off the *end* of the line, since each trailing column has
-# a predictable shape: pane is always `\d+\.\d+`; activeTools, when
-# rendered at all, is `<N> tool` or `<N> tools` (not a bare digit); status
-# is always a single word. Whatever remains after peeling all three is the
-# session name, verbatim.
+# we peel columns off the *front* of the line, since each leading column has
+# a predictable shape: status is always a single word; activeTools, when
+# rendered at all, is `<N> tool` or `<N> tools` (not a bare digit); pane is
+# always `\d+\.\d+`. Whatever remains after peeling all three is the session
+# name, verbatim.
 parsed=$(python3 -c '
 import re, sys
 line = sys.stdin.readline().rstrip("\n")
-m = re.search(r"(\d+\.\d+)\s*$", line)
+m = re.match(r"^\s*(\S+)\s*", line)
+if not m:
+    sys.exit(1)
+rest = line[m.end():]
+m = re.match(r"^(\d+\s+tools?)\s*", rest)
+if m:
+    rest = rest[m.end():]
+m = re.match(r"^(\d+\.\d+)\s*", rest)
 if not m:
     sys.exit(1)
 win_pane = m.group(1)
-rest = line[:m.start()].rstrip()
-m = re.search(r"\d+\s+tools?\s*$", rest)
-if m:
-    rest = rest[:m.start()].rstrip()
-m = re.search(r"(\S+)\s*$", rest)
-if not m:
-    sys.exit(1)
-session = rest[:m.start()].rstrip()
+session = rest[m.end():]
 print(session)
 print(win_pane)
 ' <<<"$selected")
