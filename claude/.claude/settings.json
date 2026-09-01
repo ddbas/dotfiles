@@ -23,7 +23,7 @@
         "hooks": [
           {
             "async": true,
-            "command": "id=$(cat | jq -r '.session_id'); rd agent event TOOL_CALL_START --id \"perm-$id\" --type elicitation --harness claude",
+            "command": "id=$(cat | jq -r '.session_id'); rd agent event TOOL_CALL_START --id \"perm-$id-$RANDOM\" --type permission-prompt --harness claude",
             "type": "command"
           }
         ],
@@ -31,6 +31,15 @@
       }
     ],
     "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "async": true,
+            "command": "id=$(cat | jq -r '.tool_use_id'); rd agent event TOOL_CALL_RESULT --id \"$id\" --harness claude",
+            "type": "command"
+          }
+        ]
+      },
       {
         "hooks": [
           {
@@ -45,16 +54,7 @@
         "hooks": [
           {
             "async": true,
-            "command": "id=$(cat | jq -r '.session_id'); rd agent event TOOL_CALL_RESULT --id \"perm-$id\" --type elicitation --harness claude",
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "id=$(cat | jq -r '.tool_use_id'); rd agent event TOOL_CALL_RESULT --id \"$id\" --harness claude",
+            "command": "id=$(cat | jq -r '.session_id'); rd agent event TOOL_CALL_RESULT --id \"perm-$id-$RANDOM\" --type permission-prompt --harness claude",
             "type": "command"
           }
         ]
@@ -74,20 +74,20 @@
         "hooks": [
           {
             "async": true,
-            "command": "id=$(cat | jq -r '.tool_use_id'); rd agent event TOOL_CALL_START --id \"$id\" --type elicitation --harness claude",
+            "command": "id=$(cat | jq -r '.tool_use_id'); rd agent event TOOL_CALL_START --id \"$id\" --harness claude",
             "type": "command"
           }
-        ],
-        "matcher": "AskUserQuestion|ExitPlanMode"
+        ]
       },
       {
         "hooks": [
           {
             "async": true,
-            "command": "id=$(cat | jq -r '.tool_use_id'); rd agent event TOOL_CALL_START --id \"$id\" --harness claude",
+            "command": "id=$(cat | jq -r '.tool_use_id'); rd agent event TOOL_CALL_START --id \"$id\" --type elicitation --harness claude",
             "type": "command"
           }
-        ]
+        ],
+        "matcher": "AskUserQuestion|ExitPlanMode"
       }
     ],
     "SessionEnd": [
