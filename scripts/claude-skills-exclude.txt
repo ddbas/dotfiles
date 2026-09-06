@@ -1,0 +1,3 @@
+# Skill names (matching agents/.agents/skills/<name>) listed here are
+# intentionally NOT symlinked into claude/.claude/skills/personal/skills/.
+# One name per line; '#' starts a comment.
