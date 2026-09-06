@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "bonsai": {
+      "source": "ddbas/bonsai",
+      "sourceType": "github",
+      "skillPath": "skills/bonsai/SKILL.md",
+      "computedHash": "9997ca362374bc0dc4aab4a3199e6f2f8b9a2608689853b4988843a6f090f6ff"
+    },
+    "lavish": {
+      "source": "kunchenguid/lavish-axi",
+      "sourceType": "github",
+      "skillPath": "skills/lavish/SKILL.md",
+      "computedHash": "5ff18ff1fb92bda3049037e08d1f7db31f7667bc90635677c37dcf620fd0c1a4"
+    }
+  }
+}
