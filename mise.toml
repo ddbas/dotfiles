@@ -2,4 +2,4 @@
 lefthook = "latest"
 
 [hooks]
-enter = "lefthook install"
+enter = "mise exec -- lefthook install"
