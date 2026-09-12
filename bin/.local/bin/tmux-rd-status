@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Renders one colored dot per `rd list` agent pane for the tmux status bar.
+# Renders one colored dot per `agentctl list` agent pane for the tmux status bar.
 # idle=grey, done=green, working=yellow, blocked=red, sorted in that order.
 # A `done` agent with an in-flight tool call (e.g. a monitoring/long-running
 # tool it's waiting on) is treated as `working` (yellow) instead of `done`.
 set -euo pipefail
 
-RD_BIN=$(command -v rd || echo "$HOME/.local/bin/rd")
+RD_BIN=$(command -v agentctl || echo "$HOME/.local/bin/agentctl")
 
 lines=$("$RD_BIN" list -c status,activeTools 2>/dev/null) || exit 0
 [[ -z "$lines" ]] && exit 0
