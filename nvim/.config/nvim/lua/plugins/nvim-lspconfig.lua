@@ -83,6 +83,11 @@ return {
 			}),
 		})
 
+    vim.lsp.config('taplo', {
+      cmd = { 'taplo', 'lsp', 'stdio' },
+      filetypes = { 'toml' },
+    })
+
 		-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 		vim.lsp.enable("bashls")
 		vim.lsp.enable("biome")
@@ -99,6 +104,7 @@ return {
 		vim.lsp.enable("marksman")
 		vim.lsp.enable("pyright")
 		vim.lsp.enable("rust_analyzer")
+    vim.lsp.enable("taplo")
 		vim.lsp.enable("ts_ls")
 	end,
 }

@@ -39,6 +39,7 @@ brew "shfmt"
 brew "sshpass" # for ansible
 brew "stow"
 brew "stylua"
+brew "taplo"
 brew "tlrc"
 brew "tree"
 brew "tree-sitter-cli"
