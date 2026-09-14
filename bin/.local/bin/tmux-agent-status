@@ -1,38 +1,34 @@
 #!/usr/bin/env bash
 # Renders one colored dot per `agentctl list` agent pane for the tmux status bar.
-# idle=grey, done=green, working=yellow, blocked=red, sorted in that order.
+# idle=grey, done=green, working=yellow, blocked=red, sorted by agentctl's
+# built-in status priority, reversed so blocked stays at the far right (most
+# urgent).
 # A `done` agent with an in-flight tool call (e.g. a monitoring/long-running
 # tool it's waiting on) is treated as `working` (yellow) instead of `done`.
 set -euo pipefail
 
 RD_BIN=$(command -v agentctl || echo "$HOME/.local/bin/agentctl")
 
-lines=$("$RD_BIN" list -c status,activeTools 2>/dev/null) || exit 0
+lines=$("$RD_BIN" list -c status,activeTools --sort-by status --reverse 2>/dev/null) || exit 0
 [[ -z "$lines" ]] && exit 0
 
-rank_and_color() {
+color_for() {
   case "$1" in
-    idle) echo "0 colour8" ;;
-    done) echo "1 green" ;;
-    working) echo "2 yellow" ;;
-    blocked) echo "3 red" ;;
-    *) echo "4 colour8" ;;
+    idle) echo colour8 ;;
+    done) echo green ;;
+    working) echo yellow ;;
+    blocked) echo red ;;
+    *) echo colour8 ;;
   esac
 }
 
-ranked=""
+dots=""
 while read -r status activeTools; do
   [[ -z "$status" ]] && continue
   [[ "$status" == "done" && -n "$activeTools" ]] && status="working"
-  ranked+="$(rank_and_color "$status")"$'\n'
+  dots+="#[fg=$(color_for "$status")]●"
 done <<< "$lines"
 
-[[ -z "$ranked" ]] && exit 0
-
-dots=""
-while read -r rank color; do
-  [[ -z "$rank" ]] && continue
-  dots+="#[fg=${color}]●"
-done < <(printf '%s' "$ranked" | sort -k1,1n)
+[[ -z "$dots" ]] && exit 0
 
 printf '%s#[fg=colour8] | ' "$dots"
