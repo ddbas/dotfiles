@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Watch a mermaid (.mmd) file and regenerate a PNG on every change via `mmdc`.
+# The PNG is written to a per-run tmp dir (not the working directory) and is
+# only `open`ed the first time it's generated, so subsequent regenerations
+# just refresh the already-open preview.
+#
+# Usage: mermaid-preview <input.mmd>
+
+if [[ $# -ne 1 ]]; then
+  echo "Usage: mermaid-preview <input.mmd>" >&2
+  exit 1
+fi
+
+input="$1"
+
+if [[ ! -f "$input" ]]; then
+  echo "File not found: $input" >&2
+  exit 1
+fi
+
+if ! command -v mmdc >/dev/null 2>&1; then
+  echo "mmdc (mermaid-cli) not found in PATH" >&2
+  exit 1
+fi
+
+tmpdir=$(mktemp -d "${TMPDIR:-/tmp}/mermaid-preview.XXXXXX")
+trap 'rm -rf "$tmpdir"' EXIT
+
+output="$tmpdir/$(basename "${input%.*}").png"
+
+file_mtime() {
+  stat -f %m "$input" 2>/dev/null || stat -c %Y "$input" 2>/dev/null
+}
+
+echo "Watching $input"
+echo "Output: $output"
+
+opened=false
+last_mtime=""
+
+while true; do
+  mtime=$(file_mtime)
+  if [[ "$mtime" != "$last_mtime" ]]; then
+    last_mtime="$mtime"
+    if mmdc_error=$(mmdc -i "$input" -o "$output" 2>&1 >/dev/null); then
+      echo "Regenerated at $(date '+%Y-%m-%d %H:%M:%S')"
+      if [[ "$opened" == false ]]; then
+        open "$output"
+        opened=true
+      fi
+    else
+      printf '\033[31mFailed to regenerate: %s\033[0m\n' "$mmdc_error" >&2
+    fi
+  fi
+  sleep 1
+done
