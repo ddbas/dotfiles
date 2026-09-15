@@ -6,19 +6,33 @@ set -euo pipefail
 # only `open`ed the first time it's generated, so subsequent regenerations
 # just refresh the already-open preview.
 #
-# Usage: mermaid-preview <input.mmd>
+# Usage: mermaid-preview <input.mmd> [resolution]
+# Resolution presets (mmdc scale factor): standard (default), high, ultra
 
-if [[ $# -ne 1 ]]; then
-  echo "Usage: mermaid-preview <input.mmd>" >&2
+resolution_choices="standard/high/ultra"
+
+if [[ $# -lt 1 || $# -gt 2 ]]; then
+  echo "Usage: mermaid-preview <input.mmd> [$resolution_choices]" >&2
   exit 1
 fi
 
 input="$1"
+resolution="${2:-standard}"
 
 if [[ ! -f "$input" ]]; then
   echo "File not found: $input" >&2
   exit 1
 fi
+
+case "$resolution" in
+  standard) scale=1 ;;
+  high) scale=2 ;;
+  ultra) scale=4 ;;
+  *)
+    echo "Unknown resolution: $resolution (choices: $resolution_choices)" >&2
+    exit 1
+    ;;
+esac
 
 if ! command -v mmdc >/dev/null 2>&1; then
   echo "mmdc (mermaid-cli) not found in PATH" >&2
@@ -36,6 +50,7 @@ file_mtime() {
 
 echo "Watching $input"
 echo "Output: $output"
+echo "Resolution: $resolution (scale ${scale}x)"
 
 opened=false
 last_mtime=""
@@ -44,7 +59,7 @@ while true; do
   mtime=$(file_mtime)
   if [[ "$mtime" != "$last_mtime" ]]; then
     last_mtime="$mtime"
-    if mmdc_error=$(mmdc -i "$input" -o "$output" 2>&1 >/dev/null); then
+    if mmdc_error=$(mmdc -i "$input" -o "$output" -s "$scale" 2>&1 >/dev/null); then
       echo "Regenerated at $(date '+%Y-%m-%d %H:%M:%S')"
       if [[ "$opened" == false ]]; then
         open "$output"
