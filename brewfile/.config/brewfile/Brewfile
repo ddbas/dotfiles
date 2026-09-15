@@ -1,6 +1,7 @@
 cask "alacritty"
 brew "ansible"
 brew "bat"
+brew "beads"
 cask "claude-code@latest"
 brew "clang-format"
 cask "docker-desktop"
