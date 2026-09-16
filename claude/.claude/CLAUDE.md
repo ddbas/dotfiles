@@ -13,7 +13,14 @@ The main agent remains an active builder. It owns scoping, a substantive main tr
 - Do not delegate formatting, transformation, or generation of data already in main-agent context merely to avoid doing the work.
 - Treat a subagent's result as a claim: revalidate it against current state and never assume success. Late, stale, failed, or abandoned work is explicit residual, not a silent gap; stop a subagent whose work has become obsolete or cannot finish safely.
 
+## Beads
+
+The user wants all work performed by agents to be planned and tracked in beads, the issue tracking tool.
+Use it as the user's personal and local only issue tracker. Do not use it as a replacement for Jira or Openspec,
+but do use it to complement them. See the `beads` skill for full guidance.
+
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:6cd5cc61 -->
+
 ## Beads Issue Tracker
 
 This project uses **bd (beads)** for issue tracking. Run `bd prime` to see full workflow context and commands.
@@ -63,7 +70,9 @@ This protocol applies when ending a Beads implementation workflow. It is subordi
 5. **Hand off** - Summarize changes, validation, issue status, and any blocked sync/commit/push step
 
 **Critical rules:**
+
 - Explicit user or orchestrator instructions override this Beads block.
 - Do not commit or push without clear authority from the active profile or the current user request.
 - If a required sync or push is blocked, stop and report the exact command and error.
+
 <!-- END BEADS INTEGRATION -->
