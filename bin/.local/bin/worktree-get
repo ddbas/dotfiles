@@ -51,7 +51,7 @@ result=$(
     | fzf --print-query --expect=alt-enter +i \
         --no-sort --layout=reverse --prompt="🌳 Branch: " --border=rounded \
         --border-label=" Open or create a worktree " \
-        --header="Enter: open highlighted match  ·  Alt-Enter: create new  ·  Esc: cancel"
+        --header="Enter: open highlighted match  ·  ⌥+Enter: create new  ·  Esc: cancel"
 )
 
 # --print-query + --expect=alt-enter gives 3 lines: query, key pressed
