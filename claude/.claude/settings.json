@@ -104,6 +104,11 @@
     "figma@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
+  "modelSettings": {
+    "claude-sonnet-5-5": {
+      "effortLevel": "medium"
+    }
+  },
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark-ansi",
   "skipAutoPermissionPrompt": true
