@@ -19,6 +19,11 @@ The user wants all work performed by agents to be planned and tracked in beads, 
 Use it as the user's personal and local only issue tracker. Do not use it as a replacement for Jira or Openspec,
 but do use it to complement them. See the `beads` skill for full guidance.
 
+## PR Conflicts
+
+When dealing with merge conflicts in pull requests, NEVER assume the base branch of the PR. Always check the PR's base 
+branch and merge that branch in. Never assume it's the default branch of the repository.
+
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:6cd5cc61 -->
 
 ## Beads Issue Tracker
