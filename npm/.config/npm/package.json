@@ -4,6 +4,7 @@
   "dependencies": {
     "@biomejs/biome": "^2.5.5",
     "@colbymchenry/codegraph": "^1.4.1",
+    "@earendil-works/pi-coding-agent": "^1.1.0",
     "@fission-ai/openspec": "^1.6.0",
     "@github/copilot-language-server": "^1.524.0",
     "@mermaid-js/mermaid-cli": "^11.17.0",
