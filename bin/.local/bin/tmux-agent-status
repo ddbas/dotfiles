@@ -3,11 +3,13 @@
 # idle=grey, done=green, working=yellow, blocked=red, sorted by agentctl's
 # built-in status priority, reversed so blocked stays at the far right (most
 # urgent).
+# A `done` agent with active tools (still waiting on a tool call) keeps its
+# green color but renders as a hollow dot (○) instead of a filled one.
 set -euo pipefail
 
 RD_BIN=$(command -v agentctl || echo "$HOME/.local/bin/agentctl")
 
-lines=$("$RD_BIN" list -c status --sort-by status --reverse 2>/dev/null) || exit 0
+lines=$("$RD_BIN" list -c status,activeTools --sort-by status --reverse 2>/dev/null) || exit 0
 [[ -z "$lines" ]] && exit 0
 
 color_for() {
@@ -21,9 +23,11 @@ color_for() {
 }
 
 dots=""
-while read -r status; do
+while read -r status activeTools; do
   [[ -z "$status" ]] && continue
-  dots+="#[fg=$(color_for "$status")]●"
+  dot="●"
+  [[ "$status" == "done" && -n "$activeTools" ]] && dot="○"
+  dots+="#[fg=$(color_for "$status")]$dot"
 done <<< "$lines"
 
 [[ -z "$dots" ]] && exit 0
