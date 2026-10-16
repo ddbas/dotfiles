@@ -3,13 +3,11 @@
 # idle=grey, done=green, working=yellow, blocked=red, sorted by agentctl's
 # built-in status priority, reversed so blocked stays at the far right (most
 # urgent).
-# A `done` agent with an in-flight tool call (e.g. a monitoring/long-running
-# tool it's waiting on) is treated as `working` (yellow) instead of `done`.
 set -euo pipefail
 
 RD_BIN=$(command -v agentctl || echo "$HOME/.local/bin/agentctl")
 
-lines=$("$RD_BIN" list -c status,activeTools --sort-by status --reverse 2>/dev/null) || exit 0
+lines=$("$RD_BIN" list -c status --sort-by status --reverse 2>/dev/null) || exit 0
 [[ -z "$lines" ]] && exit 0
 
 color_for() {
@@ -23,9 +21,8 @@ color_for() {
 }
 
 dots=""
-while read -r status activeTools; do
+while read -r status; do
   [[ -z "$status" ]] && continue
-  [[ "$status" == "done" && -n "$activeTools" ]] && status="working"
   dots+="#[fg=$(color_for "$status")]●"
 done <<< "$lines"
 
