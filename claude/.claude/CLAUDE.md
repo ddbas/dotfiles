@@ -21,8 +21,13 @@ but do use it to complement them. See the `beads` skill for full guidance.
 
 ## PR Conflicts
 
-When dealing with merge conflicts in pull requests, NEVER assume the base branch of the PR. Always check the PR's base 
+When dealing with merge conflicts in pull requests, NEVER assume the base branch of the PR. Always check the PR's base
 branch and merge that branch in. Never assume it's the default branch of the repository.
+
+## Lavish
+
+- You MUST always long-poll lavish artifacts. Never just create and open it. When the user uses lavish, it is not just because they want a rich HTML artifact, but also because they want to converse via lavish.
+- You MUST always using the Monitor tool to long-poll lavish artifacts. Set the timeout to the maximum allowed.
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:6cd5cc61 -->
 
