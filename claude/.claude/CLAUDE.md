@@ -27,7 +27,8 @@ branch and merge that branch in. Never assume it's the default branch of the rep
 ## Lavish
 
 - You MUST always long-poll lavish artifacts. Never just create and open it. When the user uses lavish, it is not just because they want a rich HTML artifact, but also because they want to converse via lavish.
-- You MUST always use the Bash tool with `run_in_background: true` to long-poll lavish artifacts. Set the `timeout` to the maximum allowed. If it times out, restart it for a maximum of 3 more times. 
+- You MUST always use the Bash tool with `run_in_background: true` to long-poll lavish artifacts. Set the `timeout` to the maximum allowed. If it times out, restart it for a maximum of 3 more times.
+- You SHOULD keep a lavish artifact clean so as to not overwhelm the user with content. Keep content nicely organized with sections. If content is no longer needed or relevant (e.g. the user has made a decision), hide it from the user in a collapsible section and summarize the outcome in the main content. If the user wants to see the hidden content, they can expand it.
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:6cd5cc61 -->
 
