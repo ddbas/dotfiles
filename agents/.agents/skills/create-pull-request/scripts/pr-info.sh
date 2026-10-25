@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Prints pre-PR info: branch, base branch, PR templates, existing open PRs.
+# Prints pre-PR info: branch, base branch, PR templates, existing open PRs, allowed merge methods.
 set -u
 
 branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || { echo "error: not a git repo" >&2; exit 1; }
@@ -25,3 +25,10 @@ echo "open_prs:"
 prs=$(gh pr list --head "$branch" --state open --json number,title,url \
       --jq '.[] | "  #\(.number) \(.title) \(.url)"' 2>/dev/null)
 echo "${prs:-  none}"
+
+echo "merge_methods:"
+methods=$(gh repo view --json squashMergeAllowed,rebaseMergeAllowed,mergeCommitAllowed \
+          --jq '[(if .squashMergeAllowed then "squash" else empty end),
+                 (if .rebaseMergeAllowed then "rebase" else empty end),
+                 (if .mergeCommitAllowed then "merge" else empty end)][] | "  " + .' 2>/dev/null)
+echo "${methods:-  unknown}"

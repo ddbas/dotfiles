@@ -7,11 +7,12 @@ description: Creating a pull request. Use when the user asks to create a pull re
 
 ## Workflow
 
-1. Run `scripts/pr-info.sh` (relative to this skill) to get the branch, base branch, PR template paths, and any existing open PRs.
+1. Run `scripts/pr-info.sh` (relative to this skill) to get the branch, base branch, PR template paths, any existing open PRs, and allowed merge methods.
 2. If there is an existing open PR, stop and inform the user.
 3. Prepare the PR body. Use the pull request template if available, otherwise create a brief summary of the changes. If there are multiple templates to choose from, ask the user which to use.
 4. Create the PR: `gh pr create --base <base> --title "<title>" --body "<body>"`. Use `--draft` if the user asked for a draft pull request. Use `--base` if the user asked for a specific base branch.
-5. Share the results in the following format:
+5. If the user asked you to enable auto merge, run `gh pr merge --auto --<method> <url>`, where `<method>` is the first allowed from `merge_methods` in step 1. Never enable it by default.
+6. Share the results in the following format:
 
 ```md
 **URL:** <url>
