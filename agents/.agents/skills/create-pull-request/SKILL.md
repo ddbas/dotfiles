@@ -1,19 +1,27 @@
 ---
 name: create-pull-request
-description: Creating a pull request for the current branch
+description: Creating a pull request. Use when the user asks to create a pull request.
 ---
 
 # Create Pull Request
 
-## Process
+## Workflow
 
-1. Determine the base branch with `gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name'`, defaulting to `main`.
-2. For the pull request body, look for a pull request template at `pull_request_template.md`, `.github/pull_request_template.md`, or `.github/PULL_REQUEST_TEMPLATE/pull_request_template.md`. If found, copy it in a temp folder and fill every section it requires. If not, formulate your own brief summary of the changes.
-3. Create the pull request in draft mode: `gh pr create --draft --base <base> --title "<title>" --body "<body>"`.
-4. Share the pull request URL with the user.
+1. Run `scripts/pr-info.sh` (relative to this skill) to get the branch, base branch, PR template paths, and any existing open PRs.
+2. If there is an existing open PR, stop and inform the user.
+3. Prepare the PR body. Use the pull request template if available, otherwise create a brief summary of the changes. If there are multiple templates to choose from, ask the user which to use.
+4. Create the PR: `gh pr create --base <base> --title "<title>" --body "<body>"`. Use `--draft` if the user asked for a draft pull request. Use `--base` if the user asked for a specific base branch.
+5. Share the results in the following format:
 
-## Requirements
+```
+URL: <url>
+Title: <title>
+Base: <base-branch>
+Draft: <true|false>
+```
 
-1. Only one open pull request per branch — check with `gh pr list --head <branch> --state open` before creating.
-2. Title in conventional commit format: `<type>[optional scope]: <description>`. Type must be one of `feat`, `fix`, `chore`, `docs`, `refactor`, `perf`, `test`, `ci`, or `build`. Examples: `docs: correct spelling of CHANGELOG`, `feat(lang): add Polish language`.
-3. Fill the pull request template exactly as specified — do not add, modify, or remove anything the template doesn't ask for.
+## Rules
+
+1. A branch MUST only have one open PR at a time.
+2. The title MUST be in the conventional commit format: `<type>[optional scope]: <description>`. Type must be one of `feat`, `fix`, `chore`, `docs`, `refactor`, `perf`, `test`, `ci`, or `build`. Examples: `docs: correct spelling of CHANGELOG`, `feat(lang): add Polish language`.
+3. You MUST fill the PR template exactly as specified.
