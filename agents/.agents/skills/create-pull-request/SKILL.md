@@ -13,11 +13,11 @@ description: Creating a pull request. Use when the user asks to create a pull re
 4. Create the PR: `gh pr create --base <base> --title "<title>" --body "<body>"`. Use `--draft` if the user asked for a draft pull request. Use `--base` if the user asked for a specific base branch.
 5. Share the results in the following format:
 
-```
-URL: <url>
-Title: <title>
-Base: <base-branch>
-Draft: <true|false>
+```md
+**URL:** <url>
+**Title:** "<title>"
+**Base:** <base-branch>
+**Draft:** <true|false>
 ```
 
 ## Rules
