@@ -1,6 +1,6 @@
 ---
-name: beads
-description: Use this anytime you are planning a large body of work, are given beads to orchestrate/execute, or anytime the user mentions "beads". This skill gives all the guidelines, rules, and best practices for using beads. It also gives instructions for specific workflows, including planning, orchestrating, and imlpementing beads work.
+name: beads-preferences
+description: Use this skill anytime you are using "beads" (the `bd` CLI) or are planning a large body of work. This skill provides the user's personal preferences for using "beads". It gives all the guidelines, rules, and best practices for using beads. It also gives instructions for specific workflows, including planning, orchestrating, and imlpementing beads work.
 ---
 
 # Beads
