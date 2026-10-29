@@ -1,6 +1,6 @@
 ---
 name: short-and-concise
-description: Makes agent output short, scannable, and high-level, with only the information needed for its goal. Use when the user asks for a response or artifact (message, doc, plan, report, explanation, proposal) that must be short, concise, brief, or easy to skim.
+description: Makes agent output short, scannable, and high-level, with only the information needed for its goal. Use whenever the user asks for brevity in any form, even casually about your own reply, such as "keep it short", "keep your response short", "give me a short response", "be brief", "tl;dr", "less verbose", "too long", or "summarize briefly". Also use when drafting any message, doc, plan, report, explanation, or proposal that must be concise or easy to skim. Load this skill before answering, not after.
 ---
 
 # Short and concise
