@@ -1,15 +1,17 @@
 {
   "mcpServers": {
+    "actual": {
+      "command": "npx",
+      "args": ["-y", "actual-mcp", "--enable-write"],
+      "env": {
+        "ACTUAL_SERVER_URL": "${ACTUAL_SERVER_URL}",
+        "ACTUAL_PASSWORD": "${ACTUAL_PASSWORD}",
+        "ACTUAL_BUDGET_SYNC_ID": "${ACTUAL_BUDGET_SYNC_ID}"
+      }
+    },
     "codegraph": {
       "command": "codegraph",
       "args": ["serve", "--mcp"]
-    },
-    "mise": {
-      "command": "mise",
-      "args": ["mcp"],
-      "env": {
-        "MISE_EXPERIMENTAL": "1"
-      }
     }
   }
 }

@@ -24,3 +24,6 @@ export NOTES_DIR=$REPO_DIR/notes
 
 # Customizations
 export CUSTOMIZATIONS_DIR=$XDG_CONFIG_HOME/custom
+
+# Secrets
+[[ -r ~/.secrets.zsh ]] && source ~/.secrets.zsh
