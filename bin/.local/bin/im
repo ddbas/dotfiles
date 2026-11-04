@@ -47,6 +47,34 @@ const TYPE_COLORS = {
     const type = (0,external_node_util_.styleText)(TYPE_COLORS[task.taskType], `[${task.taskType}]`);
     return `${STATUS_ICONS[task.status]} ${task.id} ${priority} ${type} ${task.title}`;
 }
+/**
+ * Renders the full detail of one task for `im show`: the `im list` line,
+ * then each non-empty section (description, acceptance criteria, comments,
+ * relationships, parent) and the created/updated timestamps in UTC. Returns
+ * one string per output line.
+ */ function renderTaskDetail(task) {
+    const lines = [
+        renderTaskLine(task)
+    ];
+    if (task.description !== "") lines.push("", task.description);
+    if (task.acceptanceCriteria.length > 0) {
+        lines.push("", "Acceptance criteria:");
+        for (const criterion of task.acceptanceCriteria)lines.push(`  [${criterion.done ? "x" : " "}] ${criterion.text}`);
+    }
+    if (task.comments.length > 0) {
+        lines.push("", "Comments:");
+        for (const comment of task.comments)lines.push(`  ${comment.createdAt.toISOString()} ${comment.body}`);
+    }
+    if (task.relationships.length > 0) {
+        lines.push("", "Relationships:");
+        for (const rel of task.relationships)lines.push(`  ${rel.kind} ${rel.relatedTask}`);
+    }
+    lines.push("");
+    if (task.parent !== undefined) lines.push(`Parent:  ${task.parent}`);
+    lines.push(`Created: ${task.createdAt.toISOString()}`);
+    lines.push(`Updated: ${task.updatedAt.toISOString()}`);
+    return lines;
+}
 
 ;// CONCATENATED MODULE: ./src/cli.ts
 
@@ -96,6 +124,13 @@ const priorityOption = ()=>new commander/* .Option */.c$("--priority <priority>"
         };
         report(app.create(title, options));
     });
+    program.command("show").description("Show the full detail of a task, whatever its status.").argument("<id>", "The id of the task to show.").action((raw)=>{
+        const taskId = id(raw);
+        if (taskId === undefined) return;
+        const result = app.show(taskId);
+        if (!result.ok) return fail((0,errors/* .formatError */.W)(result.error));
+        for (const line of renderTaskDetail(result.value))io.out(line);
+    });
     program.command("claim").description("Claim a task: move it from `Open` to `InProgress`.").argument("<id>", "The id of the task to claim.").action((raw)=>{
         const taskId = id(raw);
         if (taskId !== undefined) report(app.claim(taskId));
@@ -103,6 +138,18 @@ const priorityOption = ()=>new commander/* .Option */.c$("--priority <priority>"
     program.command("close").description("Close a task: move it from `InProgress` to `Closed`.").argument("<id>", "The id of the task to close.").action((raw)=>{
         const taskId = id(raw);
         if (taskId !== undefined) report(app.close(taskId));
+    });
+    program.command("delete").description("Permanently delete a task.").argument("<id>", "The id of the task to delete.").option("--no-interactive", "Delete without asking for confirmation.").action(async (raw, flags)=>{
+        const taskId = id(raw);
+        if (taskId === undefined) return;
+        const prepared = app.prepareDelete(taskId);
+        if (!prepared.ok) return fail((0,errors/* .formatError */.W)(prepared.error));
+        if (flags.interactive) {
+            const { id: taskIdText, title } = prepared.value;
+            const yes = await io.confirm(`Delete ${taskIdText} ${title}? [y/N] `);
+            if (!yes) return io.out("Aborted.");
+        }
+        report(app.delete(taskId));
     });
     program.command("update").description("Partially update an existing task. Only the fields whose flag is given are changed; at least one flag must be given.").argument("<id>", "The id of the task to update.").option("--title <title>", "Replaces the task's title. Leading/trailing whitespace is trimmed; the command fails if the trimmed title is empty.").addOption(typeOption().argParser((value)=>value)).addOption(priorityOption()).option("--description <description>", "Replaces the task's description.").option("--parent <id>", "Sets the id of an existing epic task as the task's parent. Mutually exclusive with `--clear-parent`.").option("--clear-parent", "Clears the task's parent. Mutually exclusive with `--parent`.").action((raw, flags)=>{
         const taskId = id(raw);
@@ -132,34 +179,54 @@ const priorityOption = ()=>new commander/* .Option */.c$("--priority <priority>"
 },
 697(module, __unused_rspack___webpack_exports__, __webpack_require__) {
 __webpack_require__.a(module, async function (__rspack_load_async_deps, __rspack_async_done) { try {
-/* import */ var _imember_adapter_json__rspack_import_0 = __webpack_require__(815);
-/* import */ var _imember_application__rspack_import_3 = __webpack_require__(681);
-/* import */ var _imember_application__rspack_import_4 = __webpack_require__(811);
-/* import */ var commander__rspack_import_1 = __webpack_require__(956);
-/* import */ var _cli_ts__rspack_import_2 = __webpack_require__(11);
+/* import */ var node_readline_promises__rspack_import_0 = __webpack_require__(848);
+/* import */ var node_readline_promises__rspack_import_0_default = /*#__PURE__*/__webpack_require__.n(node_readline_promises__rspack_import_0);
+/* import */ var _imember_adapter_json__rspack_import_1 = __webpack_require__(815);
+/* import */ var _imember_application__rspack_import_4 = __webpack_require__(681);
+/* import */ var _imember_application__rspack_import_5 = __webpack_require__(811);
+/* import */ var commander__rspack_import_2 = __webpack_require__(956);
+/* import */ var _cli_ts__rspack_import_3 = __webpack_require__(11);
 //#!/usr/bin/env node
 
 
 
 
+
 // Composition root: the only place concrete infrastructure is chosen.
-const repository = _imember_adapter_json__rspack_import_0/* .JsonTaskRepository.inDataDir */.Y.inDataDir();
+const repository = _imember_adapter_json__rspack_import_1/* .JsonTaskRepository.inDataDir */.Y.inDataDir();
 if (!repository.ok) {
-    console.error(`error: ${(0,_imember_application__rspack_import_3/* .formatError */.W)(repository.error)}`);
+    console.error(`error: ${(0,_imember_application__rspack_import_4/* .formatError */.W)(repository.error)}`);
     process.exit(1);
 }
-const program = (0,_cli_ts__rspack_import_2/* .createProgram */.r)(new _imember_application__rspack_import_4/* .App */.q(repository.value), {
+const program = (0,_cli_ts__rspack_import_3/* .createProgram */.r)(new _imember_application__rspack_import_5/* .App */.q(repository.value), {
     out: (line)=>console.log(line),
     err: (line)=>console.error(line),
     setExitCode: (code)=>{
         process.exitCode = code;
+    },
+    confirm: async (message)=>{
+        const rl = node_readline_promises__rspack_import_0_default().createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+        // EOF (e.g. non-TTY stdin) closes the interface: treat as "no".
+        const closed = new Promise((resolve)=>rl.once("close", ()=>resolve("")));
+        try {
+            const answer = await Promise.race([
+                rl.question(message),
+                closed
+            ]);
+            return /^y(es)?$/i.test(answer.trim());
+        } finally{
+            rl.close();
+        }
     }
 });
 try {
     await program.parseAsync(process.argv);
 } catch (error) {
     // Commander has already printed its own usage/help message.
-    if (error instanceof commander__rspack_import_1/* .CommanderError */.b7) process.exitCode = error.exitCode === 0 ? 0 : 2; // 2 = usage error, like clap
+    if (error instanceof commander__rspack_import_2/* .CommanderError */.b7) process.exitCode = error.exitCode === 0 ? 0 : 2; // 2 = usage error, like clap
     else throw error;
 }
 
@@ -484,6 +551,16 @@ const repository_message = (error)=>error instanceof Error ? error.message : Str
         }
         return (0,src_result.ok)(undefined);
     }
+    delete(id) {
+        const tasks = this.#read();
+        if (!tasks.ok) return tasks;
+        try {
+            external_node_fs_default().writeFileSync(this.#path, encodeTasks(tasks.value.filter((task)=>task.id !== id)));
+        } catch (error) {
+            return (0,src_result/* .err */._)(repositoryError(`failed to write tasks file ${this.#path}: ${repository_message(error)}`));
+        }
+        return (0,src_result.ok)(undefined);
+    }
 }
 
 ;// CONCATENATED MODULE: ../../packages/adapter-json/src/index.ts
@@ -659,6 +736,15 @@ var types = __webpack_require__(688);
         if (!saved.ok) return saved;
         return (0,result.ok)(`Created ${task.id} ${task.title}`);
     }
+    /** Returns the task with the given id, whatever its status. Read-only. */ show(id) {
+        const found = this.#repository.findById(id);
+        if (!found.ok) return found;
+        if (found.value === undefined) return (0,result/* .err */._)({
+            kind: "NotFound",
+            id
+        });
+        return (0,result.ok)(found.value);
+    }
     /**
    * Moves a task from `Open` to `InProgress`. Idempotent when already in
    * progress (succeeds without saving).
@@ -761,6 +847,35 @@ var types = __webpack_require__(688);
             remaining: task.acceptanceCriteria.filter((criterion)=>incomplete.includes(criterion.id)).map((criterion)=>criterion.text)
         });
     }
+    /**
+   * Looks up the task to delete and checks that it may be deleted (it exists
+   * and is not the parent of another task), without modifying anything.
+   * Lets an adapter confirm with the user before calling {@link App.delete}.
+   */ prepareDelete(id) {
+        const found = this.#repository.findById(id);
+        if (!found.ok) return found;
+        const task = found.value;
+        if (task === undefined) return (0,result/* .err */._)({
+            kind: "NotFound",
+            id
+        });
+        const all = this.#repository.listAll();
+        if (!all.ok) return all;
+        const children = all.value.filter((other)=>other.parent === id).map((other)=>other.id);
+        if (children.length > 0) return (0,result/* .err */._)({
+            kind: "HasChildren",
+            id,
+            children
+        });
+        return (0,result.ok)(task);
+    }
+    /** Permanently deletes a task and returns a one-line confirmation. */ delete(id) {
+        const prepared = this.prepareDelete(id);
+        if (!prepared.ok) return prepared;
+        const deleted = this.#repository.delete(id);
+        if (!deleted.ok) return deleted;
+        return (0,result.ok)(`Deleted ${id} ${prepared.value.title}`);
+    }
     /** Resolves `parentId` against the repository and sets it on `task`. */ #applyParent(task, parentId) {
         const found = this.#repository.findById(parentId);
         if (!found.ok) return found;
@@ -808,6 +923,8 @@ var types = __webpack_require__(688);
             return `task is not in progress (current status: ${error.current})`;
         case "IncompleteAcceptanceCriteria":
             return `task has incomplete acceptance criteria: ${error.remaining.join(", ")}`;
+        case "HasChildren":
+            return `task ${error.id} has child tasks: ${error.children.join(", ")}`;
         case "NoChanges":
             return "no changes specified";
         case "ConflictingParentFlags":
@@ -1236,6 +1353,10 @@ module.exports = __rspack_createRequire_require("node:path");
 },
 708(module) {
 module.exports = __rspack_createRequire_require("node:process");
+
+},
+848(module) {
+module.exports = __rspack_createRequire_require("node:readline/promises");
 
 },
 975(module) {
