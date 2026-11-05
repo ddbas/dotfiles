@@ -7,6 +7,12 @@
       "skillPath": "skills/bonsai/SKILL.md",
       "computedHash": "9997ca362374bc0dc4aab4a3199e6f2f8b9a2608689853b4988843a6f090f6ff"
     },
+    "grilling": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/grilling/SKILL.md",
+      "computedHash": "e40cc1d348f6d935e28f1e24474302d7368f0a400429271a43b35fe154891dc5"
+    },
     "lavish": {
       "source": "kunchenguid/lavish-axi",
       "sourceType": "github",
