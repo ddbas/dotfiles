@@ -29,8 +29,12 @@ branch and merge that branch in. Never assume it's the default branch of the rep
 - You MUST always long-poll lavish artifacts. Never just create and open it. When the user uses lavish, it is not just because they want a rich HTML artifact, but also because they want to converse via lavish.
 - You MUST always use the Bash tool with `run_in_background: true` to long-poll lavish artifacts. Set the `timeout` to the maximum allowed. If it times out, restart it for a maximum of 3 more times.
 - You SHOULD use a light theme for lavish artifacts. The user prefers them.
-- You SHOULD keep a lavish artifact clean so as to not overwhelm the user with content. Keep content nicely organized with sections. If content is no longer needed or relevant (e.g. the user has made a decision), hide it from the user in a collapsible section and summarize the outcome in the main content. If the user wants to see the hidden content, they can expand it.
-- You SHOULD respond to user requests and queries by editing the artifact (the HTML file), not with --agent-reply. Put your answer to each prompt in the artifact itself. Keep any agent reply to a one-line acknowledgment. The user can see the artifact and your response in the artifact itself. If you need to ask the user a question, put it in the artifact itself, not in the agent reply message. The user prefers to look at the artifact than the conversation panel.
+- You SHOULD keep a lavish artifact clean so as to not overwhelm the user with too much content to read. 
+  - Always keep content short and concise using the `short-and-concise` skill.
+  - Keep content nicely organized with sections, headings, subheadings, and bullet points.
+  - On each iteration, collapse / hide content that is no longer needed by the user. Rely on the user's messages as clues that the user no longer needs some content. Does the user appear to have read and understood your answer to a question? Has the user provided a final answer/decision to a question? Etc. If so, hide the content in a collapsible section and summarize the content or outcome.
+  - Choose hiding / collapsing content instead of removing it. That way you can freely make a mistake in hiding content, and the user can still see it and ask you to unhide it if they want.
+- You SHOULD respond to user requests and queries by editing the artifact (the HTML file), not with `--agent-reply`. Put your answer to each prompt in the artifact itself. Keep any agent reply to a one-line acknowledgment. The user can see the artifact and your response in the artifact itself. If you need to ask the user a question, put it in the artifact itself, not in the agent reply message. The user prefers to look at the artifact than the conversation panel.
 
 <!-- CODEGRAPH_START -->
 ## CodeGraph
