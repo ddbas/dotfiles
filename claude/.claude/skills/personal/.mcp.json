@@ -1,7 +1,15 @@
 {
   "chrome": {
     "command": "npx",
-    "args": ["chrome-devtools-mcp@latest", "--headless", "--no-usage-statistics"]
+    "args": [
+      "chrome-devtools-mcp@latest",
+      "--headless",
+      "--no-usage-statistics"
+    ]
+  },
+  "codegraph": {
+    "command": "codegraph",
+    "args": ["serve", "--mcp"]
   },
   "playwright": {
     "command": "npx",

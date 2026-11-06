@@ -31,3 +31,14 @@ branch and merge that branch in. Never assume it's the default branch of the rep
 - You SHOULD use a light theme for lavish artifacts. The user prefers them.
 - You SHOULD keep a lavish artifact clean so as to not overwhelm the user with content. Keep content nicely organized with sections. If content is no longer needed or relevant (e.g. the user has made a decision), hide it from the user in a collapsible section and summarize the outcome in the main content. If the user wants to see the hidden content, they can expand it.
 - You SHOULD respond to user requests and queries by editing the artifact (the HTML file), not with --agent-reply. Put your answer to each prompt in the artifact itself. Keep any agent reply to a one-line acknowledgment. The user can see the artifact and your response in the artifact itself. If you need to ask the user a question, put it in the artifact itself, not in the agent reply message. The user prefers to look at the artifact than the conversation panel.
+
+<!-- CODEGRAPH_START -->
+## CodeGraph
+
+In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the repo root), reach for it BEFORE grep/find or reading files when you need to understand or locate code:
+
+- **MCP tool** (when available): `codegraph_explore` answers most code questions in one call — the relevant symbols' verbatim source plus the call paths between them, including dynamic-dispatch hops grep can't follow. Name a file or symbol in the query to read its current line-numbered source. If it's listed but deferred, load it by name via tool search.
+- **Shell** (always works): `codegraph explore "<symbol names or question>"` prints the same output.
+
+If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is the user's decision.
+<!-- CODEGRAPH_END -->
