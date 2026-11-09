@@ -3,6 +3,8 @@ return {
   lazy = false,
   build = ":TSUpdate",
   config = function()
+    vim.filetype.add({ extension = { mdx = "markdown.mdx" } })
+
     require("nvim-treesitter").install({
       "bash",
       "c",
