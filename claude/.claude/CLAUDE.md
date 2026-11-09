@@ -28,9 +28,9 @@ branch and merge that branch in. Never assume it's the default branch of the rep
 
 - You MUST always long-poll lavish artifacts. Never just create and open it. When the user uses lavish, it is not just because they want a rich HTML artifact, but also because they want to converse via lavish.
 - You MUST always use the Bash tool with `run_in_background: true` to long-poll lavish artifacts. Set the `timeout` to the maximum allowed. If it times out, restart it for a maximum of 3 more times.
+- The content MUST always be short and concise. Use the `short-and-concise` skill.
 - You SHOULD use a light theme for lavish artifacts. The user prefers them.
 - You SHOULD keep a lavish artifact clean so as to not overwhelm the user with too much content to read. 
-  - Always keep content short and concise using the `short-and-concise` skill.
   - Keep content nicely organized with sections, headings, subheadings, and bullet points.
   - On each iteration, collapse / hide content that is no longer needed by the user. Rely on the user's messages as clues that the user no longer needs some content. Does the user appear to have read and understood your answer to a question? Has the user provided a final answer/decision to a question? Etc. If so, hide the content in a collapsible section and summarize the content or outcome.
   - Choose hiding / collapsing content instead of removing it. That way you can freely make a mistake in hiding content, and the user can still see it and ask you to unhide it if they want.
