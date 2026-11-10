@@ -1,6 +1,6 @@
 ---
 name: beads-preferences
-description: Use this skill anytime you are using "beads" (the `bd` CLI) or are planning a large body of work. This skill provides the user's personal preferences for using "beads". It gives all the guidelines, rules, and best practices for using beads. It also gives instructions for specific workflows, including planning, orchestrating, and imlpementing beads work.
+description: Use this skill anytime you are using "beads" (the `bd` CLI) or are planning a large body of work. This skill provides the user's personal preferences for using "beads". It gives all the guidelines, rules, and best practices for using beads. It also gives instructions for specific workflows, including planning, orchestrating, and imlpementing beads work. Also use this skill when the user wants to monitor, watch, or follow the progress of a bead or epic (e.g. "I want to monitor that bead's progress", "show me the bead's progress").
 ---
 
 # Beads
@@ -23,6 +23,7 @@ is tracked and accessible by the user and the agents doing the work on the user'
 | You need to plan work        | `references/creating-beads.md`      |
 | You need to orchestrate work | `references/orchestrating-beads.md` |
 | You need to implement work   | `references/implementing-beads.md`  |
+| The user wants to monitor, watch, or follow a bead's progress (e.g. "I want to monitor that bead", "show me its progress") and you set up the watch for them | `references/monitoring-beads.md` |
 
 ## Rules
 
