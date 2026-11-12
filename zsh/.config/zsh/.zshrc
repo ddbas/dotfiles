@@ -1,7 +1,10 @@
 #!/bin/zsh
 
+# Cache helper
+source $XDG_CONFIG_HOME/zsh/lib/cache.zsh
+
 # Brew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+_cache_init brew /opt/homebrew/bin/brew shellenv
 
 # Tmux
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
@@ -9,7 +12,15 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
 fi
 
 # Setup autocomplete
-autoload -U compinit; compinit
+autoload -Uz compinit
+() {
+  setopt local_options extendedglob # needed for the (#q...) qualifier
+  if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+    compinit # full rebuild + audit, at most daily
+  else
+    compinit -C # trust the cache
+  fi
+}
 source $XDG_CONFIG_HOME/zsh/plugins/fnm.zsh
 source $XDG_CONFIG_HOME/zsh/plugins/fzf.zsh
 source $XDG_CONFIG_HOME/zsh/plugins/mise.zsh
