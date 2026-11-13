@@ -1,23 +1,29 @@
 {
-  "version": 1,
+  "version": 2,
   "skills": {
     "bonsai": {
       "source": "ddbas/bonsai",
       "sourceType": "github",
       "skillPath": "skills/bonsai/SKILL.md",
-      "computedHash": "9997ca362374bc0dc4aab4a3199e6f2f8b9a2608689853b4988843a6f090f6ff"
+      "computedHash": "bab8666b511be6dbe6d696df14f96c73b6120d8c4dfa2d2a33d7f9ac3c8b4f9c"
+    },
+    "codebase-design": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/codebase-design/SKILL.md",
+      "computedHash": "d40f025dc1b0f2020663260f38f2bcb8d6ed3523afb11e5fda624b01238677e8"
     },
     "grilling": {
       "source": "mattpocock/skills",
       "sourceType": "github",
       "skillPath": "skills/productivity/grilling/SKILL.md",
-      "computedHash": "e40cc1d348f6d935e28f1e24474302d7368f0a400429271a43b35fe154891dc5"
+      "computedHash": "485451958784497cd4c4dbea13cb5bbb579da58fac0d0e45f3bcb310fab68ac7"
     },
     "lavish": {
       "source": "kunchenguid/lavish-axi",
       "sourceType": "github",
       "skillPath": "skills/lavish/SKILL.md",
-      "computedHash": "7a82385996353d525e181bbcef8d95c4d43bfdbc666cd4e91d073d32201c5dcd"
+      "computedHash": "70cc3775fd9619f383d152fc949346a010c8317a336a5205671adb4aae3e0c61"
     }
   }
 }
