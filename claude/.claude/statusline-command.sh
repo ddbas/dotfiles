@@ -74,13 +74,15 @@ if [ -n "$used" ]; then
   done
   used_int=$(echo "$used" | awk '{printf "%.0f", $1}')
 
-  # Color the bar: green <= 60%, yellow <= 85%, red > 85%
-  if [ "$used_int" -le 60 ]; then
-    color="\033[32m"   # green
+  # Color the bar: green <= 50%, yellow <= 70%, orange <= 85%, red > 85%
+  if [ "$used_int" -le 50 ]; then
+    color="\033[32m"        # green
+  elif [ "$used_int" -le 70 ]; then
+    color="\033[33m"        # yellow
   elif [ "$used_int" -le 85 ]; then
-    color="\033[33m"   # yellow
+    color="\033[38;5;208m"  # orange (256-color)
   else
-    color="\033[31m"   # red
+    color="\033[31m"        # red
   fi
 
   printf "%s  ${color}%s${reset} %s%%${git_segment}" "$model" "$bar" "$used_int"
