@@ -26,6 +26,10 @@ fi
 session_id=$(tmux display-message -p -t "$TMUX_PANE" '#{session_id}')
 
 if $kill_tmux_session; then
+  # If a client is still attached to this session, move it to another session
+  # instead of detaching it (which can close the user's terminal). This only
+  # affects clients attached to this session; clients elsewhere stay put.
+  tmux set-option -t "$session_id" detach-on-destroy off
   tmux kill-session -t "$session_id"
   exit 0
 fi
