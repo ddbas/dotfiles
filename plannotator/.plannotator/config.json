@@ -5,6 +5,7 @@
     "dark": "plannotator"
   },
   "inboxTool": {
+    "claude-code": true,
     "pi": true
   },
   "inboxNotifications": {
