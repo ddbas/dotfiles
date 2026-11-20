@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Open today's daily note in Neovim, inside the `notes` project session.
+# Bound to `prefix + N` in tmux.conf.
+set -euo pipefail
+
+notes_dir=${NOTES_DIR:-$HOME/repos/notes}
+
+# zk creates today's daily note from the template if missing, otherwise
+# returns the existing path. No custom date or template logic here.
+note_path=$(zk new notes/daily -W "$notes_dir" --print-path --no-input) || {
+  tmux display-message "daily note: zk failed"
+  exit 1
+}
+
+# Switch to (or create) the notes project session.
+"$HOME/.local/bin/project" notes
+
+# Find that session by name, same ID-based lookup `project` uses.
+session_id=$(tmux list-sessions -F '#{session_id}	#{session_name}' \
+  | awk -F'\t' '$2 == "🗂️  notes" {print $1; exit}')
+
+# Reuse the "daily" window if it exists, otherwise open one with nvim.
+if ! tmux list-windows -t "$session_id" -F '#W' | grep -qx daily; then
+  tmux new-window -t "$session_id:" -n daily -c "$notes_dir" nvim "$note_path"
+fi
+tmux select-window -t "$session_id:daily"
