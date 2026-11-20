@@ -1,7 +1,15 @@
 {
   "theme": {
-    "mode": "system",
+    "mode": "dark",
     "light": "plannotator",
     "dark": "plannotator"
+  },
+  "inboxTool": {
+    "pi": true
+  },
+  "inboxNotifications": {
+    "allowedOrigin": "http://localhost:63166",
+    "enabled": true,
+    "dismissed": false
   }
 }
