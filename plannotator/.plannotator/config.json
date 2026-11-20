@@ -1,6 +1,6 @@
 {
   "theme": {
-    "mode": "dark",
+    "mode": "system",
     "light": "plannotator",
     "dark": "plannotator"
   },
