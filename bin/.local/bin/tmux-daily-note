@@ -4,7 +4,6 @@
 set -euo pipefail
 
 notes_dir=${NOTES_DIR:-$HOME/repos/notes}
-session_name="🗂️  notes" # same naming as the `project` script
 
 # zk creates today's daily note from the template if missing, otherwise
 # returns the existing path. No custom date or template logic here.
@@ -13,17 +12,15 @@ note_path=$(zk new notes/daily -W "$notes_dir" --print-path --no-input) || {
   exit 1
 }
 
-# Look up the session by ID, not name: tmux target syntax mishandles some names.
-session_id=$(tmux list-sessions -F '#{session_id}	#{session_name}' 2>/dev/null \
-  | awk -F'\t' -v n="$session_name" '$2 == n {print $1; exit}')
+# Switch to (or create) the notes project session.
+"$HOME/.local/bin/project" notes
 
-if [[ -z $session_id ]]; then
-  # New session whose only window is Neovim on the note.
-  session_id=$(tmux new-session -ds "$session_name" -n daily -c "$notes_dir" \
-    -P -F '#{session_id}' nvim "$note_path")
-elif ! tmux list-windows -t "$session_id" -F '#W' | grep -qx daily; then
+# Find that session by name, same ID-based lookup `project` uses.
+session_id=$(tmux list-sessions -F '#{session_id}	#{session_name}' \
+  | awk -F'\t' '$2 == "🗂️  notes" {print $1; exit}')
+
+# Reuse the "daily" window if it exists, otherwise open one with nvim.
+if ! tmux list-windows -t "$session_id" -F '#W' | grep -qx daily; then
   tmux new-window -t "$session_id:" -n daily -c "$notes_dir" nvim "$note_path"
 fi
-
 tmux select-window -t "$session_id:daily"
-tmux switch-client -t "$session_id"
