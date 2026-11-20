@@ -6,7 +6,8 @@
   "theme": "everforest-dark",
   "lastChangelogVersion": "1.5.0",
   "packages": [
-    "npm:pi-web-access"
+    "npm:pi-web-access",
+    "npm:@plannotator/pi-extension"
   ],
   "extensionChangelogVersions": {
     "{\"source\":\"npm:pi-web-access\",\"scope\":\"user\"}": "0.46.0"

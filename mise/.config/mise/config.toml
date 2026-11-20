@@ -1,2 +1,5 @@
 [settings]
 trusted_config_paths = ["~/repos/", "~/.bonsai"]
+
+[tools]
+"github:backnotprop/plannotator" = "0.29.1"

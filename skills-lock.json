@@ -11,19 +11,46 @@
       "source": "mattpocock/skills",
       "sourceType": "github",
       "skillPath": "skills/engineering/codebase-design/SKILL.md",
-      "computedHash": "d40f025dc1b0f2020663260f38f2bcb8d6ed3523afb11e5fda624b01238677e8"
+      "computedHash": "d40f025dc1b0f2020663260f38f2bcb8d6ed3523afb11e5fda624b01238677e8",
+      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823"
     },
     "grilling": {
       "source": "mattpocock/skills",
       "sourceType": "github",
       "skillPath": "skills/productivity/grilling/SKILL.md",
-      "computedHash": "485451958784497cd4c4dbea13cb5bbb579da58fac0d0e45f3bcb310fab68ac7"
+      "computedHash": "485451958784497cd4c4dbea13cb5bbb579da58fac0d0e45f3bcb310fab68ac7",
+      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823"
     },
     "lavish": {
       "source": "kunchenguid/lavish-axi",
       "sourceType": "github",
       "skillPath": "skills/lavish/SKILL.md",
-      "computedHash": "70cc3775fd9619f383d152fc949346a010c8317a336a5205671adb4aae3e0c61"
+      "computedHash": "70cc3775fd9619f383d152fc949346a010c8317a336a5205671adb4aae3e0c61",
+      "commit": "2b32b92ec8e8fcfb7069af3e1a89c0cabc3bf9aa"
+    },
+    "plannotator-annotate": {
+      "source": "backnotprop/plannotator",
+      "ref": "main",
+      "commit": "adc9be7ebe6ed224d1a02ad6b952b58f97239d00",
+      "sourceType": "github",
+      "skillPath": "apps/skills/core/plannotator-annotate/SKILL.md",
+      "computedHash": "dc29d0d863b808140635c8b99be5e5738b91e3e7a38a381510f244abeaafd6bd"
+    },
+    "plannotator-last": {
+      "source": "backnotprop/plannotator",
+      "ref": "main",
+      "commit": "adc9be7ebe6ed224d1a02ad6b952b58f97239d00",
+      "sourceType": "github",
+      "skillPath": "apps/skills/core/plannotator-last/SKILL.md",
+      "computedHash": "ad4d72469204f5a3e91ae97fd2fc800383419cab40d76c7df4415ecbced554cc"
+    },
+    "plannotator-review": {
+      "source": "backnotprop/plannotator",
+      "ref": "main",
+      "commit": "adc9be7ebe6ed224d1a02ad6b952b58f97239d00",
+      "sourceType": "github",
+      "skillPath": "apps/skills/core/plannotator-review/SKILL.md",
+      "computedHash": "1435a8630428e3a53aa99bb8d8b27c0ea67144ce39b6d6ac66b34e702b1c89ff"
     }
   }
 }

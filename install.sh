@@ -69,7 +69,7 @@ usage() {
   echo -e "    ${CYAN}./install.sh${RESET} [options]"
   echo
   echo -e "  ${BOLD}OPTIONS${RESET}"
-  echo -e "    ${YELLOW}--steps${RESET}=<list>  Comma-separated steps to run: ${CYAN}stow${RESET}, ${CYAN}brew${RESET}, ${CYAN}npm${RESET}"
+  echo -e "    ${YELLOW}--steps${RESET}=<list>  Comma-separated steps to run: ${CYAN}stow${RESET}, ${CYAN}brew${RESET}, ${CYAN}mise${RESET}, ${CYAN}npm${RESET}"
   echo -e "                     ${DIM}(omit to run all steps)${RESET}"
   echo -e "    ${YELLOW}--help${RESET}           Show this help and exit"
   echo
@@ -85,6 +85,7 @@ usage() {
 # ─── Parse arguments ──────────────────────────────────────────────────────────
 DO_STOW=false
 DO_BREW=false
+DO_MISE=false
 DO_NPM=false
 
 for arg in "$@"; do
@@ -95,9 +96,10 @@ for arg in "$@"; do
         case "$s" in
           stow)   DO_STOW=true ;;
           brew)   DO_BREW=true ;;
+          mise)   DO_MISE=true ;;
           npm)    DO_NPM=true ;;
           *)
-            fail "Unknown step: '$s' (valid: stow, brew, npm)"
+            fail "Unknown step: '$s' (valid: stow, brew, mise, npm)"
             exit 1
             ;;
         esac
@@ -116,9 +118,10 @@ for arg in "$@"; do
 done
 
 # Default: run all steps when --steps was not given
-if ! $DO_STOW && ! $DO_BREW && ! $DO_NPM; then
+if ! $DO_STOW && ! $DO_BREW && ! $DO_MISE && ! $DO_NPM; then
   DO_STOW=true
   DO_BREW=true
+  DO_MISE=true
   DO_NPM=true
 fi
 
@@ -132,6 +135,7 @@ echo
 echo -e "  ${BOLD}Steps to run:${RESET}"
 $DO_BREW   && echo -e "    ${BULLET} brew"
 $DO_STOW   && echo -e "    ${BULLET} stow"
+$DO_MISE   && echo -e "    ${BULLET} mise"
 $DO_NPM    && echo -e "    ${BULLET} npm"
 hr
 
@@ -153,13 +157,21 @@ fi
 if $DO_STOW; then
   banner "Stow" "🔗"
   run_step "git submodule update" git submodule update --init --recursive
-  run_step "create symlink parent folders" mkdir -p ~/.agents/skills ~/.claude/skills ~/.local/bin
+  run_step "create symlink parent folders" mkdir -p ~/.agents/skills ~/.claude/skills ~/.local/bin ~/.plannotator
   for folder in "${STOW_FOLDERS[@]}"; do
     run_step "stow $folder" stow -R -t ~ "$folder"
   done
 fi
 
-# ─── Step 3: npm ──────────────────────────────────────────────────────────────
+# ─── Step 3: mise ─────────────────────────────────────────────────────────────
+# Reads ~/.config/mise/config.toml, which comes from the 'mise' stow package,
+# so run it after stow (default order does).
+if $DO_MISE; then
+  banner "mise" "🧰"
+  run_step "mise install" mise install
+fi
+
+# ─── Step 4: npm ──────────────────────────────────────────────────────────────
 if $DO_NPM; then
   banner "npm" "📦"
   # ~/.nvmrc comes from the 'npm' stow package and pins the Node version.
