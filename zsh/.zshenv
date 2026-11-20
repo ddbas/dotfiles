@@ -9,7 +9,7 @@ export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/share
 
 # Path
-export PATH="$PATH:$HOME/.local/bin:$XDG_CONFIG_HOME/npm/node_modules/.bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # Editor
 export VISUAL=nvim

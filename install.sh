@@ -69,7 +69,7 @@ usage() {
   echo -e "    ${CYAN}./install.sh${RESET} [options]"
   echo
   echo -e "  ${BOLD}OPTIONS${RESET}"
-  echo -e "    ${YELLOW}--steps${RESET}=<list>  Comma-separated steps to run: ${CYAN}stow${RESET}, ${CYAN}brew${RESET}, ${CYAN}mise${RESET}, ${CYAN}npm${RESET}"
+  echo -e "    ${YELLOW}--steps${RESET}=<list>  Comma-separated steps to run: ${CYAN}stow${RESET}, ${CYAN}brew${RESET}, ${CYAN}node${RESET}, ${CYAN}mise${RESET}"
   echo -e "                     ${DIM}(omit to run all steps)${RESET}"
   echo -e "    ${YELLOW}--help${RESET}           Show this help and exit"
   echo
@@ -77,16 +77,16 @@ usage() {
   echo -e "    ${DIM}# Run everything${RESET}"
   echo -e "    ${CYAN}./install.sh${RESET}"
   echo
-  echo -e "    ${DIM}# Only re-stow and refresh npm packages${RESET}"
-  echo -e "    ${CYAN}./install.sh --steps=stow,npm${RESET}"
+  echo -e "    ${DIM}# Only re-stow and refresh mise tools${RESET}"
+  echo -e "    ${CYAN}./install.sh --steps=stow,mise${RESET}"
   echo
 }
 
 # ─── Parse arguments ──────────────────────────────────────────────────────────
 DO_STOW=false
 DO_BREW=false
+DO_NODE=false
 DO_MISE=false
-DO_NPM=false
 
 for arg in "$@"; do
   case "$arg" in
@@ -96,10 +96,10 @@ for arg in "$@"; do
         case "$s" in
           stow)   DO_STOW=true ;;
           brew)   DO_BREW=true ;;
+          node)   DO_NODE=true ;;
           mise)   DO_MISE=true ;;
-          npm)    DO_NPM=true ;;
           *)
-            fail "Unknown step: '$s' (valid: stow, brew, mise, npm)"
+            fail "Unknown step: '$s' (valid: stow, brew, node, mise)"
             exit 1
             ;;
         esac
@@ -118,11 +118,11 @@ for arg in "$@"; do
 done
 
 # Default: run all steps when --steps was not given
-if ! $DO_STOW && ! $DO_BREW && ! $DO_MISE && ! $DO_NPM; then
+if ! $DO_STOW && ! $DO_BREW && ! $DO_NODE && ! $DO_MISE; then
   DO_STOW=true
   DO_BREW=true
+  DO_NODE=true
   DO_MISE=true
-  DO_NPM=true
 fi
 
 # ─── Header ───────────────────────────────────────────────────────────────────
@@ -135,8 +135,8 @@ echo
 echo -e "  ${BOLD}Steps to run:${RESET}"
 $DO_BREW   && echo -e "    ${BULLET} brew"
 $DO_STOW   && echo -e "    ${BULLET} stow"
+$DO_NODE   && echo -e "    ${BULLET} node"
 $DO_MISE   && echo -e "    ${BULLET} mise"
-$DO_NPM    && echo -e "    ${BULLET} npm"
 hr
 
 # ─── Source env ───────────────────────────────────────────────────────────────
@@ -163,21 +163,21 @@ if $DO_STOW; then
   done
 fi
 
-# ─── Step 3: mise ─────────────────────────────────────────────────────────────
-# Reads ~/.config/mise/config.toml, which comes from the 'mise' stow package,
-# so run it after stow (default order does).
-if $DO_MISE; then
-  banner "mise" "🧰"
-  run_step "mise install" mise install
-fi
-
-# ─── Step 4: npm ──────────────────────────────────────────────────────────────
-if $DO_NPM; then
-  banner "npm" "📦"
-  # ~/.nvmrc comes from the 'npm' stow package and pins the Node version.
+# ─── Step 3: node ─────────────────────────────────────────────────────────────
+# ~/.nvmrc comes from the 'zsh' stow package and pins the Node version.
+# Runs before mise: mise's npm: tools need this Node on PATH.
+if $DO_NODE; then
+  banner "node" "🟢"
   run_step "fnm install" bash -c "cd ~ && fnm install"
   run_step "fnm default" bash -c "fnm default \$(cat ~/.nvmrc)"
-  run_step "npm install" bash -c "eval \"\$(fnm env)\" && fnm use \$(cat ~/.nvmrc) && cd ~/.config/npm && npm install"
+fi
+
+# ─── Step 4: mise ─────────────────────────────────────────────────────────────
+# Reads ~/.config/mise/config.toml, which comes from the 'mise' stow package,
+# so run it after stow (default order does). Installs the former npm globals too.
+if $DO_MISE; then
+  banner "mise" "🧰"
+  run_step "mise install" bash -c "eval \"\$(fnm env)\" && fnm use \$(cat ~/.nvmrc) && mise install"
 fi
 
 # ─── Done ─────────────────────────────────────────────────────────────────────

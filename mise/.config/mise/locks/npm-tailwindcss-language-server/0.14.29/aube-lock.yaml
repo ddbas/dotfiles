@@ -1,0 +1,24 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@tailwindcss/language-server':
+        specifier: 0.14.29
+        version: 0.14.29
+
+packages:
+
+  '@tailwindcss/language-server@0.14.29':
+    resolution: {integrity: sha512-aZ3/XyTNmsoIyhs09Fghlw6D6y7o70aIxHmQEYPFiJPe/1k3HqtxXqhn7g7a5UpA1yeGOyKK9HRNJ8ghZqIclg==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+
+snapshots:
+
+  '@tailwindcss/language-server@0.14.29': {}
