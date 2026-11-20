@@ -24,6 +24,7 @@ return {
       "tsx",
       "typescript",
       "vimdoc",
+      "yaml", -- markdown frontmatter highlighting
     })
 
     vim.api.nvim_create_autocmd("FileType", {

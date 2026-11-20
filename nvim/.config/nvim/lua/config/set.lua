@@ -1,3 +1,6 @@
+-- Load project-local config (.nvim.lua, .nvim.vim, .exrc); prompts to :trust on first use
+vim.o.exrc = true
+
 vim.opt.signcolumn = "yes"
 vim.opt.number = true
 vim.opt.relativenumber = true
