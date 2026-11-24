@@ -3,7 +3,7 @@ trusted_config_paths = ["~/repos/", "~/.bonsai"]
 lockfile = true
 
 [tools]
-"github:backnotprop/plannotator" = "0.29.1"
+"github:backnotprop/plannotator" = "0.29.3"
 
 # Former npm globals (node itself is managed by fnm)
 "npm:@biomejs/biome" = "2.5.7"
