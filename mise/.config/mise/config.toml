@@ -18,7 +18,7 @@ kubectl = "1.37.2"
 kubeseal = "0.41.2"
 pnpm = "12.23.0"
 ruff = "0.17.6"
-rust = "1.100.0"
+rust = { version = "1.100.0", components = "rust-analyzer" }
 shfmt = "3.14.1"
 stylua = "2.6.0"
 taplo = "0.10.0"
@@ -90,7 +90,6 @@ zsh = true
 "brew:pyright" = "latest"
 "brew:ripgrep" = "latest"
 "brew:rtk" = "latest"
-"brew:rust-analyzer" = "latest"
 "brew:sshpass" = "latest" # for ansible
 "brew:tlrc" = "latest"
 "brew:tmux" = "latest"
