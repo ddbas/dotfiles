@@ -12,15 +12,7 @@ note_path=$(zk new notes/daily -W "$notes_dir" --print-path --no-input) || {
   exit 1
 }
 
-# Switch to (or create) the notes project session.
-"$HOME/.local/bin/project" notes
-
-# Find that session by name, same ID-based lookup `project` uses.
-session_id=$(tmux list-sessions -F '#{session_id}	#{session_name}' \
-  | awk -F'\t' '$2 == "🗂️  notes" {print $1; exit}')
-
-# Reuse the "daily" window if it exists, otherwise open one with nvim.
-if ! tmux list-windows -t "$session_id" -F '#W' | grep -qx daily; then
-  tmux new-window -t "$session_id:" -n daily -c "$notes_dir" nvim "$note_path"
-fi
-tmux select-window -t "$session_id:daily"
+# One window per day: a new day opens a new nvim on its own note, leaving
+# yesterday's nvim (and any unsaved changes) alone. `project` selects the
+# window if it exists, otherwise creates it (or the session) running nvim.
+"$HOME/.local/bin/project" notes -n "daily-$(date +%F)" -- nvim "$note_path"

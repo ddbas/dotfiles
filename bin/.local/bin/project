@@ -2,8 +2,26 @@
 
 repo_dir=${REPO_DIR:-$HOME/repos}
 
-if [[ $# -eq 1 ]]; then
-  selected=$1
+# Usage: project [name] [-n window-name] [-- command [args...]]
+# With a command, it runs in a window of the project session (the session's
+# first window if the session is new). The window is named `-n`, defaulting to
+# the command name, and is selected instead of re-created if it already exists.
+selected=""
+win_name=""
+cmd=()
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -n) win_name=$2; shift 2 ;;
+    --) shift; cmd=("$@"); break ;;
+    *) selected=$1; shift ;;
+  esac
+done
+if [[ ${#cmd[@]} -gt 0 && -z $win_name ]]; then
+  win_name=${cmd[0]##*/}
+fi
+
+if [[ -n $selected ]]; then
+  :
 else
   selected=$(fd --exact-depth=1 --type=d -L --format {/} . $repo_dir | fzf \
     --prompt="🗂️  Project: " \
@@ -32,11 +50,24 @@ previous_session_id=$(tmux display-message -p '#{session_id}')
 # separators, so names like "🗂️  firefly.js" break name-based targets even
 # with the "=" exact-match prefix.
 session_id=$(tmux list-sessions -F '#{session_id}	#{session_name}' 2>/dev/null | awk -F'\t' -v n="$session_name" '$2 == n {print $1; exit}')
+window_id=""
 if [[ -z $session_id ]]; then
-  session_id=$(tmux new-session -ds "$session_name" -c $repo_dir/$selected -P -F '#{session_id}')
+  if [[ ${#cmd[@]} -gt 0 ]]; then
+    session_id=$(tmux new-session -ds "$session_name" -n "$win_name" -c $repo_dir/$selected -P -F '#{session_id}' -- "${cmd[@]}")
+  else
+    session_id=$(tmux new-session -ds "$session_name" -c $repo_dir/$selected -P -F '#{session_id}')
+  fi
+elif [[ ${#cmd[@]} -gt 0 ]]; then
+  window_id=$(tmux list-windows -t "$session_id" -F '#{window_id}	#{window_name}' | awk -F'\t' -v n="$win_name" '$2 == n {print $1; exit}')
+  if [[ -z $window_id ]]; then
+    window_id=$(tmux new-window -d -t "$session_id:" -n "$win_name" -c $repo_dir/$selected -P -F '#{window_id}' -- "${cmd[@]}")
+  fi
 fi
 
 tmux switch-client -t "$session_id"
+if [[ -n $window_id ]]; then
+  tmux select-window -t "$window_id"
+fi
 
 if [[ $previous_dir == $HOME ]]; then
   tmux kill-session -t "$previous_session_id"
