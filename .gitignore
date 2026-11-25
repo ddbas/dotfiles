@@ -4,3 +4,8 @@
 
 # Work tools linked in by the work dotfiles repo
 mise/.config/mise/conf.d/
+
+# mise lockfiles are kept per machine, not in git
+mise.lock
+mise/.config/mise/mise.lock
+mise/.config/mise/locks/
