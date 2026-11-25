@@ -1,3 +1,6 @@
 # MacOS
 
 .DS_Store
+
+# Work tools linked in by the work dotfiles repo
+mise/.config/mise/conf.d/
