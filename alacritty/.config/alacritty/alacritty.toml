@@ -1,6 +1,6 @@
 [general]
 # https://github.com/alacritty/alacritty-theme/
-import = ["~/.config/alacritty/themes/themes/everforest_dark.toml"]
+import = ["~/.local/share/alacritty-theme/themes/everforest_dark.toml"]
 
 [env]
 TERM = "xterm-256color"

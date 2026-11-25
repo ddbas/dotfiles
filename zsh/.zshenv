@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-export ZDOTDIR=${ZDOTDIR:-$HOME/.config/zsh}
-
 # XDG
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_CONFIG_HOME=$HOME/.config
@@ -14,9 +12,6 @@ export PATH="$PATH:$HOME/.local/bin"
 # Editor
 export VISUAL=nvim
 export EDITOR=$VISUAL
-
-# Homebrew
-export HOMEBREW_BUNDLE_FILE=$XDG_CONFIG_HOME/brewfile/Brewfile
 
 # Development
 export REPO_DIR=$HOME/repos

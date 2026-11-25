@@ -15,7 +15,7 @@ fi
 autoload -Uz compinit
 () {
   setopt local_options extendedglob # needed for the (#q...) qualifier
-  if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
     compinit # full rebuild + audit, at most daily
   else
     compinit -C # trust the cache
@@ -23,7 +23,6 @@ autoload -Uz compinit
 }
 source $XDG_CONFIG_HOME/zsh/plugins/fnm.zsh
 source $XDG_CONFIG_HOME/zsh/plugins/fzf.zsh
-source $XDG_CONFIG_HOME/zsh/plugins/mise.zsh
 source $XDG_CONFIG_HOME/zsh/plugins/zsh-autosuggestions.zsh
 source $XDG_CONFIG_HOME/zsh/plugins/zsh-syntax-highlighting.zsh
 

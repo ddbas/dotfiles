@@ -2,10 +2,28 @@
 trusted_config_paths = ["~/repos/", "~/.bonsai"]
 lockfile = true
 
+[settings.dotfiles]
+root = "~/repos/dotfiles"
+
+# ─── Tools: things whose version a project might want to choose ───────────────
 [tools]
+node = "26"
 "github:backnotprop/plannotator" = "0.29.3"
 
-# Former npm globals (node itself is managed by fnm)
+# Former brew formulae (versions as installed by brew at migration time)
+ansible = "15.0.0"
+helm = "4.3.2"
+helmfile = "1.8.5"
+kubectl = "1.37.2"
+kubeseal = "0.41.2"
+pnpm = "12.23.0"
+ruff = "0.17.6"
+rust = "1.100.0"
+shfmt = "3.14.1"
+stylua = "2.6.0"
+taplo = "0.10.0"
+
+# Former npm globals
 "npm:@biomejs/biome" = "2.5.7"
 "npm:@colbymchenry/codegraph" = "1.5.0"
 "npm:@earendil-works/pi-coding-agent" = "1.5.0"
@@ -20,3 +38,72 @@ lockfile = true
 "npm:typescript-language-server" = "5.3.0"
 "npm:vscode-langservers-extracted" = "4.10.0"
 "npm:yaml-language-server" = "1.24.0"
+
+# ─── Bootstrap: machine-wide software, repos, dotfiles ────────────────────────
+[bootstrap]
+dotfile_groups = [
+  "agents",
+  "alacritty",
+  "bat",
+  "bin",
+  "claude",
+  "git",
+  "moxide",
+  "nvim",
+  "pi",
+  "plannotator",
+  "tmux",
+  "zsh",
+]
+
+# mise_shell_activate edits ~/.zshrc, and mise refuses to edit a symlink,
+# so this one file is copied instead of linked.
+[dotfile_groups.zsh.entries]
+"~/.zshrc" = { mode = "copy" }
+
+[bootstrap.mise_shell_activate]
+zsh = true
+
+[bootstrap.repos]
+"~/.local/share/alacritty-theme" = { url = "https://github.com/alacritty/alacritty-theme.git" }
+
+[bootstrap.packages]
+"brew:bat" = "latest"
+"brew:beads" = "latest"
+"brew:clang-format" = "latest"
+"brew:dockerfile-language-server" = "latest"
+"brew:eza" = "latest"
+"brew:fd" = "latest"
+"brew:ffmpeg" = "latest"
+"brew:fzf" = "latest"
+"brew:gh" = "latest"
+"brew:git" = "latest"
+"brew:git-lfs" = "latest"
+"brew:glfw" = "latest"
+"brew:llvm" = "latest"
+"brew:lua-language-server" = "latest"
+"brew:make" = "latest"
+"brew:markdown-oxide" = "latest"
+"brew:marksman" = "latest"
+"brew:neovim" = "latest"
+"brew:pandoc" = "latest"
+"brew:pyright" = "latest"
+"brew:ripgrep" = "latest"
+"brew:rtk" = "latest"
+"brew:rust-analyzer" = "latest"
+"brew:sshpass" = "latest" # for ansible
+"brew:tlrc" = "latest"
+"brew:tmux" = "latest"
+"brew:tpm" = "latest"
+"brew:tree" = "latest"
+"brew:tree-sitter-cli" = "latest"
+"brew:watch" = "latest"
+"brew:zk" = "latest"
+"brew:zsh" = "latest"
+"brew:zsh-autosuggestions" = "latest"
+"brew:zsh-syntax-highlighting" = "latest"
+"brew-cask:alacritty" = "latest"
+"brew-cask:claude-code@latest" = "latest"
+"brew-cask:docker-desktop" = "latest"
+"brew-cask:font-iosevka-term-nerd-font" = "latest"
+"brew-cask:rectangle" = "latest"
