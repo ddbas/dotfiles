@@ -57,14 +57,6 @@ dotfile_groups = [
   "zsh",
 ]
 
-# mise_shell_activate edits ~/.zshrc, and mise refuses to edit a symlink,
-# so this one file is copied instead of linked.
-[dotfile_groups.zsh.entries]
-"~/.zshrc" = { mode = "copy" }
-
-[bootstrap.mise_shell_activate]
-zsh = true
-
 [bootstrap.repos]
 "~/.local/share/alacritty-theme" = { url = "https://github.com/alacritty/alacritty-theme.git" }
 

@@ -22,6 +22,10 @@ autoload -Uz compinit
   fi
 }
 source $XDG_CONFIG_HOME/zsh/plugins/fzf.zsh
+
+# mise (https://mise.jdx.dev/getting-started.html)
+eval "$(mise activate zsh)"
+
 source $XDG_CONFIG_HOME/zsh/plugins/zsh-autosuggestions.zsh
 source $XDG_CONFIG_HOME/zsh/plugins/zsh-syntax-highlighting.zsh
 

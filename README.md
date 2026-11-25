@@ -17,7 +17,7 @@ curl https://mise.run | sh
 ```
 
 This clones the repo, links `~/.config/mise` to `mise/.config/mise`, then installs packages and
-tools, clones repos, deploys dotfiles and activates mise in zsh.
+tools, clones repos and deploys dotfiles. `zsh/.zshrc` activates mise itself.
 
 ## Update
 
@@ -32,11 +32,6 @@ mise dotfiles unapply
 ```
 
 Removes the deployed dotfiles only, not packages or tools.
-
-## Notes
-
-- `~/.zshrc` is copied, not linked, because mise refuses to edit a symlink and it adds its
-  activation block there. Edit `zsh/.zshrc` in the repo, then run `mise dotfiles apply`.
 
 ### Themes I like
 
