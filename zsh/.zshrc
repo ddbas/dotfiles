@@ -21,7 +21,6 @@ autoload -Uz compinit
     compinit -C # trust the cache
   fi
 }
-source $XDG_CONFIG_HOME/zsh/plugins/fnm.zsh
 source $XDG_CONFIG_HOME/zsh/plugins/fzf.zsh
 source $XDG_CONFIG_HOME/zsh/plugins/zsh-autosuggestions.zsh
 source $XDG_CONFIG_HOME/zsh/plugins/zsh-syntax-highlighting.zsh
