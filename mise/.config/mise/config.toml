@@ -1,6 +1,7 @@
 [settings]
 trusted_config_paths = ["~/repos/", "~/.bonsai"]
 lockfile = true
+idiomatic_version_file_enable_tools = ["node"]
 
 [settings.dotfiles]
 root = "~/repos/dotfiles"
