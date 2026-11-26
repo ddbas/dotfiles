@@ -14,7 +14,7 @@ root = "~/repos/dotfiles"
 # ─── Tools: things whose version a project might want to choose ───────────────
 [tools]
 node = "26"
-"github:backnotprop/plannotator" = "0.29.3"
+"github:backnotprop/plannotator" = "0.29.5"
 
 # Former brew formulae (versions as installed by brew at migration time)
 ansible = "15.0.0"
