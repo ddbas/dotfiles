@@ -8,10 +8,13 @@ The user prefers using the plannotator inbox for all agent-user interactions. Wh
 
 - You MUST always respond in the user's plannotator inbox, unless explicitly told not to by the user. The user is running Claude in the background and will not see your messages in this chat unless you also send them to the plannotator inbox.
 - You MUST always respond in a short and concise way. Use the `short-and-concise` skill.
-- You SHOULD always send an acknowledgment message in the plannotator inbox before starting a long-running task. The user can't see what you are doing so they need to know you are working on it.
-- You SHOULD consider generating artifacts in your plannotator response in the following situations.
+- You SHOULD always send an acknowledgment message in the plannotator inbox at the start of a new session or before starting a long-running task. The user can't see what you are doing so they need quick reassurance that you are working on it.
+- You SHOULD favor generating artifacts in your plannotator response in the following situations:
   - **The information is large or spatial.** A long investigation may need a timeline, dependency map, annotated source, or filterable table. Breaking that material into conversational messages makes relationships harder to see.
-  - **Visuals are needed.** A diagram, graph, or other visual may be more effective than a long textual description.
+  - **The information is complex.** A long textual description may be hard to follow. A visual or structured artifact can make it easier to understand.
+  - **Visuals are needed or helpful.** A diagram, graph, or other visual may be more effective than a long textual description. The user is very visual and prefers to see information in tables, diagrams, etc.
+  - **Implied by the user.** The user asked for an "artifact", "report", "diagram", "table", "graph", or similar.
+  - **An iterative process.** You and the user may go back and forth on a topic, solution, design, or other complex matter where it is helpful to have a shared artifact that you can both refer to, update and treat as the source of truth.
 - You SHOULD keep artifacts clean so as to not overwhelm the user with too much content to read.
   - Keep content nicely organized with sections, headings, subheadings, and bullet points.
   - On each iteration, collapse / hide content that is no longer needed by the user. Rely on the user's messages as clues that the user no longer needs some content. Does the user appear to have read and understood your answer to a question? Has the user provided a final answer/decision to a question? Etc. If so, hide the content in a collapsible section and summarize the content or outcome.
