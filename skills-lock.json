@@ -28,13 +28,6 @@
       "computedHash": "485451958784497cd4c4dbea13cb5bbb579da58fac0d0e45f3bcb310fab68ac7",
       "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823"
     },
-    "lavish": {
-      "source": "kunchenguid/lavish-axi",
-      "sourceType": "github",
-      "skillPath": "skills/lavish/SKILL.md",
-      "computedHash": "70cc3775fd9619f383d152fc949346a010c8317a336a5205671adb4aae3e0c61",
-      "commit": "2b32b92ec8e8fcfb7069af3e1a89c0cabc3bf9aa"
-    },
     "plannotator-annotate": {
       "source": "backnotprop/plannotator",
       "ref": "main",

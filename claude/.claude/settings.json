@@ -120,5 +120,8 @@
   },
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark-ansi",
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "worktree": {
+    "bgIsolation": "none"
+  }
 }
