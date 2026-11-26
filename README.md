@@ -17,7 +17,7 @@ curl https://mise.run | sh
 ```
 
 This clones the repo, links `~/.config/mise` to `mise/.config/mise`, then installs packages and
-tools, clones repos and deploys dotfiles. `zsh/.zshrc` activates mise itself.
+tools, clones repos and deploys dotfiles. `~/.zshrc` is written by mise (its activation block plus a `source` of `~/.config/zsh/zshrc`). Edit `zsh/.config/zsh/zshrc` in the repo.
 
 ## Update
 

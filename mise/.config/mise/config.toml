@@ -6,6 +6,10 @@ idiomatic_version_file_enable_tools = ["node"]
 [settings.dotfiles]
 root = "~/repos/dotfiles"
 
+# Mise owns ~/.zshrc and ~/.zprofile through edits (never a link or a copy).
+[dotfiles]
+"~/.zshrc/personal" = { line = 'source ~/.config/zsh/zshrc' }
+
 # ─── Tools: things whose version a project might want to choose ───────────────
 [tools]
 node = "26"
@@ -56,6 +60,9 @@ dotfile_groups = [
   "tmux",
   "zsh",
 ]
+
+[bootstrap.mise_shell_activate]
+zsh = true
 
 [bootstrap.repos]
 "~/.local/share/alacritty-theme" = { url = "https://github.com/alacritty/alacritty-theme.git" }
