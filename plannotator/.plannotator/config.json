@@ -12,5 +12,50 @@
     "allowedOrigin": "http://localhost:63166",
     "enabled": true,
     "dismissed": false
-  }
+  },
+  "inboxRows": [
+    "roomy",
+    "previewTwo",
+    "relativeTime",
+    "marksThreads",
+    "marksProjects",
+    "repoLogo",
+    "agentProjectIcons"
+  ],
+  "inboxRowsRev": 35,
+  "inboxRowsDefaults": 2,
+  "inboxRowsPrev": [
+    "roomy",
+    "previewTwo",
+    "relativeTime",
+    "marksThreads",
+    "marksProjects",
+    "repoLogo"
+  ],
+  "inboxRowsBy": null,
+  "inboxTextSize": 15,
+  "inboxSidebar": {
+    "top": [
+      "search",
+      "new-message",
+      "inbox",
+      "board",
+      "scheduled",
+      "shape",
+      "artifacts",
+      "reviews",
+      "drafts"
+    ],
+    "bottom": [
+      "copy-prompt",
+      "feedback",
+      "usage",
+      "settings"
+    ],
+    "hidden": [
+      "copy-prompt",
+      "feedback"
+    ]
+  },
+  "inboxSidebarRev": 6
 }
