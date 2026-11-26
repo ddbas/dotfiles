@@ -6,7 +6,7 @@ Applies across projects. More local instructions may override anything here.
 
 The user prefers using the plannotator inbox for all agent-user interactions. When the user mentions their "inbox", they're referring to the plannotator inbox.
 
-- You MUST always respond in the user's plannotator inbox, unless explicitly told not to by the user.
+- You MUST always respond in the user's plannotator inbox, unless explicitly told not to by the user. The user is running Claude in the background and will not see your messages in this chat unless you also send them to the plannotator inbox.
 - You MUST always respond in a short and concise way. Use the `short-and-concise` skill.
 - You SHOULD always send an acknowledgment message in the plannotator inbox before starting a long-running task. The user can't see what you are doing so they need to know you are working on it.
 - You SHOULD consider generating artifacts in your plannotator response in the following situations.
